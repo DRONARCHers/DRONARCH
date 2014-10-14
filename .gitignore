@@ -1,0 +1,17 @@
+# latex stuff
+*.temp
+*.db
+*.rar
+*.aux
+*.log
+*.gz
+*.bbl
+*.blg
+*.tks
+*.lof
+*.loa
+*.toc
+*.out
+
+#MS Office
+~*
