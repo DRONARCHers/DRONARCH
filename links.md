@@ -6,3 +6,4 @@ SfM:
 
 Drone:
 http://vision.in.tum.de/data/software/tum_ardrone
+https://github.com/venthur/python-ardrone (ist in python 2.6, aber ich denke, dass es sehr schnell portiert ist)
