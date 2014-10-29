@@ -1,4 +1,4 @@
-Drone supported <something> for Archeology
+Drone supported Reconstruction Of Natural Environment for Archaeology
 
 Specification
 	Mandatory features:
