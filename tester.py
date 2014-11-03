@@ -15,14 +15,8 @@ while(cap.isOpened()):
     kp = fast.detect(frame,None)
     # kp, des = surf.detectAndCompute(frame,None)
 
+
     img2 = cv2.drawKeypoints(frame, kp, color=(255,0,0))
-
-    # Print all default params
-    print "Threshold: ", fast.getInt('threshold')
-    print "nonmaxSuppression: ", fast.getBool('nonmaxSuppression')
-    print "Total Keypoints with nonmaxSuppression: ", len(kp)
-
-
     cv2.imshow('frame',img2)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
