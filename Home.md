@@ -5,13 +5,13 @@ Drones seem to be a good solution to this challenge and are affordable as well.
 DRONARCH is a structure from motion application developed for this purpose and takes its source images from videos from drones and additional images.
 
 ### How did it start
-This is a project for the for the research group _Archäologie der Römischen Provinzen_ of the _Institut für Archäologische Wissenschaften_ at the University of Bern.
+This is a project for the for the research group _Archäologie der Römischen Provinzen_ of the _Institut für Archäologische Wissenschaften_ at the University of Bern as part of my bachelors studies.
 
 ### Where is it now
 Development has just started
 
 ### Where does it go
-
+For now this is just a small project for University
 
 ## Proposal
 The proposal defining the goal of this project can be found here: [Concept](https://github.com/DRONARCHers/DRONARCH/tree/master/concept)
