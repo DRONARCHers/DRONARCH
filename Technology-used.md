@@ -18,8 +18,8 @@ You can find the code [on github](https://github.com/snavely/bundler_sfm)
 
 ## CMVS/PMVS
 
-Dense point-cloude
+Is used to get a dense point-cloude.  
+For installation issues check out [this blog post](http://www.10flow.com/2012/08/15/building-visualsfm-on-ubuntu-12-04-precise-pangolin-desktop-64-bit/). Scroll down to Hack PMVS-2.
 
 [Homepage](http://www.di.ens.fr/cmvs/)  
 There exists a fork [on github](https://github.com/pmoulon/CMVS-PMVS)
-
