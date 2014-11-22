@@ -33,13 +33,18 @@ matches = bf.match(descrs[0],descrs[1])
 # is better
 matches = sorted(matches, key=lambda val: val.distance)
 
-res = drawMatches(frames[0], key_points[0], frames[1], key_points[1], matches[:50])
+# res = drawMatches(frames[0], key_points[0], frames[1], key_points[1], matches[:50])
 
 points0 = np.array([key_points[0][match.queryIdx].pt for match in matches])
 points1 = np.array([key_points[1][match.queryIdx].pt for match in matches])
 
 F = cv2.findFundamentalMat(points0, points1, cv2.FM_RANSAC, 0.1, 0.99, 3)
-print(F[0])
+F = F[0]
+
+
+U,D,V = cv2.SVDecomp(np.mat(F))
+print(np.mat(V))
+
 #defining FLANN
 # index_params = dict(algorithm = 0, trees = 5)
 # search_params = dict(checks = 50)
