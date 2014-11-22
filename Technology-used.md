@@ -5,9 +5,7 @@ Unfortunately I was not able to compile the complete OpenCV package for Python3,
 OpenCV is a huge collection of computer vision libraries.
 
 DRONARCH uses version 2.9.4.1
-
 [Homepage](http://opencv.org/)
-
 The source can be found [on github](https://github.com/Itseez/opencv)
 
 ## Bundler
