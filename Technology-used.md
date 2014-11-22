@@ -18,6 +18,8 @@ You can find the code [on github](https://github.com/snavely/bundler_sfm)
 
 ## CMVS/PMVS
 
-[Homepage](http://www.di.ens.fr/cmvs/)
+Dense point-cloude
+
+[Homepage](http://www.di.ens.fr/cmvs/)  
 There exists a fork [on github](https://github.com/pmoulon/CMVS-PMVS)
 
