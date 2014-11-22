@@ -13,5 +13,8 @@ Development has just started
 ### Where does it go
 For now this is just a small project for University
 
+## Technology
+See [here](https://github.com/DRONARCHers/DRONARCH/wiki/Technology-used) for more.
+
 ## Proposal
 The proposal defining the goal of this project can be found here: [Concept](https://github.com/DRONARCHers/DRONARCH/tree/master/concept)
