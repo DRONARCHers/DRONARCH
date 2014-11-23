@@ -1,5 +1,10 @@
-import os, sys, video2image,re,glob,shutil
+#standard python imports
+import os, sys,re,glob,shutil
+#DRONARCH internal
+import video2image, img_manipulations, helpers
 from debug import debug
+#external imports
+
 
 __author__ = 'niclas'
 
@@ -13,6 +18,10 @@ class Dronarch:
         bundler_bin_dir     The location of the bundler binaries
         cmvs_bin_dir        The location of the CMVS binaries
         pmvs_bin_dir        The location of the PMVS binaries
+
+        vid_imgs_per_sec    How many images should be extracted per second from a video
+        vid_start_frame     Which frame to start extracting images from a video with
+        vid_no_images       How many images should be extracted from a video in total
     """
     #Attributes loaded from config file
     config_file = './../config/dronarch.cfg'
@@ -20,15 +29,21 @@ class Dronarch:
     cmvs_bin_dir = ''
     pmvs_bin_dir = ''
 
+    vid_imgs_per_sec = 1
+    vid_start_frame = 10
+    vid_no_images = 10
+
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
     vid_dest_dir = '../vid_imgs/'
-    img_dir = '../imgs/'
+    orig_img_dir = '../imgs/'
+    temp_img_dir = '../temp_imgs/'
     video_formats = ['avi','mpeg']
-    img_formats = ['jpeg']
+    img_formats = ['jpeg','jpg']
+    img_max_size = (2000,2000)
 
     #TODO: ALL DIRECTORIES (that must be created and removes ) HAVE TO BE IN THIS LIST.
-    dirs = [vid_dest_dir]
+    dirs = [vid_dest_dir,temp_img_dir]
 
 
     def __init__(self):
@@ -88,6 +103,12 @@ class Dronarch:
                 self.cmvs_bin_dir = value;
             elif key == 'pmvs_bin_dir':
                 self.pmvs_bin_dir = value
+            elif key == 'vid_imgs_per_sec':
+                self.vid_imgs_per_sec = value
+            elif key == 'vid_start_frame':
+                self.vid_start_frame = value
+            elif key =='vid_no_images':
+                self.vid_no_images = value
             else:
                 debug(1, 'Unknown entry: ',key, '=', value)
 
@@ -127,33 +148,11 @@ class Dronarch:
         for dir in self.dirs:
             shutil.rmtree(dir)
 
-    def get_files_with_ending(self, folder, endings):
-        """
-        Scan the folder for files with specified ending and return them as a list
-        :param folder: The folder to be searched
-        :param endings: List containing the endings without the dot. .e.g. ['avi', 'mpeg']
-        :return:
-        """
-        #get all files
-        files = glob.glob(folder+'*')
-
-        #compile the most epic regex patterne ever
-        pattern = ''.join([''+end+'|' for end in endings])
-        #add brackets and remove last pipe
-        pattern = '.*\.('+pattern[0:-1]+')$'
-        regex = re.compile(pattern, re.IGNORECASE)
-
-        #filter to keep matches only
-        files = filter(lambda x: regex.match(x), files)
-
-        return files
 
     def start_execution(self):
-        videos = self.get_files_with_ending(self.img_dir, self.video_formats)
-        if len(videos)>0:
-            for video in videos:
-                video2image.video2image(video, self.vid_dest_dir, 1,100, 3)
+        video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir, dest_dir=self.vid_dest_dir, formats=self.video_formats, imgs_per_sec=self.vid_imgs_per_sec, start_frame=self.vid_start_frame, no_images=self.vid_no_images)
+        img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir, dest_dir=self.temp_img_dir, size=self.img_max_size, formats=self.img_formats)
 
-
-with Dronarch() as dron:
-    dron.start_execution()
+if __name__ == '__main__':
+    with Dronarch() as dron:
+        dron.start_execution()

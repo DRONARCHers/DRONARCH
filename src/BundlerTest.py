@@ -16,9 +16,6 @@ from_video = True
 
 
 
-def imgs_from_video():
-
-
 def write_file(dicti, filename):
     with open(filename, 'w') as fp:
             for image,value in dicti.items():

@@ -1,7 +1,14 @@
-import cv2,os,ntpath
+import cv2,os,ntpath,helpers
 from debug import debug
 
+
 __author__ = 'niclas'
+
+def check_and_extract_all_videos(src_dir, dest_dir,formats, imgs_per_sec, start_frame, no_images):
+    videos = helpers.get_files_with_ending(src_dir, formats)
+    if len(videos)>0:
+        for video in videos:
+            video2image(video, dest_dir, imgs_per_sec, start_frame, no_images)
 
 
 def video2image(video, dest_folder, imgs_per_sec, start_frame=0, no_images=50, focal_length=2.45):
