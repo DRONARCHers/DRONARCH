@@ -68,25 +68,38 @@ def bundler_stuff():
             '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-11.key',
             '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.key',
             '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.key',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.key'
             ]
     # img_f_dict = {'/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.JPG': None}
 
     # bundler.match_images(keys, matches_file, verbose=True)
 
     bundler.bundler(image_list=imgs_file,
-                options_file="options.txt",
-                verbose=True,
-                match_table=matches_file,
-                output="bundle.out",
-                output_all="bundle_",
-                output_dir="bundle",
-                variable_focal_length=True,
-                use_focal_estimate=True,
-                constrain_focal=True,
-                constrain_focal_weight=0.0001,
-                estimate_distortion=True,
-                run_bundle=True)
+            options_file="options.txt",
+            verbose=True,
+            match_table=matches_file,
+            output="bundle.out",
+            output_all="bundle_",
+            output_dir="bundle",
+            variable_focal_length=True,
+            use_focal_estimate=True,
+            constrain_focal=True,
+            constrain_focal_weight=0.0001,
+            estimate_distortion=True,
+            run_bundle=True)
+
+    # bundler.bundler(image_list=img_f_dict,
+    #             options_file="options.txt",
+    #             verbose=True,
+    #             match_table=matches_file,
+    #             output="bundle.out",
+    #             output_all="bundle_",
+    #             output_dir="bundle",
+    #             variable_focal_length=True,
+    #             use_focal_estimate=True,
+    #             constrain_focal=True,
+    #             constrain_focal_weight=0.0001,
+    #             estimate_distortion=True,
+    #             run_bundle=True)
 
 def execute_command(command):
     """
@@ -153,9 +166,24 @@ def pmvs_stuff():
     command = pmvs_bin_folder+'pmvs2 ./ pmvs_options.txt'
     execute_command(command)
     os.chdir('./../')
-if from_video:
-    bundler_stuff()
+# if from_video:
+bundler_stuff()
 # bundler2pmvs_stuff()
-# cmvs_stuff()
-# pmvs_stuff()
+# cmvs_stuff()# pmvs_stuff()
 
+imgs = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/small-0.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-1.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-2.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-3.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-4.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-5.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-6.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-7.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-8.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-9.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-10.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-11.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.jpg',
+        '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.jpg'
+    ]
+# bundler.run_bundler(imgs,verbose=True, parallel=False)

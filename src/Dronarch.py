@@ -200,4 +200,4 @@ class Dronarch:
 
 if __name__ == '__main__':
     with Dronarch() as dron:
-        dron.start_execution(use_old_data=True)
+        dron.start_execution(use_old_data=False)
