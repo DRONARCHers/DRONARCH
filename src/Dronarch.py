@@ -1,7 +1,7 @@
 #standard python imports
 import os, sys,re,glob,shutil
 #DRONARCH internal
-import video2image, img_manipulations, helpers
+import video2image, img_manipulations, bundler_interface
 from debug import debug
 #external imports
 
@@ -29,21 +29,38 @@ class Dronarch:
     cmvs_bin_dir = ''
     pmvs_bin_dir = ''
 
-    vid_imgs_per_sec = 1
+    vid_imgs_per_sec = 5
     vid_start_frame = 10
-    vid_no_images = 10
+    vid_no_images = 50
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
-    vid_dest_dir = '../vid_imgs/'
+
+    #directories
+    temp_dir = '/home/niclas/code/dronarch/project/roaming/'
+    vid_dest_dir = temp_dir+'vid_imgs/'
     orig_img_dir = '../imgs/'
-    temp_img_dir = '../temp_imgs/'
+    temp_img_dir = temp_dir+'temp_imgs/'
+    bundler_output_dir = temp_dir+'bundler/'
+
+
+    #bundler files
+    bundler_img_name_file = bundler_output_dir+'all_imgs.txt'
+    bundler_match_file =  bundler_output_dir+'matches'
+    bundler_options_file = bundler_output_dir+'options.txt'
+    bundler_output_file = bundler_output_dir+'bundle.out'
+
+
+    #formats
     video_formats = ['avi','mpeg']
     img_formats = ['jpeg','jpg']
     img_max_size = (2000,2000)
 
     #TODO: ALL DIRECTORIES (that must be created and removes ) HAVE TO BE IN THIS LIST.
-    dirs = [vid_dest_dir,temp_img_dir]
+    dirs = [temp_dir,
+            vid_dest_dir,
+            temp_img_dir,
+            bundler_output_dir]
 
 
     def __init__(self):
@@ -51,14 +68,14 @@ class Dronarch:
         self.parse_config_dict(entries)
         if not self.check_attriburtes():
             sys.exit('Config file is incomplete. '+self.config_file)
-        self.make_dirs()
+        self.make_dirs(self.dirs)
 
     #using with .. as .. guaranties to clean up in the end
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.remove_dirs()
+        # self.remove_dirs()
         pass
 
     def read_config_file(self, config_file):
@@ -131,14 +148,16 @@ class Dronarch:
             debug(0, 'All attribures could be read from ', self.config_file)
             return True
 
-    def make_dirs(self):
+    def make_dirs(self, dirs):
         """
         Creates all directories specified in self.dirs
         :return:
         """
-        for dir in self.dirs:
+        for dir in dirs:
             if not os.path.exists(dir):
                 os.makedirs(dir)
+        debug(0, 'Created directories: ', dirs)
+
 
     def remove_dirs(self):
         """
@@ -149,10 +168,36 @@ class Dronarch:
             shutil.rmtree(dir)
 
 
-    def start_execution(self):
-        video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir, dest_dir=self.vid_dest_dir, formats=self.video_formats, imgs_per_sec=self.vid_imgs_per_sec, start_frame=self.vid_start_frame, no_images=self.vid_no_images)
-        img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir, dest_dir=self.temp_img_dir, size=self.img_max_size, formats=self.img_formats)
+    def start_execution(self, use_old_data):
+        if not use_old_data:
+            #create images from videos and store them
+            video_imgs = video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir,
+                                                                  dest_dir=self.vid_dest_dir,
+                                                                  formats=self.video_formats,
+                                                                  imgs_per_sec=self.vid_imgs_per_sec,
+                                                                  start_frame=self.vid_start_frame,
+                                                                  no_images=self.vid_no_images)
+
+            #copy single images to temp dictionary and resize if needed
+            imgs = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
+                                                          dest_dir=self.temp_img_dir,
+                                                          size=self.img_max_size,
+                                                          formats=self.img_formats)
+        else:
+            imgs = None
+            video_imgs = None
+
+        #start bundler pipline
+        bundler_interface.start_bundler(imgs_file=self.bundler_img_name_file,
+                                        match_file=self.bundler_match_file,
+                                        options_file=self.bundler_options_file,
+                                        output_file=self.bundler_output_file,
+                                        output_dir=self.bundler_output_dir,
+                                        imgs=imgs,
+                                        vid_imgs=video_imgs,
+                                        use_old_data=use_old_data)
+
 
 if __name__ == '__main__':
     with Dronarch() as dron:
-        dron.start_execution()
+        dron.start_execution(use_old_data=True)

@@ -38,15 +38,24 @@ def check_and_resize(file, dest_dir, (height, width)):
 
         # create new file name
         name = file.split('/')
-        print name
         name = ''.join([dest_dir,name[-1]])
 
         success =  cv2.imwrite(name, img)
+
         if success:
             debug(0, 'Image is to large. Resized ',file, ' from ', img_h, ',',img_w, ' to ', img_h_sm, ',', img_w_sm,' and saved as ', name)
         else:
             debug(2, 'Could not scale or store image ', file, ' to ', name)
-        return name
+    else: #is no resize is needed, just copy the file
+        name = dest_dir + helpers.get_files_with_ending(file)
+        success =  cv2.imwrite(name, img)
+
+        if success:
+            debug(0, 'Image ', file, ' has been copied to', dest_dir)
+        else:
+            debug(2, 'Could not scale or store image ', file, ' to ', name)
+
+    return name
 
 def resize(img, (height, width)):
     """

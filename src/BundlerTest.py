@@ -17,7 +17,7 @@ from_video = True
 
 
 def write_file(dicti, filename):
-    with open(filename, 'w') as fp:
+    with open(filename, 'w+') as fp:
             for image,value in dicti.items():
                 if value == None: fp.write(image + '\n')
                 else: fp.write(' '.join([image, '0', str(value), '\n']))
@@ -27,7 +27,22 @@ def write_file(dicti, filename):
 
 def bundler_stuff():
     #load imgs
-    imgs =  bundler.get_images()
+    # imgs =  bundler.get_images()
+    imgs = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.JPG',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.JPG'
+    ]
 
     #get dictionary img:focal_length
     img_f_dict = bundler.extract_focal_length(imgs)
@@ -36,13 +51,14 @@ def bundler_stuff():
     write_file(img_f_dict, imgs_file)
 
     #get feature points
-    keys = bundler.sift_images(imgs,verbose=True, parallel=False) #parallel=True has lead to a system crash!!!
+    # keys = bundler.sift_images(imgs,verbose=True, parallel=False) #parallel=True has lead to a system crash!!!
     # keys = ['./sm-14.key', './sm-13.key', './sm-6.key', './sm-7.key', './sm-10.key', './sm-8.key', './sm-5.key', './sm-0.key', './sm-4.key', './sm-11.key', './sm-3.key', './sm-1.key', './sm-9.key', './sm-2.key', './sm-12.key']
+    keys = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.key']
+    img_f_dict = {'/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.JPG': None}
 
+    # bundler.match_images(keys, matches_file, verbose=True)
 
-    bundler.match_images(keys, matches_file, verbose=True)
-
-
+    print(imgs_file)
 
     bundler.bundler(image_list=imgs_file,
                 options_file="options.txt",
@@ -124,7 +140,6 @@ def pmvs_stuff():
     execute_command(command)
     os.chdir('./../')
 if from_video:
-    imgs_from_video()
     bundler_stuff()
 # bundler2pmvs_stuff()
 # cmvs_stuff()
