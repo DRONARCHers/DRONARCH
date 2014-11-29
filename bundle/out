@@ -1,0 +1,131 @@
+[OnInit] Running program /home/niclas/code/dronarch/bundler_sfm/utils/../bin/bundler
+Loading images from file 'imgs.txt'
+[BundlerApp::OnInit] Processing options...
+[BundlerApp::OnInit] Loading frame...
+[BundlerApp::OnInit] Loading images...
+[LoadMatchTable] Loading matches
+[PruneDoubleMatches] Pruned[0,1] = 10 / 512
+[PruneDoubleMatches] Pruned[0,2] = 3 / 58
+[PruneDoubleMatches] Pruned[0,12] = 14 / 17
+[PruneDoubleMatches] Removing[0,12]
+[PruneDoubleMatches] Pruned[1,2] = 8 / 110
+[PruneDoubleMatches] Pruned[1,3] = 3 / 16
+[PruneDoubleMatches] Pruned[1,5] = 4 / 17
+[PruneDoubleMatches] Pruned[1,6] = 7 / 18
+[PruneDoubleMatches] Pruned[1,12] = 49 / 53
+[PruneDoubleMatches] Pruned[1,13] = 17 / 22
+[PruneDoubleMatches] Removing[1,3]
+[PruneDoubleMatches] Removing[1,5]
+[PruneDoubleMatches] Removing[1,6]
+[PruneDoubleMatches] Removing[1,12]
+[PruneDoubleMatches] Removing[1,13]
+[PruneDoubleMatches] Pruned[2,3] = 2 / 47
+[PruneDoubleMatches] Pruned[2,4] = 2 / 35
+[PruneDoubleMatches] Pruned[2,5] = 0 / 23
+[PruneDoubleMatches] Pruned[2,6] = 2 / 16
+[PruneDoubleMatches] Pruned[2,7] = 0 / 17
+[PruneDoubleMatches] Pruned[2,8] = 1 / 19
+[PruneDoubleMatches] Pruned[2,9] = 7 / 27
+[PruneDoubleMatches] Pruned[2,11] = 9 / 17
+[PruneDoubleMatches] Pruned[2,12] = 58 / 64
+[PruneDoubleMatches] Pruned[2,13] = 23 / 33
+[PruneDoubleMatches] Removing[2,6]
+[PruneDoubleMatches] Removing[2,11]
+[PruneDoubleMatches] Removing[2,12]
+[PruneDoubleMatches] Removing[2,13]
+[PruneDoubleMatches] Pruned[3,4] = 4 / 101
+[PruneDoubleMatches] Pruned[3,5] = 2 / 19
+[PruneDoubleMatches] Pruned[4,5] = 4 / 211
+[PruneDoubleMatches] Pruned[4,6] = 1 / 46
+[PruneDoubleMatches] Pruned[4,7] = 2 / 38
+[PruneDoubleMatches] Pruned[4,8] = 7 / 49
+[PruneDoubleMatches] Pruned[4,9] = 12 / 35
+[PruneDoubleMatches] Pruned[4,10] = 11 / 24
+[PruneDoubleMatches] Pruned[4,11] = 5 / 20
+[PruneDoubleMatches] Pruned[4,12] = 50 / 59
+[PruneDoubleMatches] Pruned[4,13] = 13 / 24
+[PruneDoubleMatches] Removing[4,10]
+[PruneDoubleMatches] Removing[4,11]
+[PruneDoubleMatches] Removing[4,12]
+[PruneDoubleMatches] Removing[4,13]
+[PruneDoubleMatches] Pruned[5,6] = 7 / 197
+[PruneDoubleMatches] Pruned[5,7] = 2 / 59
+[PruneDoubleMatches] Pruned[5,8] = 5 / 37
+[PruneDoubleMatches] Pruned[5,9] = 16 / 38
+[PruneDoubleMatches] Pruned[5,10] = 11 / 21
+[PruneDoubleMatches] Pruned[5,11] = 6 / 16
+[PruneDoubleMatches] Pruned[5,12] = 36 / 43
+[PruneDoubleMatches] Pruned[5,13] = 22 / 34
+[PruneDoubleMatches] Removing[5,10]
+[PruneDoubleMatches] Removing[5,11]
+[PruneDoubleMatches] Removing[5,12]
+[PruneDoubleMatches] Removing[5,13]
+[PruneDoubleMatches] Pruned[6,7] = 2 / 156
+[PruneDoubleMatches] Pruned[6,8] = 3 / 62
+[PruneDoubleMatches] Pruned[6,9] = 10 / 31
+[PruneDoubleMatches] Pruned[6,11] = 6 / 17
+[PruneDoubleMatches] Pruned[6,12] = 15 / 19
+[PruneDoubleMatches] Pruned[6,13] = 16 / 25
+[PruneDoubleMatches] Removing[6,11]
+[PruneDoubleMatches] Removing[6,12]
+[PruneDoubleMatches] Removing[6,13]
+[PruneDoubleMatches] Pruned[7,8] = 12 / 404
+[PruneDoubleMatches] Pruned[7,9] = 9 / 80
+[PruneDoubleMatches] Pruned[7,10] = 16 / 34
+[PruneDoubleMatches] Pruned[7,11] = 5 / 20
+[PruneDoubleMatches] Pruned[7,12] = 70 / 76
+[PruneDoubleMatches] Pruned[7,13] = 19 / 30
+[PruneDoubleMatches] Removing[7,11]
+[PruneDoubleMatches] Removing[7,12]
+[PruneDoubleMatches] Removing[7,13]
+[PruneDoubleMatches] Pruned[8,9] = 4 / 243
+[PruneDoubleMatches] Pruned[8,10] = 6 / 22
+[PruneDoubleMatches] Pruned[8,11] = 9 / 23
+[PruneDoubleMatches] Pruned[8,12] = 77 / 86
+[PruneDoubleMatches] Pruned[8,13] = 16 / 29
+[PruneDoubleMatches] Removing[8,11]
+[PruneDoubleMatches] Removing[8,12]
+[PruneDoubleMatches] Removing[8,13]
+[PruneDoubleMatches] Pruned[9,10] = 8 / 94
+[PruneDoubleMatches] Pruned[9,11] = 6 / 96
+[PruneDoubleMatches] Pruned[9,12] = 25 / 39
+[PruneDoubleMatches] Pruned[9,13] = 27 / 37
+[PruneDoubleMatches] Removing[9,12]
+[PruneDoubleMatches] Removing[9,13]
+[PruneDoubleMatches] Pruned[10,11] = 19 / 731
+[PruneDoubleMatches] Pruned[10,12] = 5 / 39
+[PruneDoubleMatches] Pruned[11,12] = 3 / 39
+[PruneDoubleMatches] Pruned[11,13] = 7 / 16
+[PruneDoubleMatches] Removing[11,13]
+[PruneDoubleMatches] Pruned[12,13] = 3 / 16
+[PruneDoubleMatches] Removing[12,13]
+[LoadKeys] Loading keys...
+[LoadKeys] Loading keys from image 0...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-11.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 1...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 2...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-6.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 3...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-4.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 4...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-2.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 5...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-0.jpg: ( 1000 , 750 )
+[LoadKeys] Loading keys from image 6...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-10.jpg: ( 1000 , 750 )
+[LoadKeys] Loading keys from image 7...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 8...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-7.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 9...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-5.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 10...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-8.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 11...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-3.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 12...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-1.jpg: ( 2000 , 1500 )
+[LoadKeys] Loading keys from image 13...
+[GetJPEGDimensions] File /home/niclas/code/dronarch/project/roaming/temp_imgs/small-9.jpg: ( 2000 , 1500 )
+[LoadKeys] Loaded keys in 0.140s

@@ -47,6 +47,7 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
     a = imgs_file
     b = get_filename_from_path(options_file)
     d = get_filename_from_path(output_file)
+
     bundler.bundler(image_list=imgs_file,
                     options_file=get_filename_from_path(options_file),
                     verbose=True,

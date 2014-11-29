@@ -28,20 +28,20 @@ def write_file(dicti, filename):
 def bundler_stuff():
     #load imgs
     # imgs =  bundler.get_images()
-    imgs = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.JPG',
-            '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.JPG'
+    imgs = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/small-0.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-1.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-2.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-3.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-4.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-5.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-6.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-7.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-8.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-9.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-10.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-11.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.jpg',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.jpg'
     ]
 
     #get dictionary img:focal_length
@@ -52,13 +52,27 @@ def bundler_stuff():
 
     #get feature points
     # keys = bundler.sift_images(imgs,verbose=True, parallel=False) #parallel=True has lead to a system crash!!!
-    # keys = ['./sm-14.key', './sm-13.key', './sm-6.key', './sm-7.key', './sm-10.key', './sm-8.key', './sm-5.key', './sm-0.key', './sm-4.key', './sm-11.key', './sm-3.key', './sm-1.key', './sm-9.key', './sm-2.key', './sm-12.key']
-    keys = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.key']
-    img_f_dict = {'/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.JPG': None}
+
+    # keys = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.key']
+    keys = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/small-0.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-1.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-2.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-3.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-4.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-5.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-6.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-7.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-8.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-9.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-10.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-11.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.key',
+            '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.key'
+            ]
+    # img_f_dict = {'/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.JPG': None}
 
     # bundler.match_images(keys, matches_file, verbose=True)
-
-    print(imgs_file)
 
     bundler.bundler(image_list=imgs_file,
                 options_file="options.txt",

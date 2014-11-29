@@ -1,0 +1,14 @@
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-11.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-6.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-4.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-2.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-0.jpg
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-10.jpg
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-7.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-5.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-8.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-3.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-1.jpg 0 3946.86907021 
+/home/niclas/code/dronarch/project/roaming/temp_imgs/small-9.jpg 0 3946.86907021 
