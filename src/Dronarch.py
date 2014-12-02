@@ -212,7 +212,9 @@ class Dronarch:
                                         output_dir=self.bundler_output_dir,
                                         imgs=imgs,
                                         vid_imgs=video_imgs,
-                                        use_old_data=use_old_data)
+                                        use_old_data=use_old_data,
+                                        focal_length=5.2
+                                        )
 
 
 if __name__ == '__main__':

@@ -69,7 +69,7 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
 
     #start bundler
     bundler.bundler(image_list=imgs_file,
-            options_file="options.txt",
+            # options_file="options.txt",
             verbose=True,
             match_table=match_file,
             output="bundle.out",
@@ -81,19 +81,7 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
             constrain_focal_weight=0.0001,
             estimate_distortion=True,
             run_bundle=True)
-    # bundler.bundler(image_list=imgs_file,
-    #                 options_file=options_file,
-    #                 verbose=True,
-    #                 match_table=match_file,
-    #                 output='bundle.out', #helpers.get_filename_from_path(output_file),
-    #                 output_all="bundle_",
-    #                 output_dir='bundle',
-    #                 variable_focal_length=True,
-    #                 use_focal_estimate=True,
-    #                 constrain_focal=True,
-    #                 constrain_focal_weight=0.0001,
-    #                 estimate_distortion=True,
-    #                 run_bundle=True)
+
     debug(0,'Bundler pipline is finished.')
     # os.chdir(dir)
 def write_file(img_dict, file_path):
