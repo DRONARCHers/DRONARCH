@@ -70,4 +70,4 @@ def start_stopwatch():
 def elapsed_time():
     return time.time()-start_time
 def timestamp():
-    debug.debug(0,'Time elapsed since start: {:.2}sec'.format(elapsed_time()))
+    debug.debug(0,'Time elapsed since start: {:.2f}sec'.format(elapsed_time()))

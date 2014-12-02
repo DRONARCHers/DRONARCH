@@ -2,3 +2,4 @@
 *.aux
 *.pyc
 .idea/
+/roaming/
