@@ -71,7 +71,7 @@ def bundler_stuff():
             ]
     # img_f_dict = {'/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.JPG': None, '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.JPG': None}
 
-    # bundler.match_images(keys, matches_file, verbose=True)
+    bundler.match_images(keys, matches_file, verbose=True)
 
     bundler.bundler(image_list=imgs_file,
             options_file="options.txt",

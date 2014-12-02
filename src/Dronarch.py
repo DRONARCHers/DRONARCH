@@ -1,7 +1,7 @@
 #standard python imports
 import os, sys,re,glob,shutil
 #DRONARCH internal
-import video2image, img_manipulations, bundler_interface
+import video2image, img_manipulations, bundler_interface,helpers
 from debug import debug
 #external imports
 
@@ -52,7 +52,7 @@ class Dronarch:
 
 
     #formats
-    video_formats = ['avi','mpeg']
+    video_formats = ['avi','mpeg','mov']
     img_formats = ['jpeg','jpg']
     img_max_size = (2000,2000)
 
@@ -169,6 +169,7 @@ class Dronarch:
 
 
     def start_execution(self, use_old_data):
+        helpers.start_stopwatch()
         if not use_old_data:
             #create images from videos and store them
             video_imgs = video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir,
@@ -188,6 +189,22 @@ class Dronarch:
             video_imgs = None
 
         #start bundler pipline
+        helpers.timestamp()
+        # imgs = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/small-0.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-1.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-2.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-3.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-4.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-5.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-6.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-7.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-8.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-9.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-10.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-11.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.jpg',
+        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.jpg'
+    # ]
         bundler_interface.start_bundler(imgs_file=self.bundler_img_name_file,
                                         match_file=self.bundler_match_file,
                                         options_file=self.bundler_options_file,

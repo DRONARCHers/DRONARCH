@@ -47,7 +47,7 @@ def check_and_resize(file, dest_dir, (height, width)):
         else:
             debug(2, 'Could not scale or store image ', file, ' to ', name)
     else: #is no resize is needed, just copy the file
-        name = dest_dir + helpers.get_files_with_ending(file)
+        name = dest_dir + helpers.get_filename_from_path(file)
         success =  cv2.imwrite(name, img)
 
         if success:

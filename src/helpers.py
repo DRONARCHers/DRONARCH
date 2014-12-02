@@ -1,6 +1,8 @@
-import glob,re,os,shutil,subprocess
+import glob,re,os,shutil,subprocess,debug,time
 
 __author__ = 'niclas'
+
+global start_time
 
 def get_files_with_ending(folder, endings):
         """
@@ -60,3 +62,12 @@ def get_filename_from_path(path):
     name = path.split('/')
     name = ''.join(name[-1])
     return name
+
+
+def start_stopwatch():
+    global start_time
+    start_time = time.time()
+def elapsed_time():
+    return time.time()-start_time
+def timestamp():
+    debug.debug(0,'Time elapsed since start: {:.2}sec'.format(elapsed_time()))
