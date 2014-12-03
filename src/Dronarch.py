@@ -34,9 +34,9 @@ class Dronarch:
     cmvs_bin_dir = ''
     pmvs_bin_dir = ''
 
-    vid_imgs_per_sec = 3
+    vid_imgs_per_sec = 1
     vid_start_frame = 1
-    vid_no_images = 20
+    vid_no_images = 50
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -179,13 +179,14 @@ class Dronarch:
                                                                   no_images=self.vid_no_images)
 
             #copy single images to temp dictionary and resize if needed
-            imgs = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
+            imgs, orig_imgs = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
                                                           dest_dir=self.temp_img_dir,
                                                           size=self.img_max_size,
                                                           formats=self.img_formats)
         else:
             imgs = None
             video_imgs = None
+            orig_imgs = None
 
         #start bundler pipline
         helpers.timestamp()
@@ -204,17 +205,21 @@ class Dronarch:
         #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.jpg',
         #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.jpg'
     # ]
-        start_bundler(imgs_file=self.bundler_img_name_file,
+        return_state_bundler = start_bundler(imgs_file=self.bundler_img_name_file,
                                         match_file=self.bundler_match_file,
                                         options_file=self.bundler_options_file,
                                         output_file=self.bundler_output_file,
                                         output_dir=self.bundler_output_dir,
+                                        img_dir= self.temp_img_dir,
                                         imgs=imgs,
+                                        orig_imgs=orig_imgs,
                                         vid_imgs=video_imgs,
                                         use_old_data=use_old_data,
                                         focal_length=5.2
                                         )
-
+        if not return_state_bundler == 0:
+            debug(2, 'Bundler finished with error code ', return_state_bundler)
+            exit(return_state_bundler)
         run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
                          cmvs_bin_folder=self.cmvs_bin_dir,
                          bunder_output_dir=self.bundler_output_dir,
@@ -222,7 +227,6 @@ class Dronarch:
                          bundler_image_file=self.bundler_img_name_file,
                          bundler_out_file=self.bundler_output_file
         )
-        helpers.timestamp()
         run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
                  pmvs_temp_dir=self.pmvs_temp_dir
         )
@@ -230,7 +234,8 @@ class Dronarch:
                  pmvs_temp_dir=self.pmvs_temp_dir,
         )
         helpers.timestamp()
+        debug(0, 'Execution of everything completed.')
 
 if __name__ == '__main__':
     with Dronarch() as dron:
-        dron.start_execution(use_old_data=False)
+        dron.start_execution(use_old_data=True)

@@ -15,10 +15,12 @@ def check_and_resize_all(src_dir, dest_dir, size, formats):
     :return:
     """
     resized_files = []
+    orig_files = []
 
     for file in helpers.get_files_with_ending(src_dir, formats): # all imgs in src_dir
+        orig_files.append(file)
         resized_files.append(check_and_resize(file, dest_dir, size))
-    return resized_files
+    return (resized_files,orig_files)
 
 
 def check_and_resize(file, dest_dir, (height, width)):

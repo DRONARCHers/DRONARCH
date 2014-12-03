@@ -6,7 +6,7 @@ import helpers
 
 __author__ = 'niclas'
 
-def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, use_old_data= False, imgs=None, vid_imgs=None, focal_length=2.45):
+def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, img_dir, use_old_data= False, orig_imgs=None, imgs=None, vid_imgs=None, focal_length=2.45):
     """
     Starts the bundler pipline.
     To run the pipline with the old data, no imgs and vid_imgs lists have to be provided.
@@ -32,12 +32,19 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
         for frame in vid_imgs:
             vid_imgs_dict[frame] = focal_length
 
+        imgs_dict = {}
         # If there are single images, extract focal length
         if len(imgs)>0:
-            imgs_dict = bundler.extract_focal_length(imgs)
-        else:
-            imgs_dict = {}
+            orig_imgs = [dir+'/'+img for img in orig_imgs]
+            print(orig_imgs)
+            orig_imgs_dict = bundler.extract_focal_length(orig_imgs)
+            for key, value in orig_imgs_dict.items():
+                #get path of resized/copied img and create key entry
+                key = img_dir+helpers.get_filename_from_path(key)
+                imgs_dict[key] = value
 
+
+        print(imgs_dict)
         #merge the two dictionaries. This is a bit tricky, since the order should be kept, wich is not the case when using update()
         total_imgs_dict = {}#OrderedDict()
         for key,value in vid_imgs_dict.items():
@@ -76,23 +83,24 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
 
     debug(0, 'Start bundle adjustment. This might take a while (up to several hours).')
     #start bundler
-    bundler.bundler(image_list=imgs_file,
+    return_state = bundler.bundler(image_list=imgs_file,
             options_file=options_file,
             verbose=True,
             match_table=match_file,
             output=helpers.get_filename_from_path(output_file),
             output_all="bundle_",
             output_dir=output_dir,
-            # variable_focal_length=True,
-            # use_focal_estimate=True,
-            # constrain_focal=True,
-            constrain_focal_weight=0,
-            # estimate_distortion=True,
+            variable_focal_length=True,
+            use_focal_estimate=True,
+            constrain_focal=True,
+            constrain_focal_weight=0.0001,
+            estimate_distortion=True,
             run_bundle=True)
 
     debug(0,'Bundler pipline is finished.')
     helpers.timestamp()
     os.chdir(dir)
+    return return_state
 def write_file(img_dict, file_path):
     """
     Writes content of img_dict in a bundler specific format into a file
