@@ -3,6 +3,11 @@ import os, sys,re,glob,shutil
 #DRONARCH internal
 import video2image, img_manipulations, bundler_interface,helpers
 from debug import debug
+from bundler_interface import start_bundler
+from bundler2pmvs import run_bundler2pmvs
+from pmvs import run_pmvs
+from cmvs import run_cmvs
+
 #external imports
 
 
@@ -29,19 +34,20 @@ class Dronarch:
     cmvs_bin_dir = ''
     pmvs_bin_dir = ''
 
-    vid_imgs_per_sec = 5
-    vid_start_frame = 10
-    vid_no_images = 50
+    vid_imgs_per_sec = 3
+    vid_start_frame = 1
+    vid_no_images = 20
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
 
     #directories
-    temp_dir = '/home/niclas/code/dronarch/project/roaming/'
+    temp_dir = '/home/niclas/code/dronarch/project/roaming/' #TODO: Use relative path
     vid_dest_dir = temp_dir+'vid_imgs/'
     orig_img_dir = '../imgs/'
     temp_img_dir = temp_dir+'temp_imgs/'
     bundler_output_dir = temp_dir+'bundler/'
+    pmvs_temp_dir = temp_dir+'pmvs/'
 
 
     #bundler files
@@ -60,7 +66,9 @@ class Dronarch:
     dirs = [temp_dir,
             vid_dest_dir,
             temp_img_dir,
-            bundler_output_dir]
+            bundler_output_dir,
+            pmvs_temp_dir
+            ]
 
 
     def __init__(self):
@@ -75,7 +83,7 @@ class Dronarch:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        # self.remove_dirs()
+        # shutil.rmtree(self.temp_dir)
         pass
 
     def read_config_file(self, config_file):
@@ -159,15 +167,6 @@ class Dronarch:
         debug(0, 'Created directories: ', dirs)
 
 
-    def remove_dirs(self):
-        """
-        Removes all directories specified in self.dirs
-        :return:
-        """
-        for dir in self.dirs:
-            shutil.rmtree(dir)
-
-
     def start_execution(self, use_old_data):
         helpers.start_stopwatch()
         if not use_old_data:
@@ -205,7 +204,7 @@ class Dronarch:
         #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.jpg',
         #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.jpg'
     # ]
-        bundler_interface.start_bundler(imgs_file=self.bundler_img_name_file,
+        start_bundler(imgs_file=self.bundler_img_name_file,
                                         match_file=self.bundler_match_file,
                                         options_file=self.bundler_options_file,
                                         output_file=self.bundler_output_file,
@@ -216,6 +215,21 @@ class Dronarch:
                                         focal_length=5.2
                                         )
 
+        run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
+                         cmvs_bin_folder=self.cmvs_bin_dir,
+                         bunder_output_dir=self.bundler_output_dir,
+                         pmvs_temp_dir=self.pmvs_temp_dir,
+                         bundler_image_file=self.bundler_img_name_file,
+                         bundler_out_file=self.bundler_output_file
+        )
+        helpers.timestamp()
+        run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
+                 pmvs_temp_dir=self.pmvs_temp_dir
+        )
+        run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
+                 pmvs_temp_dir=self.pmvs_temp_dir,
+        )
+        helpers.timestamp()
 
 if __name__ == '__main__':
     with Dronarch() as dron:

@@ -1,0 +1,7 @@
+
+--run_bundle
+--output_all bundle_
+--match_table /home/niclas/code/dronarch/project/roaming/bundler/matches
+--output_dir /home/niclas/code/dronarch/project/roaming/bundler/
+--output bundle.out
+--constrain_focal_weight 0

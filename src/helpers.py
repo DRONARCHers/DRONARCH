@@ -1,5 +1,5 @@
-import glob,re,os,shutil,subprocess,debug,time
-
+import glob,re,os,shutil,subprocess,time
+from debug import debug
 __author__ = 'niclas'
 
 global start_time
@@ -37,8 +37,9 @@ def move_command(path1, path2):
     print('Execute: Move from ', path1, ' to ', path2)
     try:
         shutil.move(path1, path2)
+        debug(0,'File moved from ',path1,' to ', path2 )
     except shutil.Error:
-        print('File ', path2, 'already exists. I will try overwrite it. This will fail if it is a directory.')
+        debug(1, 'File ', path2, 'already exists. I will try overwrite it. This will fail if it is a directory.')
         os.remove(path2)
         shutil.move(path1, path2)
 
@@ -50,7 +51,7 @@ def execute_command(command):
     :return:
     """
     #TODO: Do some security check on the command. Otherwise this is a huge security issue
-    print('\tExecute: ', command)
+    debug(0,'Execute: ', command)
     subprocess.call(command, shell=True)
 
 def get_filename_from_path(path):
@@ -70,4 +71,4 @@ def start_stopwatch():
 def elapsed_time():
     return time.time()-start_time
 def timestamp():
-    debug.debug(0,'Time elapsed since start: {:.2f}sec'.format(elapsed_time()))
+    debug(0,'Time elapsed since start: {:.2f}sec'.format(elapsed_time()))

@@ -26,6 +26,7 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
         debug(0, 'Start bundler pipline using new images.')
         helpers.timestamp()
 
+
         #Use OrderedDictionary to keep order of frames
         vid_imgs_dict =OrderedDict()
         for frame in vid_imgs:
@@ -37,53 +38,61 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
         else:
             imgs_dict = {}
 
-        #merge the two dictionaries
-        imgs_dict.update(vid_imgs_dict)
+        #merge the two dictionaries. This is a bit tricky, since the order should be kept, wich is not the case when using update()
+        total_imgs_dict = {}#OrderedDict()
+        for key,value in vid_imgs_dict.items():
+            total_imgs_dict[key] = value
+        for key,value in imgs_dict.items():
+            total_imgs_dict[key] = value
 
         #write all image pathes to a file. This will be used by bundler and meshlab
-        write_file(imgs_dict, imgs_file)
+        write_file(total_imgs_dict, imgs_file)
 
         #get feature points
-        keys = bundler.sift_images(imgs_dict.keys(), verbose=True, parallel=False) #parallel=True has lead to a system crash!!!
-        debug(0,'Feature detection done. Feature keys are:', keys)
+        debug(0, 'Start feature detection. This might take a while (up to several hours) and slow down your computer.')
+        keys = bundler.sift_images(total_imgs_dict.keys(), verbose=True, parallel=True) #parallel=True has lead to a system crash!!!
+        debug(0,'Feature detection done.')
         helpers.timestamp()
 
         #match features
+        debug(0, 'Start matching features.')
         bundler.match_images(keys, match_file, verbose=True)
-        debug(0, 'Matching completed')
+        debug(0, 'Matching features completed')
         helpers.timestamp()
 
     elif not use_old_data: #Illegal state
         debug(2, 'Paramater imgs or vid_imgs are None, but use_old_data is False. Check if the parameters have been defined.')
     else:
         debug(0.,'Start bundler pipline using the data of the last run.')
-        if True:
+        if False:
 
-            keys = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0628.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0631.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0623.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0625.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0627.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0626.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0629.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0622.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0621.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0632.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0630.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0634.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0620.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0624.key', '/home/niclas/code/dronarch/project/roaming/temp_imgs/IMG_0633.key']
-            # bundler.match_images(keys, match_file, verbose=True)
+            keys = ['/home/niclas/code/dronarch/project/roaming/vid_imgs/test2_'+str(i)+'.key' for i in range(0,20)]
+            bundler.match_images(keys, match_file, verbose=True)
 
 
 
     debug(0, 'Start bundle adjustment.')
     helpers.timestamp()
 
+    debug(0, 'Start bundle adjustment. This might take a while (up to several hours).')
     #start bundler
     bundler.bundler(image_list=imgs_file,
-            # options_file="options.txt",
+            options_file=options_file,
             verbose=True,
             match_table=match_file,
-            output="bundle.out",
+            output=helpers.get_filename_from_path(output_file),
             output_all="bundle_",
-            output_dir="bundle",
-            variable_focal_length=True,
-            use_focal_estimate=True,
-            constrain_focal=True,
-            constrain_focal_weight=0.0001,
-            estimate_distortion=True,
+            output_dir=output_dir,
+            # variable_focal_length=True,
+            # use_focal_estimate=True,
+            # constrain_focal=True,
+            constrain_focal_weight=0,
+            # estimate_distortion=True,
             run_bundle=True)
 
     debug(0,'Bundler pipline is finished.')
-    # os.chdir(dir)
+    helpers.timestamp()
+    os.chdir(dir)
 def write_file(img_dict, file_path):
     """
     Writes content of img_dict in a bundler specific format into a file
