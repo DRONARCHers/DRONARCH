@@ -34,9 +34,9 @@ class Dronarch:
     cmvs_bin_dir = ''
     pmvs_bin_dir = ''
 
-    vid_imgs_per_sec = 1
+    vid_imgs_per_sec = 5
     vid_start_frame = 10
-    vid_no_images = 200
+    vid_no_images = 100
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -175,6 +175,7 @@ class Dronarch:
                                                           dest_dir=self.temp_img_dir,
                                                           size=self.img_max_size,
                                                           formats=self.img_formats)
+
         else:
             imgs = None
             video_imgs = None

@@ -56,7 +56,7 @@ def video2image(video, dest_folder, imgs_per_sec, start_frame=0, no_images=None)
     for t in range(start_frame,end,step):
         cap.set(cv2.cv.CV_CAP_PROP_POS_FRAMES,t)
         ret, frame = cap.read()
-        name = dest_folder+file_name+'_'+str(no_img_proc)+'.jpg'
+        name = dest_folder+file_name+'-img_per_sec_'+str(imgs_per_sec)+'-start_frame_'+str(start_frame)+'-no_images_'+str(no_images)+'-img_num_'+str(no_img_proc)+'.jpg'
         names.append(name)
         cv2.imwrite(name, frame)
 
