@@ -1,19 +1,20 @@
 import bundler,os
+from img_manipulations import get_size
 from collections import OrderedDict
 from debug import debug
-
+from PIL import Image, ExifTags
+from math import tan, pi
 import helpers
 
 __author__ = 'niclas'
 
-def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, img_dir, use_old_data= False, orig_imgs=None, imgs=None, vid_imgs=None, focal_length=2.45):
+def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, img_dir, use_old_data= False, orig_imgs=None, imgs=None, vid_imgs=None,video_fov=93):
     """
     Starts the bundler pipline.
     To run the pipline with the old data, no imgs and vid_imgs lists have to be provided.
 
     :param imgs: List of image pathes
     :param vid_imgs: List of image pathes for the images retreived from videos
-    :param focal_length: focal length of the camera. Assuming it is a fixed lens camera. If non is declared the value for the Parrot AR 2.0 is used (for historical reason)
     :return:
     """
 
@@ -26,25 +27,25 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
         debug(0, 'Start bundler pipline using new images.')
         helpers.timestamp()
 
+        #calculate focal length for video images
+        focal_length = focal_length_for_video(vid_imgs[0], video_fov)
 
         #Use OrderedDictionary to keep order of frames
         vid_imgs_dict =OrderedDict()
         for frame in vid_imgs:
             vid_imgs_dict[frame] = focal_length
 
+
         imgs_dict = {}
         # If there are single images, extract focal length
         if len(imgs)>0:
             orig_imgs = [dir+'/'+img for img in orig_imgs]
-            print(orig_imgs)
-            orig_imgs_dict = bundler.extract_focal_length(orig_imgs)
+            orig_imgs_dict = extract_focal_length(images=orig_imgs, resized_imgs= imgs)
             for key, value in orig_imgs_dict.items():
                 #get path of resized/copied img and create key entry
                 key = img_dir+helpers.get_filename_from_path(key)
                 imgs_dict[key] = value
 
-
-        print(imgs_dict)
         #merge the two dictionaries. This is a bit tricky, since the order should be kept, wich is not the case when using update()
         total_imgs_dict = {}#OrderedDict()
         for key,value in vid_imgs_dict.items():
@@ -82,6 +83,7 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
     helpers.timestamp()
 
     debug(0, 'Start bundle adjustment. This might take a while (up to several hours).')
+    # exit(1)
     #start bundler
     return_state = bundler.bundler(image_list=imgs_file,
             options_file=options_file,
@@ -90,12 +92,13 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
             output=helpers.get_filename_from_path(output_file),
             output_all="bundle_",
             output_dir=output_dir,
-            variable_focal_length=True,
-            use_focal_estimate=True,
-            constrain_focal=True,
-            constrain_focal_weight=0.0001,
-            estimate_distortion=True,
-            run_bundle=True)
+            variable_focal_length=False,
+            # use_focal_estimate=True,
+            # constrain_focal=True,
+            # constrain_focal_weight=0.0001,
+            # estimate_distortion=True,
+            run_bundle=True
+    )
 
     debug(0,'Bundler pipline is finished.')
     helpers.timestamp()
@@ -118,3 +121,81 @@ def write_file(img_dict, file_path):
             image_list_file = file.name
     debug(0, 'Saved image file: ', file_path)
     return image_list_file
+
+
+def extract_focal_length(images, resized_imgs, verbose=True):
+    """Extracts (pixel) focal length from images where available.
+    The functions returns a dictionary of image, focal length pairs.
+    If no focal length is extracted for an image, the second pair is None.
+    """
+    ret = OrderedDict()
+    for i in range(len(images)):
+        image = images[i]
+        new_image = resized_imgs[i]
+        if verbose:
+            debug(0, 'Extracting EXIF tags from image {0}'.format(image))
+
+        tags = {}
+        with open(image, 'rb') as fp:
+            img = Image.open(fp)
+            if hasattr(img, '_getexif'):
+                exifinfo = img._getexif()
+                if exifinfo is not None:
+                    for tag, value in exifinfo.items():
+                        tags[ExifTags.TAGS.get(tag, tag)] = value
+
+        ret[new_image] = None
+
+        # Extract Focal Length
+        focalN, focalD = tags.get('FocalLength', (0, 1))
+        focal_length = float(focalN)/float(focalD)
+
+        # Extract Resolution
+        img_width,img_height,img_depth = get_size(new_image)
+
+
+        if img_width < img_height:
+            img_width,img_height = img_height,img_width
+
+
+        # Extract CCD Width (Prefer Lookup Table)
+        make_model = tags.get('Make', '') + ' ' + tags.get('Model', '')
+        if bundler.CCD_WIDTHS.has_key(make_model.strip()):
+            ccd_width = bundler.CCD_WIDTHS[make_model.strip()]
+        else:
+            fplaneN, fplaneD = tags.get('FocalPlaneXResolution', (0, 1))
+            if fplaneN != 0:
+                ccd_width = 25.4*float(img_width)*float(fplaneD)/float(fplaneN)
+                if verbose: debug(0,'Using CCD width from EXIF tags')
+            else:
+                ccd_width = 0
+
+        if verbose:
+            debug(0,'EXIF focal length = {0}mm' .format(focal_length),
+                    ', EXIF CCD width = {0}mm'.format(ccd_width),
+                    ', EXIF resolution = {0} x {1}'.format(img_width, img_height))
+            if ccd_width == 0:
+                debug(1,'No CCD width available for camera {0}]'.format(
+                    make_model))
+
+        if (img_width==0 or img_height==0 or focalN==0 or ccd_width==0):
+            if verbose:
+                debug(1,'Could not determine pixel focal length')
+            continue
+
+        # Compute Focal Length in Pixels
+        ret[new_image] = img_width * (focal_length / ccd_width)
+        if verbose:
+            debug(0,'Focal length (pixels) = {0}'.format(ret[new_image]))
+
+    return ret
+
+def calculate_focal_length_in_px(img_width, fov):
+    focal_pixel = (float(img_width) * 0.5) / tan(fov * 0.5 * pi/180)
+    return focal_pixel
+
+def focal_length_for_video(image, fov):
+    width, width, height = get_size(image)
+    return calculate_focal_length_in_px(width, fov)
+
+print calculate_focal_length_in_px(720, 93)

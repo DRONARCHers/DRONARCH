@@ -35,8 +35,8 @@ class Dronarch:
     pmvs_bin_dir = ''
 
     vid_imgs_per_sec = 1
-    vid_start_frame = 1
-    vid_no_images = 50
+    vid_start_frame = 10
+    vid_no_images = 200
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -77,14 +77,6 @@ class Dronarch:
         if not self.check_attriburtes():
             sys.exit('Config file is incomplete. '+self.config_file)
         self.make_dirs(self.dirs)
-
-    #using with .. as .. guaranties to clean up in the end
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        # shutil.rmtree(self.temp_dir)
-        pass
 
     def read_config_file(self, config_file):
         """
@@ -214,8 +206,7 @@ class Dronarch:
                                         imgs=imgs,
                                         orig_imgs=orig_imgs,
                                         vid_imgs=video_imgs,
-                                        use_old_data=use_old_data,
-                                        focal_length=5.2
+                                        use_old_data=use_old_data
                                         )
         if not return_state_bundler == 0:
             debug(2, 'Bundler finished with error code ', return_state_bundler)
@@ -237,5 +228,13 @@ class Dronarch:
         debug(0, 'Execution of everything completed.')
 
 if __name__ == '__main__':
-    with Dronarch() as dron:
-        dron.start_execution(use_old_data=True)
+
+    use_old_data=False
+    if not use_old_data:
+        try:
+            shutil.rmtree(Dronarch.temp_dir)
+        except OSError:
+            pass
+
+    dron = Dronarch()
+    dron.start_execution(use_old_data=use_old_data)

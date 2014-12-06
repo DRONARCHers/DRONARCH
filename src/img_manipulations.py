@@ -42,6 +42,16 @@ def check_and_resize(file, dest_dir, (height, width)):
         name = file.split('/')
         name = ''.join([dest_dir,name[-1]])
 
+        #CAUTION: bundler only accepts files ending with exactly .jpg or .bmp. .JPG or jpeg is not allowed
+        name_decomp = name.split('.')
+        if name_decomp[-1] in ['JPG','JPEG','jpeg', 'jpg']:
+            name_decomp[-1] = 'jpg'
+        elif name_decomp[-1] in ['BMP', 'bmp']:
+            name_decomp[-1] = 'bmp'
+        else:
+            debug(2, 'File ',name, 'has invalid format.')
+
+        name = '.'.join(name_decomp)
         success =  cv2.imwrite(name, img)
 
         if success:
@@ -71,5 +81,11 @@ def resize(img, (height, width)):
     img = cv2.resize(img, (0,0), fx=factor, fy=factor)
     return img
 
+def get_size(image):
+    img = cv2.imread(image)
+    (img_h, img_w, img_d) = img.shape
+    return (img_h, img_w, img_d)
+
 # check_and_resize('../imgs/IMG_0632.JPG','../temp_imgs/', (1000,1000))
 # check_and_resize_all(src_dir=Dronarch.orig_img_dir, dest_dir=Dronarch.temp_img_dir, size=(1000,1000), formats=Dronarch.img_formats)
+# print get_size('../imgs/IMG_0621.JPG')
