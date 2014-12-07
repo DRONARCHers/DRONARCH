@@ -34,7 +34,7 @@ def move_command(path1, path2):
     :param path2:
     :return:
     """
-    print('Execute: Move from ', path1, ' to ', path2)
+    debug(0,'Execute: Move from ', path1, ' to ', path2)
     try:
         shutil.move(path1, path2)
         debug(0,'File moved from ',path1,' to ', path2 )
@@ -44,15 +44,17 @@ def move_command(path1, path2):
         shutil.move(path1, path2)
 
 
-def execute_command(command):
+def execute_command(command, shell=True, env=None, stdout=None):
     """
     Executes the command as a shell command
     :param command:
     :return:
     """
-    #TODO: Do some security check on the command. Otherwise this is a huge security issue
+    #TODO: Do some security check on the command. Otherwise this is a bit of a security issue
     debug(0,'Execute: ', command)
-    subprocess.call(command, shell=True)
+
+    ret = subprocess.call(command, shell=shell, emv=env, stdout=stdout)
+    return ret
 
 def get_filename_from_path(path):
     """

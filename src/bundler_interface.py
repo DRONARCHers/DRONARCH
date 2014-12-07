@@ -1,4 +1,4 @@
-import bundler,os
+import bundler,os,sys
 from img_manipulations import get_size
 from collections import OrderedDict
 from debug import debug
@@ -8,7 +8,9 @@ import helpers
 
 __author__ = 'niclas'
 
-def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, img_dir, use_old_data= False, orig_imgs=None, imgs=None, vid_imgs=None,video_fov=93):
+global BUNDLER_BIN
+
+def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, img_dir,bundler_bin_dir, use_old_data= False, orig_imgs=None, imgs=None, vid_imgs=None,video_fov=93):
     """
     Starts the bundler pipline.
     To run the pipline with the old data, no imgs and vid_imgs lists have to be provided.
@@ -21,6 +23,11 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
     #Change to bundler dir
     dir = os.getcwd()
     os.chdir(output_dir)
+
+
+    #get bundler binary
+    set_bundler_bin(bundler_bin_dir=bundler_bin_dir)
+
 
     if not use_old_data and not imgs==None and not vid_imgs==None: #The old data is not reused and the required lists are defined
         #create dictionaries with ImageName:FocalLenght
@@ -58,13 +65,13 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
 
         #get feature points
         debug(0, 'Start feature detection. This might take a while (up to several hours) and slow down your computer.')
-        keys = bundler.sift_images(total_imgs_dict.keys(), verbose=True, parallel=True) #parallel=True has lead to a system crash!!!
+        keys = sift_images(total_imgs_dict.keys(), bundler_bin=bundler_bin, verbose=True, parallel=True) #parallel=True has lead to a system crash!!!
         debug(0,'Feature detection done.')
         helpers.timestamp()
 
         #match features
         debug(0, 'Start matching features.')
-        bundler.match_images(keys, match_file, verbose=True)
+        match_images(keys, match_file, bundler_bin=bundler_bin,verbose=True)
         debug(0, 'Matching features completed')
         helpers.timestamp()
 
@@ -85,7 +92,7 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
     debug(0, 'Start bundle adjustment. This might take a while (up to several hours).')
     # exit(1)
     #start bundler
-    return_state = bundler.bundler(image_list=imgs_file,
+    return_state = bundler(image_list=imgs_file,
             options_file=options_file,
             verbose=True,
             match_table=match_file,
@@ -198,4 +205,171 @@ def focal_length_for_video(image, fov):
     width, width, height = get_size(image)
     return calculate_focal_length_in_px(width, fov)
 
-print calculate_focal_length_in_px(720, 93)
+
+def bundler(bundler_bin, image_list_file, options_file, shell=False, *args, **kwargs):
+    """Run bundler, parsing arguments from args and kwargs through.
+    For Bundler usage run bundler("--help").
+
+    image_list : File containing list of images.
+    options_file : Specify an options file for bundler (optional).
+    shell : Enable full shell support for parsing args (default: False).
+    """
+    def kwargs_bool(b, r):
+        if b: return r
+        else: return []
+
+    kwargs_dict = {
+        'match_table'            : lambda k,v: ['--'+k,v],
+        'output'                 : lambda k,v: ['--'+k,v],
+        'output_all'             : lambda k,v: ['--'+k,v],
+        'output_dir'             : lambda k,v: ['--'+k,v],
+        'variable_focal_length'  : lambda k,v: kwargs_bool(v, ['--'+k]),
+        'use_focal_estimate'     : lambda k,v: kwargs_bool(v, ['--'+k]),
+        'constrain_focal'        : lambda k,v: kwargs_bool(v, ['--'+k]),
+        'constrain_focal_weight' : lambda k,v: ['--'+k,str(v)],
+        'estimate_distortion'    : lambda k,v: kwargs_bool(v, ['--'+k]),
+        'run_bundle'             : lambda k,v: kwargs_bool(v, ['--'+k]),
+    }
+
+    str_args = [a for a in args if type(a) == str]
+    for k,v in kwargs.items():
+        if not kwargs_dict.has_key(k): continue
+        str_args.extend(kwargs_dict[k](k,v))
+
+    if len(str_args) != 0 and options_file is not None:
+        with open(options_file, 'wb') as fp:
+            for o in str_args:
+                if o.startswith('--'): fp.write('\n')
+                else: fp.write(' ')
+                fp.write(o)
+
+    # Add lib folder to LD_LIBRARY_PATH
+    env = dict(os.environ)
+    bundler_lib_path = os.path.join(bundler_bin_dir, "../lib")
+    if env.has_key('LD_LIBRARY_PATH'):
+        env['LD_LIBRARY_PATH'] = env['LD_LIBRARY_PATH'] + ':' + bundler_lib_path
+    else:
+        env['LD_LIBRARY_PATH'] = bundler_lib_path
+
+    #create folder for output
+    try:
+        os.mkdir("bundle")
+    except:
+        pass
+
+
+    with open(os.path.join("bundle", "out"), 'wb') as fp_out:
+        if options_file is not None:
+            command = ' '.join([bundler_bin, image_list_file, "--options_file",
+                options_file])
+            out = helpers.execute_command(command, shell=shell, env=env, stdout=fp_out)
+        else:
+            debug(2, 'No option file for bundler found')
+
+    return out
+
+
+def sift_image(image, verbose=False):
+    """Extracts SIFT features from a single image.  See sift_images."""
+
+
+    if sys.platform == 'win32' or sys.platform == 'cygwin':
+        BIN_SIFT = os.path.join(BIN_PATH, "siftWin32.exe")
+    else:
+        BIN_SIFT = os.path.join(BIN_PATH, "sift")
+
+    pgm_filename = image.rsplit('.', 1)[0] + ".pgm"
+    key_filename = image.rsplit('.', 1)[0] + ".key"
+
+    # Convert image to PGM format (grayscale)
+    with open(image, 'rb') as fp_img:
+        image = Image.open(fp_img)
+        image.convert('L').save(pgm_filename)
+
+    # Extract SIFT data
+    if verbose:
+        with open(pgm_filename, 'rb') as fp_in:
+            with open(key_filename, 'wb') as fp_out:
+                helpers.execute_command(BIN_SIFT, stdin=fp_in, stdout=fp_out)
+    else:
+        with open(pgm_filename, 'rb') as fp_in:
+            with open(key_filename, 'wb') as fp_out:
+                with open(os.devnull, 'w') as fp_err:
+                    subprocess.call(BIN_SIFT, stdin=fp_in, stdout=fp_out,
+                                    stderr=fp_err)
+
+    # Remove pgm file
+    os.remove(pgm_filename)
+
+    # GZIP compress key file (and remove)
+    with open(key_filename, 'rb') as fp_in:
+        with gzip.open(key_filename + ".gz", 'wb') as fp_out:
+            fp_out.writelines(fp_in)
+    os.remove(key_filename)
+
+    return key_filename
+
+
+def sift_images(images, bundler_bin, verbose=False, parallel=True):
+    """Extracts SIFT features from images in 'images'.
+
+    'images' should be a list of file names.  The function creates a
+    SIFT compressed key file for each image in 'images' with a '.key.gz'
+    extension.  A list of the uncompressed key file names is returned.
+
+    If 'parallel' is True, the function executes SIFT in parallel.
+    """
+
+    key_filenames = []
+
+    if parallel:
+        no_processors = cpu_count()
+        pool = Pool(processes=no_processors-2) #otherwise he system will freeze
+        key_filenames = pool.map(sift_image, images)
+    else:
+        for image in images:
+            key_filenames.append(sift_image(image, verbose=verbose))
+
+    return key_filenames
+
+
+def match_images(key_files, matches_file, bundler_bin,verbose=False):
+    "Executes KeyMatchFull to match key points in images."""
+    global BIN_MATCHKEYS, BIN_PATH
+
+    if BIN_MATCHKEYS is None:
+        if sys.platform == 'win32' or sys.platform == 'cygwin':
+            BIN_MATCHKEYS = os.path.join(BIN_PATH, "KeyMatchFull.exe")
+        else:
+            BIN_MATCHKEYS = os.path.join(BIN_PATH, "KeyMatchFull")
+
+    keys_file = ""
+    with tempfile.NamedTemporaryFile(delete=False) as fp:
+        for key in key_files:
+            fp.write(key + '\n')
+        keys_file = fp.name
+
+    # Add lib folder to LD_LIBRARY_PATH
+    env = dict(os.environ)
+    if env.has_key('LD_LIBRARY_PATH'):
+        env['LD_LIBRARY_PATH'] = env['LD_LIBRARY_PATH'] + ':' + LIB_PATH
+    else:
+        env['LD_LIBRARY_PATH'] = LIB_PATH
+
+    if verbose:
+        subprocess.call([BIN_MATCHKEYS, keys_file, matches_file], env=env)
+    else:
+        with open(os.devnull, 'w') as fp_out:
+            subprocess.call([BIN_MATCHKEYS, keys_file, matches_file],
+                            stdout=fp_out, env=env)
+
+    os.remove(keys_file)
+
+
+def set_bundler_bin(bundler_bin_dir):
+    if sys.platform == 'win32' or sys.platform == 'cygwin':
+        bundler_bin = os.path.join(bundler_bin_dir, "Bundler.exe")
+    else:
+        bundler_bin = os.path.join(bundler_bin_dir, "bundler")
+    global BUNDLER_BIN
+    BUNDLER_BIN = bundler_bin

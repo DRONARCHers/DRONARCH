@@ -2,7 +2,7 @@ import sys
 
 __author__ = 'niclas'
 
-class Printer:
+class prinzPrinter:
     """
     Overwrites the default stdout
     """

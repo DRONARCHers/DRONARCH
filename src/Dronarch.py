@@ -7,6 +7,7 @@ from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
 from pmvs import run_pmvs
 from cmvs import run_cmvs
+from CameraCalibration import calibrate
 
 #external imports
 
@@ -33,21 +34,27 @@ class Dronarch:
     bundler_bin_dir =''
     cmvs_bin_dir = ''
     pmvs_bin_dir = ''
+    vid_calib_img_dir = ''
+    img_calib_img_dir = ''
 
-    vid_imgs_per_sec = 5
+    img_max_size = (2000,2000)
+
+    vid_imgs_per_sec = 3
     vid_start_frame = 10
-    vid_no_images = 100
+    vid_no_images = 5
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
 
     #directories
-    temp_dir = '/home/niclas/code/dronarch/project/roaming/' #TODO: Use relative path
+    temp_dir = '../roaming/'
+    temp_dir = os.path.abspath(temp_dir)+'/'
     vid_dest_dir = temp_dir+'vid_imgs/'
     orig_img_dir = '../imgs/'
     temp_img_dir = temp_dir+'temp_imgs/'
     bundler_output_dir = temp_dir+'bundler/'
     pmvs_temp_dir = temp_dir+'pmvs/'
+
 
 
     #bundler files
@@ -59,8 +66,8 @@ class Dronarch:
 
     #formats
     video_formats = ['avi','mpeg','mov']
-    img_formats = ['jpeg','jpg']
-    img_max_size = (2000,2000)
+    img_formats = ['jpeg','jpg','JPG','JPEG','bmp', 'BMP']
+
 
     #TODO: ALL DIRECTORIES (that must be created and removes ) HAVE TO BE IN THIS LIST.
     dirs = [temp_dir,
@@ -126,6 +133,12 @@ class Dronarch:
                 self.vid_start_frame = value
             elif key =='vid_no_images':
                 self.vid_no_images = value
+            elif key == 'vid_calib_img_dir':
+                self.vid_calib_img_dir = value
+            elif key == 'img_calib_img_dir':
+                self.img_calib_img_dir = value
+            elif key == 'img_max_size':
+                self.img_max_size = self.str2Tuple(value, int)
             else:
                 debug(1, 'Unknown entry: ',key, '=', value)
 
@@ -158,6 +171,26 @@ class Dronarch:
                 os.makedirs(dir)
         debug(0, 'Created directories: ', dirs)
 
+    def str2Tuple(self, string, data_type):
+        """
+        Parses a string into a tuple
+        :param string:
+        :return:
+        >>> dron.str2Tuple('(1,2,3)', int)
+        (1, 2, 3)
+        """
+        string.strip()
+        if string[0] == '(':
+            string = string[1:]
+        if string[-1] == ')':
+            string = string[:-1]
+
+        string = string.split(',')
+        for i in range(len(string)):
+            string[i] = data_type(string[i])
+        tup = tuple(string)
+        return tup
+
 
     def start_execution(self, use_old_data):
         helpers.start_stopwatch()
@@ -170,48 +203,39 @@ class Dronarch:
                                                                   start_frame=self.vid_start_frame,
                                                                   no_images=self.vid_no_images)
 
+            #calibrate and undistort images from videos
+            calibrate(calib_img_dir=self.vid_calib_img_dir, img_dir=self.vid_dest_dir, dest_dir=self.vid_dest_dir, img_endings=self.img_formats, parallel=True)
+
             #copy single images to temp dictionary and resize if needed
             imgs, orig_imgs = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
                                                           dest_dir=self.temp_img_dir,
                                                           size=self.img_max_size,
                                                           formats=self.img_formats)
 
+            #calibrate and undistort singel images
+            calibrate(calib_img_dir=self.img_calib_img_dir, img_dir=self.temp_img_dir, dest_dir=self.temp_img_dir, img_endings=self.img_formats, parallel=True)
         else:
             imgs = None
             video_imgs = None
             orig_imgs = None
 
         #start bundler pipline
-        helpers.timestamp()
-        # imgs = ['/home/niclas/code/dronarch/project/roaming/temp_imgs/small-0.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-1.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-2.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-3.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-4.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-5.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-6.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-7.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-8.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-9.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-10.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-11.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-12.jpg',
-        #     '/home/niclas/code/dronarch/project/roaming/temp_imgs/small-13.jpg'
-    # ]
         return_state_bundler = start_bundler(imgs_file=self.bundler_img_name_file,
-                                        match_file=self.bundler_match_file,
-                                        options_file=self.bundler_options_file,
-                                        output_file=self.bundler_output_file,
-                                        output_dir=self.bundler_output_dir,
-                                        img_dir= self.temp_img_dir,
-                                        imgs=imgs,
-                                        orig_imgs=orig_imgs,
-                                        vid_imgs=video_imgs,
-                                        use_old_data=use_old_data
-                                        )
+                                             match_file=self.bundler_match_file,
+                                            options_file=self.bundler_options_file,
+                                            output_file=self.bundler_output_file,
+                                            output_dir=self.bundler_output_dir,
+                                            img_dir= self.temp_img_dir,
+                                            bundler_bin_dir=self.bundler_bin_dir,
+                                            imgs=imgs,
+                                            orig_imgs=orig_imgs,
+                                            vid_imgs=video_imgs,
+                                            use_old_data=use_old_data
+                                            )
         if not return_state_bundler == 0:
             debug(2, 'Bundler finished with error code ', return_state_bundler)
             exit(return_state_bundler)
+
         run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
                          cmvs_bin_folder=self.cmvs_bin_dir,
                          bunder_output_dir=self.bundler_output_dir,
@@ -228,8 +252,9 @@ class Dronarch:
         helpers.timestamp()
         debug(0, 'Execution of everything completed.')
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
+    test = False
     use_old_data=False
     if not use_old_data:
         try:
@@ -238,4 +263,8 @@ if __name__ == '__main__':
             pass
 
     dron = Dronarch()
-    dron.start_execution(use_old_data=use_old_data)
+    if test:
+        import doctest
+        doctest.testmod(extraglobs={'dron': dron})
+    else:
+        dron.start_execution(use_old_data=use_old_data)
