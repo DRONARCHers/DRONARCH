@@ -3,10 +3,13 @@ from collections import OrderedDict
 from PIL import Image, ExifTags
 from math import tan, pi
 
-import helpers
+
 from img_manipulations import get_size
 from debug import debug
+import helpers
+from img_manipulations import get_size
 from parallel_exe import parallel_exe
+
 
 
 
