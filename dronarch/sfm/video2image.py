@@ -1,5 +1,6 @@
-import cv2,os,ntpath,helpers
-from debug import debug
+import cv2,os,ntpath
+from dronarch.helpers.debug import debug
+from dronarch.helpers import helpers
 from math import ceil
 
 __author__ = 'niclas'

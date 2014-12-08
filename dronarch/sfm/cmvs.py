@@ -1,6 +1,6 @@
 __author__ = 'niclas'
 
-from helpers import debug, execute_command
+from dronarch.helpers.helpers import debug, execute_command
 import os
 
 def run_cmvs(cmvs_bin_folder, pmvs_temp_dir, no_clusers=50):

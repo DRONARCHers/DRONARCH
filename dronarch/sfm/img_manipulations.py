@@ -1,5 +1,6 @@
-import cv2, helpers
-from debug import debug
+import cv2
+from dronarch.helpers.debug import debug
+from dronarch.helpers import helpers
 
 __author__ = 'niclas'
 

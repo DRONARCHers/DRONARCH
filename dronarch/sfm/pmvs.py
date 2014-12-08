@@ -1,6 +1,6 @@
 import os
-from helpers import execute_command, get_filename_from_path
-from debug import debug
+from dronarch.helpers.helpers import execute_command, get_filename_from_path
+from dronarch.helpers.debug import debug
 from glob import glob
 __author__ = 'niclas'
 

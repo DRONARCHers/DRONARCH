@@ -1,4 +1,4 @@
-from src.sfm import parallel_exe
+from parallel_exe import parallel_exe
 
 __author__ = 'niclas'
 
@@ -11,8 +11,8 @@ and http://docs.opencv.org/trunk/doc/py_tutorials/py_calib3d/py_calibration/py_c
 
 import numpy as np
 import cv2
-from helpers import get_files_with_ending,timestamp
-from debug import debug
+from dronarch.helpers.helpers import get_files_with_ending,timestamp
+from dronarch.helpers.debug import debug
 
 
 def do_calibration(images_names, show_corners=False):

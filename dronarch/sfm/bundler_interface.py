@@ -3,10 +3,8 @@ from collections import OrderedDict
 from PIL import Image, ExifTags
 from math import tan, pi
 
-
-from img_manipulations import get_size
-from debug import debug
-import helpers
+from dronarch.helpers.debug import debug
+from dronarch.helpers import helpers
 from img_manipulations import get_size
 from parallel_exe import parallel_exe
 

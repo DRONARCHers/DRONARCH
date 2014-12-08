@@ -1,11 +1,6 @@
-import glob
-import re
-import os
-import shutil
-import subprocess
-import time
+import glob, re, os, shutil, subprocess, time
 
-from src_junk import debug
+import debug
 
 __author__ = 'niclas'
 
