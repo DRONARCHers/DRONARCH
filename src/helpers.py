@@ -1,5 +1,12 @@
-import glob,re,os,shutil,subprocess,time
-from debug import debug
+import glob
+import re
+import os
+import shutil
+import subprocess
+import time
+
+from src_junk import debug
+
 __author__ = 'niclas'
 
 global start_time

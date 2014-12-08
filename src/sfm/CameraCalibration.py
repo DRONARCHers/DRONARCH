@@ -1,3 +1,5 @@
+from src.sfm import parallel_exe
+
 __author__ = 'niclas'
 
 """
@@ -11,7 +13,7 @@ import numpy as np
 import cv2
 from helpers import get_files_with_ending,timestamp
 from debug import debug
-from parallel_exe import parallel_exe
+
 
 def do_calibration(images_names, show_corners=False):
     # termination criteria

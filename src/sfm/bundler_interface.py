@@ -1,10 +1,14 @@
-import bundler,os,sys
-from img_manipulations import get_size
+import os
+import sys
 from collections import OrderedDict
-from debug import debug
 from PIL import Image, ExifTags
 from math import tan, pi
+
+import bundler
+from src.sfm.img_manipulations import get_size
+from debug import debug
 import helpers
+
 
 __author__ = 'niclas'
 
