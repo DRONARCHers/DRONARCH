@@ -44,16 +44,16 @@ def move_command(path1, path2):
         shutil.move(path1, path2)
 
 
-def execute_command(command, shell=True, env=None, stdout=None):
+def execute_command(command, shell=True, env=None, stdout=None, stdin=None,stderr=None):
     """
     Executes the command as a shell command
     :param command:
     :return:
     """
     #TODO: Do some security check on the command. Otherwise this is a bit of a security issue
-    debug(0,'Execute: ', command)
+    # debug(0,'Execute: ', command)
 
-    ret = subprocess.call(command, shell=shell, emv=env, stdout=stdout)
+    ret = subprocess.call(command, env=env, stdin=stdin, stdout=stdout, stderr=stderr, shell=shell)
     return ret
 
 def get_filename_from_path(path):

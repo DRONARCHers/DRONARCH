@@ -53,7 +53,7 @@ as output."""
 MOD_PATH = os.path.dirname(__file__)
 BIN_PATH = os.path.join(MOD_PATH, "../bin")
 LIB_PATH = os.path.join(MOD_PATH, "../lib")
-BIN_SIFT = None
+SIFT_BIN = None
 BIN_BUNDLER = None
 BIN_MATCHKEYS = None
 
@@ -410,7 +410,7 @@ def extract_focal_length(images=[], scale=1.0, verbose=False):
 
 def sift_image(image, verbose=False):
     """Extracts SIFT features from a single image.  See sift_images."""
-    global BIN_SIFT, BIN_PATH
+    global SIFT_BIN, BIN_PATH
 
     if BIN_SIFT is None:
         if sys.platform == 'win32' or sys.platform == 'cygwin':
@@ -458,7 +458,7 @@ def sift_images(images, verbose=False, parallel=True):
 
     If 'parallel' is True, the function executes SIFT in parallel.
     """
-    global BIN_SIFT, BIN_PATH
+    global SIFT_BIN, BIN_PATH
 
     key_filenames = []
 

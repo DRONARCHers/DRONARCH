@@ -14,13 +14,17 @@ def parallel_exe(function, data, max_threads=None):
 
     return ret
 
-# def func(names, letter):
-#     new_names = []
-#     for i in names:
-#         new_names.append(i+letter)
-#     return True
-
+# class cla:
+#     letter = 'L'
+#     def func(self,names):
+#         new_names = []
+#         for i in names:
+#             new_names.append(i+self.letter)
+#         return new_names
+#
 # names = ['a','b','c','d','e','f','g','h','i','j','k','l','m']
-# print func(names)
-# ret =  parallel_exe(func, names, max_threads=2)
+# c = cla()
+# print c.func(names)
+# ret =  parallel_exe(cla.func, names, max_threads=2)
+#
 # print ret

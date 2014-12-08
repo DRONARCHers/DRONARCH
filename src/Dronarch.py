@@ -41,7 +41,7 @@ class Dronarch:
 
     vid_imgs_per_sec = 3
     vid_start_frame = 10
-    vid_no_images = 5
+    vid_no_images = 30
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -192,7 +192,7 @@ class Dronarch:
         return tup
 
 
-    def start_execution(self, use_old_data):
+    def start_execution(self, use_old_data=False, do_calibration=True):
         helpers.start_stopwatch()
         if not use_old_data:
             #create images from videos and store them
@@ -203,17 +203,18 @@ class Dronarch:
                                                                   start_frame=self.vid_start_frame,
                                                                   no_images=self.vid_no_images)
 
-            #calibrate and undistort images from videos
-            calibrate(calib_img_dir=self.vid_calib_img_dir, img_dir=self.vid_dest_dir, dest_dir=self.vid_dest_dir, img_endings=self.img_formats, parallel=True)
 
             #copy single images to temp dictionary and resize if needed
             imgs, orig_imgs = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
                                                           dest_dir=self.temp_img_dir,
                                                           size=self.img_max_size,
                                                           formats=self.img_formats)
+            if do_calibration:
+                #calibrate and undistort images from videos
+                calibrate(calib_img_dir=self.vid_calib_img_dir, img_dir=self.vid_dest_dir, dest_dir=self.vid_dest_dir, img_endings=self.img_formats, parallel=True)
 
-            #calibrate and undistort singel images
-            calibrate(calib_img_dir=self.img_calib_img_dir, img_dir=self.temp_img_dir, dest_dir=self.temp_img_dir, img_endings=self.img_formats, parallel=True)
+                #calibrate and undistort singel images
+                calibrate(calib_img_dir=self.img_calib_img_dir, img_dir=self.temp_img_dir, dest_dir=self.temp_img_dir, img_endings=self.img_formats, parallel=True)
         else:
             imgs = None
             video_imgs = None
@@ -230,7 +231,8 @@ class Dronarch:
                                             imgs=imgs,
                                             orig_imgs=orig_imgs,
                                             vid_imgs=video_imgs,
-                                            use_old_data=use_old_data
+                                            use_old_data=use_old_data,
+                                            parallel=True
                                             )
         if not return_state_bundler == 0:
             debug(2, 'Bundler finished with error code ', return_state_bundler)
@@ -267,4 +269,4 @@ if __name__ == '__main__':
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
-        dron.start_execution(use_old_data=use_old_data)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=True)
