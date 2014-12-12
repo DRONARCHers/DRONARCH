@@ -7,3 +7,6 @@ SfM:
 Drone:
 http://vision.in.tum.de/data/software/tum_ardrone
 https://github.com/venthur/python-ardrone (ist in python 2.6, aber ich denke, dass es sehr schnell portiert ist)
+
+Vergleich von SfM tools:
+http://www.visual-experiments.com/2010/12/20/structure-from-motion-projects/
