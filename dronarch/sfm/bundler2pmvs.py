@@ -12,9 +12,9 @@ def run_bundler2pmvs(bundler_bin_folder, cmvs_bin_folder, bunder_output_dir, bun
     timestamp()
 
     #call RadialUndistort to undistort images.
-    #TODO: remove this if camera calibratioon and img undistortion has been implemented
-    command = bundler_bin_folder+'/RadialUndistort '+bundler_image_file+' '+bundler_out_file+' '+pmvs_temp_dir
-    execute_command(command)
+    # #TODO: No longer needed, calibration is done before using chessboard calibration
+    # command = bundler_bin_folder+'/RadialUndistort '+bundler_image_file+' '+bundler_out_file+' '+pmvs_temp_dir
+    # execute_command(command)
 
 
     #move, rename, cleanup according to prep_pmvs.sh

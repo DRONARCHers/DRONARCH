@@ -1,4 +1,4 @@
-from parallel_exe import parallel_exe
+from dronarch.helpers.parallel_exe import parallel_exe
 
 __author__ = 'niclas'
 
@@ -124,9 +124,8 @@ def calibrate(calib_img_dir, img_dir, dest_dir, img_endings, parallel=False, cro
     debug(0, 'Calibration done.')
     timestamp()
 
-
-
-# calibrate('../vid_calib/', '../roaming/vid_imgs/', '../roaming/vid_imgs/calib_', ['jpg','JPG','jpeg','JPEG'], crop=False)
+if __name__ =='__main__':
+    calibrate('../../vid_calib/', '../../roaming/vid_imgs/', '../../roaming/vid_imgs/calib_', ['jpg','JPG','jpeg','JPEG'], crop=False)
 
 
     # mean_error = 0

@@ -4,7 +4,7 @@ import sys
 import shutil
 #DRONARCH internal
 import video2image, img_manipulations
-import dronarch.helpers.helpers
+from dronarch.helpers import helpers
 from dronarch.helpers.debug import debug
 from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
@@ -33,7 +33,7 @@ class Dronarch:
         vid_no_images       How many images should be extracted from a video in total
     """
     #Attributes loaded from config file
-    config_file = './../config/dronarch.cfg'
+    config_file = '../../config/dronarch.cfg'
     bundler_bin_dir =''
     cmvs_bin_dir = ''
     pmvs_bin_dir = ''
@@ -42,18 +42,18 @@ class Dronarch:
 
     img_max_size = (2000,2000)
 
-    vid_imgs_per_sec = 3
+    vid_imgs_per_sec = 5
     vid_start_frame = 10
-    vid_no_images = 30
+    vid_no_images = 50 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
 
     #directories
-    temp_dir = '../roaming/'
+    temp_dir = '../../roaming/'
+    orig_img_dir = '../../imgs/'
     temp_dir = os.path.abspath(temp_dir)+'/'
     vid_dest_dir = temp_dir+'vid_imgs/'
-    orig_img_dir = '../imgs/'
     temp_img_dir = temp_dir+'temp_imgs/'
     bundler_output_dir = temp_dir+'bundler/'
     pmvs_temp_dir = temp_dir+'pmvs/'
@@ -213,11 +213,12 @@ class Dronarch:
                                                           size=self.img_max_size,
                                                           formats=self.img_formats)
             if do_calibration:
-                #calibrate and undistort images from videos
-                calibrate(calib_img_dir=self.vid_calib_img_dir, img_dir=self.vid_dest_dir, dest_dir=self.vid_dest_dir, img_endings=self.img_formats, parallel=True)
-
-                #calibrate and undistort singel images
-                calibrate(calib_img_dir=self.img_calib_img_dir, img_dir=self.temp_img_dir, dest_dir=self.temp_img_dir, img_endings=self.img_formats, parallel=True)
+                if len(video_imgs)>0:
+                    #calibrate and undistort images from videos
+                    calibrate(calib_img_dir=self.vid_calib_img_dir, img_dir=self.vid_dest_dir, dest_dir=self.vid_dest_dir, img_endings=self.img_formats, parallel=True)
+                if len(imgs)>0:
+                    #calibrate and undistort singel images
+                    calibrate(calib_img_dir=self.img_calib_img_dir, img_dir=self.temp_img_dir, dest_dir=self.temp_img_dir, img_endings=self.img_formats, parallel=True)
         else:
             imgs = None
             video_imgs = None
@@ -225,7 +226,7 @@ class Dronarch:
 
         #start bundler pipline
         return_state_bundler = start_bundler(imgs_file=self.bundler_img_name_file,
-                                             match_file=self.bundler_match_file,
+                                            match_file=self.bundler_match_file,
                                             options_file=self.bundler_options_file,
                                             output_file=self.bundler_output_file,
                                             output_dir=self.bundler_output_dir,
@@ -235,7 +236,8 @@ class Dronarch:
                                             orig_imgs=orig_imgs,
                                             vid_imgs=video_imgs,
                                             use_old_data=use_old_data,
-                                            parallel=True
+                                            parallel=True,
+                                            match_radius=50
                                             )
         if not return_state_bundler == 0:
             debug(2, 'Bundler finished with error code ', return_state_bundler)

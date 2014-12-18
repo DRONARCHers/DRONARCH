@@ -1,6 +1,6 @@
 import glob, re, os, shutil, subprocess, time
 
-import debug
+from debug import debug
 
 __author__ = 'niclas'
 
@@ -53,7 +53,7 @@ def execute_command(command, shell=True, env=None, stdout=None, stdin=None,stder
     :return:
     """
     #TODO: Do some security check on the command. Otherwise this is a bit of a security issue
-    # debug(0,'Execute: ', command)
+    debug(0,'Execute: ', command)
 
     ret = subprocess.call(command, env=env, stdin=stdin, stdout=stdout, stderr=stderr, shell=shell)
     return ret
