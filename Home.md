@@ -10,7 +10,7 @@ This is a project for the for the research group _Archäologie der Römischen Pr
 ### Where is it now
 DRONARCH is still in development
 
-[Some intermediate results](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2818.12.14%29)
+[Some intermediate results (18.12.14)](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2818.12.14%29)
 
 ### Where does it go
 For now this is just a small project for University
