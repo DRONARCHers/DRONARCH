@@ -8,7 +8,9 @@ DRONARCH is a structure from motion application developed for this purpose and t
 This is a project for the for the research group _Archäologie der Römischen Provinzen_ of the _Institut für Archäologische Wissenschaften_ at the University of Bern as part of my bachelors studies.
 
 ### Where is it now
-Development has just started
+DRONARCH is still in development
+
+[Some intermediate results](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2818.12.14%29)
 
 ### Where does it go
 For now this is just a small project for University
