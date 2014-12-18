@@ -13,7 +13,7 @@ The first results using 50 images with 5 imgs/sec looks like that:
 ![Side view of bundler output using 50 images and 5 imgs/sec](https://github.com/DRONARCHers/DRONARCH/blob/master/results/int_res_side.png)
 ![Top view of bundler output using 50 images and 5 imgs/sec](https://github.com/DRONARCHers/DRONARCH/blob/master/results/int_res_top.png)
 
-The input is the [following video](https://github.com/DRONARCHers/DRONARCH/blob/master/orig_imgs/test.avi) (can't find the source right now, will fix that)
+The input is the following video [youtube: Parrot AR.Drone 2.0: Director Mode camera demo (HD)](https://www.youtube.com/watch?v=YGk2ghqoHug)
 
 The red, green and yellow dots are the camera positions and the other points are reconstructed scene points.
 ![Top view of bundler. The green area is the "front pillars" of the building, the red the actual walls](https://github.com/DRONARCHers/DRONARCH/blob/master/results/int_res_top_mark.png)
