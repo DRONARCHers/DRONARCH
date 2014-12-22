@@ -12,8 +12,10 @@ DRONARCH is still in development
 
 * [Some intermediate results (18.12.14)](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2818.12.14%29)
 * [More results (22.12.14) using the K matrix](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2822.12.14%29)
+
 ### Where does it go
-For now this is just a small project for University
+For now this is just a small project for University.
+There are some more ideas about the usage of IT in archaeology around and I hope to start some further projects in the near future.
 
 ## Technology
 See [here](https://github.com/DRONARCHers/DRONARCH/wiki/Technology-used) for more.
