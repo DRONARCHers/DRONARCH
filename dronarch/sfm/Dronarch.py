@@ -10,7 +10,7 @@ from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
 from pmvs import run_pmvs
 from cmvs import run_cmvs
-from CameraCalibration import calibrate
+from CameraCalibration import calibrate,calibrate_two_times
 
 #external imports
 
@@ -39,12 +39,13 @@ class Dronarch:
     pmvs_bin_dir = ''
     vid_calib_img_dir = ''
     img_calib_img_dir = ''
+    calib_file_path = ''
 
     img_max_size = (2000,2000)
 
-    vid_imgs_per_sec = 5
-    vid_start_frame = 10
-    vid_no_images = 11 #*vid_imgs_per_sec
+    vid_imgs_per_sec = 10
+    vid_start_frame = 25*10
+    vid_no_images = 30 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -55,6 +56,8 @@ class Dronarch:
     temp_dir = os.path.abspath(temp_dir)+'/'
     vid_dest_dir = temp_dir+'vid_imgs/'
     temp_img_dir = temp_dir+'temp_imgs/'
+    video_calib_dest_dir = temp_dir+'temp_vid_calib_imgs/'
+    img_calib_dest_dir = temp_dir+'temp_img_calib_imgs/'
     bundler_output_dir = temp_dir+'bundler/'
     pmvs_temp_dir = temp_dir+'pmvs/'
 
@@ -77,7 +80,9 @@ class Dronarch:
             vid_dest_dir,
             temp_img_dir,
             bundler_output_dir,
-            pmvs_temp_dir
+            pmvs_temp_dir,
+            img_calib_dest_dir,
+            video_calib_dest_dir
             ]
 
 
@@ -142,6 +147,8 @@ class Dronarch:
                 self.img_calib_img_dir = value
             elif key == 'img_max_size':
                 self.img_max_size = self.str2Tuple(value, int)
+            elif key == 'calib_file_path':
+                self.calib_file_path = value
             else:
                 debug(1, 'Unknown entry: ',key, '=', value)
 
@@ -215,10 +222,22 @@ class Dronarch:
             if do_calibration:
                 if len(video_imgs)>0:
                     #calibrate and undistort images from videos
-                    calibrate(calib_img_dir=self.vid_calib_img_dir, img_dir=self.vid_dest_dir, dest_dir=self.vid_dest_dir, img_endings=self.img_formats, parallel=True)
+                    calibrate_two_times(calib_img_dir=self.vid_calib_img_dir,
+                                        img_dir=self.vid_dest_dir,
+                                        dest_dir=self.vid_dest_dir,
+                                        calib_dest_dir=self.video_calib_dest_dir,
+                                        calib_file_path=self.calib_file_path,
+                                        img_endings=self.img_formats,
+                                        parallel=True)
                 if len(imgs)>0:
                     #calibrate and undistort singel images
-                    calibrate(calib_img_dir=self.img_calib_img_dir, img_dir=self.temp_img_dir, dest_dir=self.temp_img_dir, img_endings=self.img_formats, parallel=True)
+                    calibrate_two_times(calib_img_dir=self.img_calib_img_dir,
+                                        img_dir=self.temp_img_dir,
+                                        dest_dir=self.temp_img_dir,
+                                        calib_dest_dir=self.img_calib_dest_dir,
+                                        calib_file_path=self.calib_file_path,
+                                        img_endings=self.img_formats,
+                                        parallel=True)
         else:
             imgs = None
             video_imgs = None
@@ -232,12 +251,13 @@ class Dronarch:
                                             output_dir=self.bundler_output_dir,
                                             img_dir= self.temp_img_dir,
                                             bundler_bin_dir=self.bundler_bin_dir,
+                                            calib_file_path=self.calib_file_path,
                                             imgs=imgs,
                                             orig_imgs=orig_imgs,
                                             vid_imgs=video_imgs,
                                             use_old_data=use_old_data,
                                             parallel=True,
-                                            match_radius=50
+                                            match_radius=128
                                             )
         if not return_state_bundler == 0:
             debug(2, 'Bundler finished with error code ', return_state_bundler)
@@ -249,7 +269,8 @@ class Dronarch:
                          bundler_out_file=self.bundler_output_file
         )
         run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
-                 pmvs_temp_dir=self.pmvs_temp_dir
+                 pmvs_temp_dir=self.pmvs_temp_dir,
+                 bundler_out_file=self.bundler_output_file
         )
         run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
                  pmvs_temp_dir=self.pmvs_temp_dir,
@@ -260,7 +281,7 @@ class Dronarch:
 
 if __name__ == '__main__':
     test = False
-    use_old_data=True
+    use_old_data=False
     if not use_old_data:
         try:
             shutil.rmtree(Dronarch.temp_dir)
@@ -272,4 +293,4 @@ if __name__ == '__main__':
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
-        dron.start_execution(use_old_data=use_old_data, do_calibration=False)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=True)

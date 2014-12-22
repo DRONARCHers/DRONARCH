@@ -26,6 +26,7 @@ def start_bundler(imgs_file,
                   output_dir,
                   img_dir,
                   bundler_bin_dir,
+                  calib_file_path,
                   orig_imgs=None,
                   imgs=None,
                   vid_imgs=None,
@@ -129,9 +130,9 @@ def start_bundler(imgs_file,
             # constrain_focal_weight=0.0001,
             # estimate_distortion=True,
             run_bundle=True,
-            intrinsics='../../config/calib.txt',
-            init_pair1=1,
-            init_pair2=10
+            intrinsics=calib_file_path,
+            init_pair1=0,
+            init_pair2=1
     )
 
     debug(0,'Bundler pipline is finished.')
