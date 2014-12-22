@@ -21,7 +21,7 @@ In this image I marked the "front pillars" of the building green, and with read 
 Note that the walls behind have looots of outliers.
 They are marked red in the following image.
 
-![Side view of bundler. Red area is outliers](https://github.com/DRONARCHers/DRONARCH/blob/master/results18_12_14//int_res_side_mark.png)
+![Side view of bundler. Red area is outliers](https://github.com/DRONARCHers/DRONARCH/blob/master/results/18_12_14/int_res_side_mark.png)
 
 
 
