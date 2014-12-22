@@ -44,7 +44,7 @@ class Dronarch:
 
     vid_imgs_per_sec = 5
     vid_start_frame = 10
-    vid_no_images = 50 #*vid_imgs_per_sec
+    vid_no_images = 11 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -244,8 +244,6 @@ class Dronarch:
             exit(return_state_bundler)
 
         run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
-                         cmvs_bin_folder=self.cmvs_bin_dir,
-                         bunder_output_dir=self.bundler_output_dir,
                          pmvs_temp_dir=self.pmvs_temp_dir,
                          bundler_image_file=self.bundler_img_name_file,
                          bundler_out_file=self.bundler_output_file
@@ -262,7 +260,7 @@ class Dronarch:
 
 if __name__ == '__main__':
     test = False
-    use_old_data=False
+    use_old_data=True
     if not use_old_data:
         try:
             shutil.rmtree(Dronarch.temp_dir)
@@ -274,4 +272,4 @@ if __name__ == '__main__':
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
-        dron.start_execution(use_old_data=use_old_data, do_calibration=True)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=False)

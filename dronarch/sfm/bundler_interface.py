@@ -69,7 +69,7 @@ def start_bundler(imgs_file,
             vid_imgs_dict[frame] = focal_length
 
 
-        imgs_dict = {}
+        imgs_dict = OrderedDict()
         # If there are single images, extract focal length
         if len(imgs)>0:
             orig_imgs = [dir+'/'+img for img in orig_imgs]
@@ -80,7 +80,7 @@ def start_bundler(imgs_file,
                 imgs_dict[key] = value
 
         #merge the two dictionaries. This is a bit tricky, since the order should be kept, wich is not the case when using update()
-        total_imgs_dict = {}#OrderedDict()
+        total_imgs_dict = OrderedDict()
         for key,value in vid_imgs_dict.items():
             total_imgs_dict[key] = value
         for key,value in imgs_dict.items():
@@ -123,13 +123,15 @@ def start_bundler(imgs_file,
             output=helpers.get_filename_from_path(output_file),
             output_all="bundle_",
             output_dir=output_dir,
-            variable_focal_length=True,
-            use_focal_estimate=True,
+            # variable_focal_length=True,
+            # use_focal_estimate=True,
             # constrain_focal=True,
-            constrain_focal_weight=0.0001,
+            # constrain_focal_weight=0.0001,
             # estimate_distortion=True,
             run_bundle=True,
-            intrinsics='../../config/calib.txt'
+            intrinsics='../../config/calib.txt',
+            init_pair1=1,
+            init_pair2=10
     )
 
     debug(0,'Bundler pipline is finished.')
@@ -253,8 +255,10 @@ def bundler(image_list_file, options_file, logfile, shell=False, *args, **kwargs
         'constrain_focal'        : lambda k,v: kwargs_bool(v, ['--'+k]),
         'constrain_focal_weight' : lambda k,v: ['--'+k,str(v)],
         'estimate_distortion'    : lambda k,v: kwargs_bool(v, ['--'+k]),
-        'run_bundle'             : lambda k,v: kwargs_bool(v, ['--'+k])
-        # 'intrinsics'             : lambda k,v : ['--'+k,v]
+        'run_bundle'             : lambda k,v: kwargs_bool(v, ['--'+k]),
+        'intrinsics'             : lambda k,v : ['--'+k,v],
+        'init_pair1'             : lambda k,v : ['--'+k,str(v)],
+        'init_pair2'             : lambda k,v : ['--'+k,str(v)]
     }
 
     str_args = [a for a in args if type(a) == str]

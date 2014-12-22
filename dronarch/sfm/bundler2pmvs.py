@@ -3,7 +3,7 @@ from dronarch.helpers.helpers import move_command,execute_command, get_files_wit
 from dronarch.helpers.debug import debug
 import glob,os
 
-def run_bundler2pmvs(bundler_bin_folder, cmvs_bin_folder, bunder_output_dir, bundler_image_file, bundler_out_file, pmvs_temp_dir):
+def run_bundler2pmvs(bundler_bin_folder, bundler_image_file, bundler_out_file, pmvs_temp_dir):
 
      #call Bundle2PMVS to prepare files for PMVS
     debug(0, 'Starting Bundle2PMVS. This might take a while.')
@@ -13,8 +13,8 @@ def run_bundler2pmvs(bundler_bin_folder, cmvs_bin_folder, bunder_output_dir, bun
 
     #call RadialUndistort to undistort images.
     # #TODO: No longer needed, calibration is done before using chessboard calibration
-    # command = bundler_bin_folder+'/RadialUndistort '+bundler_image_file+' '+bundler_out_file+' '+pmvs_temp_dir
-    # execute_command(command)
+    command = bundler_bin_folder+'/RadialUndistort '+bundler_image_file+' '+bundler_out_file+' '+pmvs_temp_dir
+    execute_command(command)
 
 
     #move, rename, cleanup according to prep_pmvs.sh
