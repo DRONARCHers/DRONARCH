@@ -1,14 +1,15 @@
-import os,sys,tempfile,gzip
+import os
+import sys
+import tempfile
+import gzip
 from collections import OrderedDict
 from PIL import Image, ExifTags
 from math import tan, pi
 
 from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
+from dronarch.helpers.parallel_exe import parallel_exe
 from img_manipulations import get_size
-from parallel_exe import parallel_exe
-
-
 
 
 __author__ = 'niclas'
@@ -18,7 +19,21 @@ SIFT_BIN = None
 MATCH_BIN = None
 ENV = None
 
-def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, img_dir, bundler_bin_dir, use_old_data= False, orig_imgs=None, imgs=None, vid_imgs=None, parallel=False, video_fov=93):
+def start_bundler(imgs_file,
+                  match_file,
+                  options_file,
+                  output_file,
+                  output_dir,
+                  img_dir,
+                  bundler_bin_dir,
+                  orig_imgs=None,
+                  imgs=None,
+                  vid_imgs=None,
+                  video_fov=93,
+                  match_radius=15,
+                  use_old_data= False,
+                  parallel=False
+):
     """
     Starts the bundler pipline.
     To run the pipline with the old data, no imgs and vid_imgs lists have to be provided.
@@ -82,7 +97,7 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
 
         #match features
         debug(0, 'Start matching features.')
-        match_images(keys, match_file, radius=15, verbose=True)
+        match_images(keys, match_file, radius=match_radius, verbose=True)
         debug(0, 'Matching features completed')
         helpers.timestamp()
 
@@ -108,12 +123,13 @@ def start_bundler(imgs_file, match_file, options_file, output_file, output_dir, 
             output=helpers.get_filename_from_path(output_file),
             output_all="bundle_",
             output_dir=output_dir,
-            variable_focal_length=False,
-            # use_focal_estimate=True,
+            variable_focal_length=True,
+            use_focal_estimate=True,
             # constrain_focal=True,
-            # constrain_focal_weight=0.0001,
+            constrain_focal_weight=0.0001,
             # estimate_distortion=True,
-            run_bundle=True
+            run_bundle=True,
+            intrinsics='../../config/calib.txt'
     )
 
     debug(0,'Bundler pipline is finished.')
@@ -237,7 +253,8 @@ def bundler(image_list_file, options_file, logfile, shell=False, *args, **kwargs
         'constrain_focal'        : lambda k,v: kwargs_bool(v, ['--'+k]),
         'constrain_focal_weight' : lambda k,v: ['--'+k,str(v)],
         'estimate_distortion'    : lambda k,v: kwargs_bool(v, ['--'+k]),
-        'run_bundle'             : lambda k,v: kwargs_bool(v, ['--'+k]),
+        'run_bundle'             : lambda k,v: kwargs_bool(v, ['--'+k])
+        # 'intrinsics'             : lambda k,v : ['--'+k,v]
     }
 
     str_args = [a for a in args if type(a) == str]
