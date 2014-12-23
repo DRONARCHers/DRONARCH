@@ -32,6 +32,7 @@ def start_bundler(imgs_file,
                   vid_imgs=None,
                   video_fov=93,
                   match_radius=15,
+                  init_imgs=(0,5),
                   use_old_data= False,
                   parallel=False
 ):
@@ -131,8 +132,8 @@ def start_bundler(imgs_file,
             # estimate_distortion=True,
             run_bundle=True,
             intrinsics=calib_file_path,
-            init_pair1=0,
-            init_pair2=1
+            init_pair1=init_imgs[0],
+            init_pair2=init_imgs[1]
     )
 
     debug(0,'Bundler pipline is finished.')

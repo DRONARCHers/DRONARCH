@@ -21,7 +21,14 @@ def run_cmvs(cmvs_bin_folder, pmvs_temp_dir, bundler_out_file, no_clusers=50):
 
 
     debug(0, 'GenOptions')
-    command = cmvs_bin_folder+'genOption ./'
+    level = 1
+    csize = 1
+    threshold = 0.7
+    wsize = 15
+    minImageNum = 5
+    CPU = 8
+
+    command = cmvs_bin_folder+'genOption ./ '+' '.join([str(level), str(csize), str(threshold), str(wsize), str(minImageNum), str(CPU)])
     execute_command(command)
 
     #change back to previous dir

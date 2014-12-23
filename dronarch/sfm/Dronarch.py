@@ -43,9 +43,9 @@ class Dronarch:
 
     img_max_size = (2000,2000)
 
-    vid_imgs_per_sec = 10
-    vid_start_frame = 25*10
-    vid_no_images = 30 #*vid_imgs_per_sec
+    vid_imgs_per_sec = 20
+    vid_start_frame = 23*8
+    vid_no_images = 40*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -202,7 +202,7 @@ class Dronarch:
         return tup
 
 
-    def start_execution(self, use_old_data=False, do_calibration=True):
+    def start_execution(self, use_old_data=False, do_calibration=True, do_bundler=True, do_pmvs=True):
         helpers.start_stopwatch()
         if not use_old_data:
             #create images from videos and store them
@@ -243,38 +243,42 @@ class Dronarch:
             video_imgs = None
             orig_imgs = None
 
-        #start bundler pipline
-        return_state_bundler = start_bundler(imgs_file=self.bundler_img_name_file,
-                                            match_file=self.bundler_match_file,
-                                            options_file=self.bundler_options_file,
-                                            output_file=self.bundler_output_file,
-                                            output_dir=self.bundler_output_dir,
-                                            img_dir= self.temp_img_dir,
-                                            bundler_bin_dir=self.bundler_bin_dir,
-                                            calib_file_path=self.calib_file_path,
-                                            imgs=imgs,
-                                            orig_imgs=orig_imgs,
-                                            vid_imgs=video_imgs,
-                                            use_old_data=use_old_data,
-                                            parallel=True,
-                                            match_radius=128
-                                            )
-        if not return_state_bundler == 0:
-            debug(2, 'Bundler finished with error code ', return_state_bundler)
-            exit(return_state_bundler)
+        if do_bundler:
+            #start bundler pipline
+            return_state_bundler = start_bundler(imgs_file=self.bundler_img_name_file,
+                                                match_file=self.bundler_match_file,
+                                                options_file=self.bundler_options_file,
+                                                output_file=self.bundler_output_file,
+                                                output_dir=self.bundler_output_dir,
+                                                img_dir= self.temp_img_dir,
+                                                bundler_bin_dir=self.bundler_bin_dir,
+                                                calib_file_path=self.calib_file_path,
+                                                imgs=imgs,
+                                                orig_imgs=orig_imgs,
+                                                vid_imgs=video_imgs,
+                                                use_old_data=use_old_data,
+                                                parallel=True,
+                                                match_radius=64,
+                                                init_imgs=(0,50)
+                                                )
+            if not return_state_bundler == 0:
+                debug(2, 'Bundler finished with error code ', return_state_bundler)
+                exit(return_state_bundler)
 
-        run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
-                         pmvs_temp_dir=self.pmvs_temp_dir,
-                         bundler_image_file=self.bundler_img_name_file,
-                         bundler_out_file=self.bundler_output_file
-        )
-        run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
-                 pmvs_temp_dir=self.pmvs_temp_dir,
-                 bundler_out_file=self.bundler_output_file
-        )
-        run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
-                 pmvs_temp_dir=self.pmvs_temp_dir,
-        )
+        if do_pmvs:
+            run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
+                             pmvs_temp_dir=self.pmvs_temp_dir,
+                             bundler_image_file=self.bundler_img_name_file,
+                             bundler_out_file=self.bundler_output_file
+            )
+            run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
+                     pmvs_temp_dir=self.pmvs_temp_dir,
+                     bundler_out_file=self.bundler_output_file,
+                     no_clusers=50
+            )
+            run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
+                     pmvs_temp_dir=self.pmvs_temp_dir,
+            )
         helpers.timestamp()
         debug(0, 'Execution of everything completed.')
 
@@ -293,4 +297,4 @@ if __name__ == '__main__':
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
-        dron.start_execution(use_old_data=use_old_data, do_calibration=True)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=True, do_bundler=True)
