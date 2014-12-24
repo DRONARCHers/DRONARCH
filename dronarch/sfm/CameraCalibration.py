@@ -95,8 +95,9 @@ def undistort_parallel(params):
 
     # crop the image
     if crop:
+        margin = 100
         x,y,w,h = roi
-        undist_img = undist_img[y:y+h, x:x+w]
+        undist_img = undist_img[y:y+h, x+margin:x+w-margin]
 
     #save new image
     cv2.imwrite(dest_img,undist_img)

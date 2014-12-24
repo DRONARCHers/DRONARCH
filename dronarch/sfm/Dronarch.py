@@ -43,9 +43,9 @@ class Dronarch:
 
     img_max_size = (2000,2000)
 
-    vid_imgs_per_sec = 20
-    vid_start_frame = 23*8
-    vid_no_images = 40*vid_imgs_per_sec
+    vid_imgs_per_sec = 10
+    vid_start_frame = 8*23
+    vid_no_images = 40 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -258,8 +258,8 @@ class Dronarch:
                                                 vid_imgs=video_imgs,
                                                 use_old_data=use_old_data,
                                                 parallel=True,
-                                                match_radius=64,
-                                                init_imgs=(0,50)
+                                                match_radius=4,
+                                                init_imgs=(0,2)
                                                 )
             if not return_state_bundler == 0:
                 debug(2, 'Bundler finished with error code ', return_state_bundler)
