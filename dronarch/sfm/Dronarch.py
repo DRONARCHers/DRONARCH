@@ -43,9 +43,9 @@ class Dronarch:
 
     img_max_size = (2000,2000)
 
-    vid_imgs_per_sec = 10
-    vid_start_frame = 8*23
-    vid_no_images = 40 #*vid_imgs_per_sec
+    vid_imgs_per_sec = 1
+    vid_start_frame = 2
+    vid_no_images = 2 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -228,7 +228,8 @@ class Dronarch:
                                         calib_dest_dir=self.video_calib_dest_dir,
                                         calib_file_path=self.calib_file_path,
                                         img_endings=self.img_formats,
-                                        parallel=True)
+                                        crop=False
+                                        )
                 if len(imgs)>0:
                     #calibrate and undistort singel images
                     calibrate_two_times(calib_img_dir=self.img_calib_img_dir,
@@ -237,7 +238,7 @@ class Dronarch:
                                         calib_dest_dir=self.img_calib_dest_dir,
                                         calib_file_path=self.calib_file_path,
                                         img_endings=self.img_formats,
-                                        parallel=True)
+                                        )
         else:
             imgs = None
             video_imgs = None
