@@ -77,7 +77,7 @@ class DroneVideoDisplay:
 
 			cv2.imshow(winname='Video',mat=image)
 
-			# cv2.imwrite('img.jpg', image)
+			cv2.imwrite('img.jpg', image)
 
 
 	def ReceiveImage(self,data):
