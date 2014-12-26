@@ -10,9 +10,9 @@ This is a project for the for the research group _Archäologie der Römischen Pr
 ### Where is it now
 DRONARCH is still in development
 
-* [Some intermediate results (18.12.14)](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2818.12.14%29)
-* [More results (22.12.14) using the K matrix](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2822.12.14%29)
-* [Dense point cloud - The first success](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2826.12.14%29)
+* [(18.12.14) Some first intermediate results](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2818.12.14%29)
+* [(22.12.14) Results using the K matrix](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2822.12.14%29)
+* [(26.12.14)Dense point cloud - The first success](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2826.12.14%29)
 
 ### Where does it go
 For now this is just a small project for University.
