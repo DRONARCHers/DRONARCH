@@ -12,6 +12,7 @@ DRONARCH is still in development
 
 * [Some intermediate results (18.12.14)](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2818.12.14%29)
 * [More results (22.12.14) using the K matrix](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2822.12.14%29)
+* [Dense point cloud - The first success](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2826.12.14%29)
 
 ### Where does it go
 For now this is just a small project for University.
