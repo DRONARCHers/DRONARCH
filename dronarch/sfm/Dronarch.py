@@ -3,14 +3,14 @@ import os
 import sys
 import shutil
 #DRONARCH internal
-import video2image, img_manipulations
-from dronarch.helpers import helpers
+import video2image
+from dronarch.helpers import helpers, img_manipulations
 from dronarch.helpers.debug import debug
 from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
 from pmvs import run_pmvs
 from cmvs import run_cmvs
-from CameraCalibration import calibrate,calibrate_two_times
+from CameraCalibration import calibrate_two_times
 
 #external imports
 
@@ -43,9 +43,9 @@ class Dronarch:
 
     img_max_size = (2000,2000)
 
-    vid_imgs_per_sec = 1
-    vid_start_frame = 2
-    vid_no_images = 2 #*vid_imgs_per_sec
+    vid_imgs_per_sec = 3
+    vid_start_frame = 50
+    vid_no_images = 50 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -206,18 +206,20 @@ class Dronarch:
         helpers.start_stopwatch()
         if not use_old_data:
             #create images from videos and store them
-            video_imgs = video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir,
+            video_imgs,vid_img_scale, vid_img_size = video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir,
                                                                   dest_dir=self.vid_dest_dir,
-                                                                  formats=self.video_formats,
+                                                                  video_formats=self.video_formats,
+                                                                  image_formats=self.img_formats,
                                                                   imgs_per_sec=self.vid_imgs_per_sec,
                                                                   start_frame=self.vid_start_frame,
-                                                                  no_images=self.vid_no_images)
+                                                                  no_images=self.vid_no_images,
+                                                                  max_size=self.img_max_size)
 
 
             #copy single images to temp dictionary and resize if needed
-            imgs, orig_imgs = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
+            imgs,orig_imgs,img_scale,img_size  = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
                                                           dest_dir=self.temp_img_dir,
-                                                          size=self.img_max_size,
+                                                          max_size=self.img_max_size,
                                                           formats=self.img_formats)
             if do_calibration:
                 if len(video_imgs)>0:
@@ -228,7 +230,8 @@ class Dronarch:
                                         calib_dest_dir=self.video_calib_dest_dir,
                                         calib_file_path=self.calib_file_path,
                                         img_endings=self.img_formats,
-                                        crop=False
+                                        max_size=vid_img_size,
+                                        crop=True
                                         )
                 if len(imgs)>0:
                     #calibrate and undistort singel images
@@ -238,6 +241,7 @@ class Dronarch:
                                         calib_dest_dir=self.img_calib_dest_dir,
                                         calib_file_path=self.calib_file_path,
                                         img_endings=self.img_formats,
+                                        max_size=img_size
                                         )
         else:
             imgs = None
@@ -260,7 +264,7 @@ class Dronarch:
                                                 use_old_data=use_old_data,
                                                 parallel=True,
                                                 match_radius=4,
-                                                init_imgs=(0,2)
+                                                init_imgs=(10,17)
                                                 )
             if not return_state_bundler == 0:
                 debug(2, 'Bundler finished with error code ', return_state_bundler)
@@ -286,7 +290,7 @@ class Dronarch:
 
 if __name__ == '__main__':
     test = False
-    use_old_data=False
+    use_old_data=True
     if not use_old_data:
         try:
             shutil.rmtree(Dronarch.temp_dir)

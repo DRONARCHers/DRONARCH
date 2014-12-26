@@ -9,7 +9,7 @@ from math import tan, pi
 from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
 from dronarch.helpers.parallel_exe import parallel_exe
-from img_manipulations import get_size
+from dronarch.helpers.img_manipulations import get_size
 
 
 __author__ = 'niclas'
@@ -131,7 +131,7 @@ def start_bundler(imgs_file,
             # constrain_focal_weight=0.0001,
             # estimate_distortion=True,
             run_bundle=True,
-            intrinsics=calib_file_path,
+            # intrinsics=calib_file_path,
             init_pair1=init_imgs[0],
             init_pair2=init_imgs[1]
     )

@@ -1,14 +1,15 @@
 import cv2,os,ntpath
 from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
+from dronarch.helpers.img_manipulations import check_and_resize_all
 from math import ceil
 
 __author__ = 'niclas'
 
-def check_and_extract_all_videos(src_dir, dest_dir,formats, imgs_per_sec, start_frame, no_images):
+def check_and_extract_all_videos(src_dir, dest_dir,video_formats, image_formats, imgs_per_sec, start_frame, no_images, max_size):
     debug(0, 'Start extracting images from videos.')
     helpers.timestamp()
-    videos = helpers.get_files_with_ending(src_dir, formats)
+    videos = helpers.get_files_with_ending(src_dir, video_formats)
     names = []
     if len(videos)>0:
         for video in videos:
@@ -17,9 +18,12 @@ def check_and_extract_all_videos(src_dir, dest_dir,formats, imgs_per_sec, start_
             names.extend(name)
             debug(0, 'Video ',video, ' processed.')
             helpers.timestamp()
+
+    resized_files,orig_files,scale, size = check_and_resize_all(src_dir=dest_dir, dest_dir=dest_dir, max_size=max_size, formats=image_formats, use_images_with_same_size_only=True)
+
     debug(0, 'Extracting images from videos done.')
     helpers.timestamp()
-    return names
+    return resized_files,scale,size
 
 def video2image(video, dest_folder, imgs_per_sec, start_frame=0, no_images=None):
     """
@@ -57,7 +61,7 @@ def video2image(video, dest_folder, imgs_per_sec, start_frame=0, no_images=None)
     for t in range(start_frame,end,step):
         cap.set(cv2.cv.CV_CAP_PROP_POS_FRAMES,t)
         ret, frame = cap.read()
-        name = dest_folder+file_name+str(no_img_proc)+'.jpg'#dest_folder+file_name+'-img_per_sec_'+str(imgs_per_sec)+'-start_frame_'+str(start_frame)+'-no_images_'+str(no_images)+'-img_num_'+str(no_img_proc)+'.jpg'
+        name = dest_folder+file_name+'_{:08d}.jpg'.format(no_img_proc)#dest_folder+file_name+'-img_per_sec_'+str(imgs_per_sec)+'-start_frame_'+str(start_frame)+'-no_images_'+str(no_images)+'-img_num_'+str(no_img_proc)+'.jpg'
         names.append(name)
         cv2.imwrite(name, frame)
 

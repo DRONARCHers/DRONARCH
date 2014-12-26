@@ -26,6 +26,9 @@ def get_files_with_ending(folder, endings):
         #filter to keep matches only
         files = filter(lambda x: regex.match(x), files)
 
+        #sort images to guarantee deterministic order
+        files.sort()
+
         return files
 
 def move_command(path1, path2):
