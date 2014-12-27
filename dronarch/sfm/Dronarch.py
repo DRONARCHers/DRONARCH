@@ -43,9 +43,9 @@ class Dronarch:
 
     img_max_size = (2000,2000)
 
-    vid_imgs_per_sec = 3
+    vid_imgs_per_sec = 5
     vid_start_frame = 50
-    vid_no_images = 50 #*vid_imgs_per_sec
+    vid_no_images = 250 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -263,8 +263,8 @@ class Dronarch:
                                                 vid_imgs=video_imgs,
                                                 use_old_data=use_old_data,
                                                 parallel=True,
-                                                match_radius=4,
-                                                init_imgs=(10,17)
+                                                match_radius=32,
+                                                init_imgs=(5,10)
                                                 )
             if not return_state_bundler == 0:
                 debug(2, 'Bundler finished with error code ', return_state_bundler)
@@ -291,6 +291,8 @@ class Dronarch:
 if __name__ == '__main__':
     test = False
     use_old_data=True
+    send_email = True
+
     if not use_old_data:
         try:
             shutil.rmtree(Dronarch.temp_dir)
@@ -302,4 +304,6 @@ if __name__ == '__main__':
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
-        dron.start_execution(use_old_data=use_old_data, do_calibration=True, do_bundler=True)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=True)
+    if send_email:
+        helpers.send_mail('Bundler finished')
