@@ -76,7 +76,11 @@ def start_stopwatch():
     global start_time
     start_time = time.time()
 def elapsed_time():
+    """
+    :return: Elapsed time since start in seconds
+    """
     return time.time()-start_time
+
 def timestamp():
     debug(0,'Time elapsed since start: {:.2f}sec'.format(elapsed_time()))
 
