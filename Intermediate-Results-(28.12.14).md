@@ -2,8 +2,10 @@
 Using 250 images (2-3h processing time) resulted in this nice point cloud
 ![PMVS output 250 images](https://github.com/DRONARCHers/DRONARCH/blob/master/results/28_12_14/left.png)
 ![PMVS output 250 images](https://github.com/DRONARCHers/DRONARCH/blob/master/results/28_12_14/right.png)
-The detail level is really nice. The paper is not readable, but you can see the different paragraphs.
+
+The detail level is really nice. In the image below, you can see an archaeology paper on my desk. It is not readable, but you can see the different paragraphs.
 ![PMVS output 250 images](https://github.com/DRONARCHers/DRONARCH/blob/master/results/28_12_14/paper_mark.png)
+
 There are still some large holes in the cloud. These are mainly the uniform regions. I hope to be able to improve this by tweaking the parameters.
 ![PMVS output 250 images](https://github.com/DRONARCHers/DRONARCH/blob/master/results/28_12_14/screen_mark.png)
 
