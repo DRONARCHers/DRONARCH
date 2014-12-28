@@ -10,7 +10,7 @@ from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
 from dronarch.helpers.parallel_exe import parallel_exe
 from dronarch.helpers.img_manipulations import get_size
-
+from ccd_width import CCD_WIDTHS
 
 __author__ = 'niclas'
 
@@ -62,13 +62,15 @@ def start_bundler(imgs_file,
         debug(0, 'Start bundler pipline using new images.')
         helpers.timestamp()
 
-        #calculate focal length for video images
-        focal_length = focal_length_for_video(vid_imgs[0], video_fov)
-
         #Use OrderedDictionary to keep order of frames
         vid_imgs_dict =OrderedDict()
-        for frame in vid_imgs:
-            vid_imgs_dict[frame] = focal_length
+
+        if len(vid_imgs)>0:
+            #calculate focal length for video images
+            focal_length = focal_length_for_video(vid_imgs[0], video_fov)
+
+            for frame in vid_imgs:
+                vid_imgs_dict[frame] = focal_length
 
 
         imgs_dict = OrderedDict()
@@ -99,7 +101,7 @@ def start_bundler(imgs_file,
 
         #match features
         debug(0, 'Start matching features.')
-        match_images(keys, match_file, radius=match_radius, verbose=True)
+        match_images(key_files=keys, matches_file=match_file, radius=match_radius, verbose=True)
         debug(0, 'Matching features completed')
         helpers.timestamp()
 
@@ -151,7 +153,7 @@ def write_file(img_dict, file_path):
             for image,focal_length in img_dict.items():
                 #use the  format bundler expects
                 if focal_length == None:
-                    file.write(image + '\n')
+                    file.write(' '.join([image, '0', '0', '\n']))
                 else:
                     file.write(' '.join([image, '0', str(focal_length), '\n']))
             image_list_file = file.name
@@ -196,8 +198,8 @@ def extract_focal_length(images, resized_imgs, verbose=True):
 
         # Extract CCD Width (Prefer Lookup Table)
         make_model = tags.get('Make', '') + ' ' + tags.get('Model', '')
-        if bundler.CCD_WIDTHS.has_key(make_model.strip()):
-            ccd_width = bundler.CCD_WIDTHS[make_model.strip()]
+        if CCD_WIDTHS.has_key(make_model.strip()):
+            ccd_width = CCD_WIDTHS[make_model.strip()]
         else:
             fplaneN, fplaneD = tags.get('FocalPlaneXResolution', (0, 1))
             if fplaneN != 0:
@@ -338,7 +340,7 @@ def sift_images(images, verbose=False, parallel=False):
     key_filenames = []
 
     if parallel:
-        key_filenames = parallel_exe(sift_image, images)
+        key_filenames = parallel_exe(sift_image, images, max_threads=5)
         # pool = Pool(processes=no_processors-2) #otherwise he system will freeze
         # key_filenames = pool.map(sift_image, images)
     else:
@@ -350,8 +352,6 @@ def sift_images(images, verbose=False, parallel=False):
 def match_images(key_files, matches_file, radius, verbose=False):
     """Executes KeyMatchFull to match key points in images."""
 
-
-    keys_file = ''
     with tempfile.NamedTemporaryFile(delete=False) as fp:
         for key in key_files:
             fp.write(key + '\n')

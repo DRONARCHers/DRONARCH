@@ -41,7 +41,8 @@ class Dronarch:
     img_calib_img_dir = ''
     calib_file_path = ''
 
-    img_max_size = (2000,2000)
+    #this is only a fallback value. If specified, the value in the dronarch.cfg file will be used
+    img_max_size = (1000,1000)
 
     vid_imgs_per_sec = 5
     vid_start_frame = 50
@@ -264,7 +265,7 @@ class Dronarch:
                                                 use_old_data=use_old_data,
                                                 parallel=True,
                                                 match_radius=32,
-                                                init_imgs=(5,20)
+                                                init_imgs=(1,6)
                                                 )
             if not return_state_bundler == 0:
                 debug(2, 'Bundler finished with error code ', return_state_bundler)
@@ -290,7 +291,7 @@ class Dronarch:
 
 if __name__ == '__main__':
     test = False
-    use_old_data=True
+    use_old_data=False
     send_email = True
 
     if not use_old_data:
@@ -309,4 +310,5 @@ if __name__ == '__main__':
         t = helpers.elapsed_time()
         h,h_rem = divmod(t,60*60)
         m,s = divmod(h_rem, 60)
+        s = int(s)
         helpers.send_mail('Bundler finished. Took {}h {:02d}m {:02d}s to complete'.format(h,m,s))
