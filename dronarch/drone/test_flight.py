@@ -42,10 +42,7 @@ def talk():
         pub.publish(msg)
         rate.sleep()
 
-# start_new_thread(start_ros,())
-start_new_thread(start_ardrone,())
-# sleep(10)
-rospy.init_node('talker', anonymous=True)
-# start_new_thread(talk,())
-# listen()
-sleep(99999)
+if __name__=='__main__':
+    start_new_thread(start_ardrone,())
+    rospy.init_node('dronarch', anonymous=True)
+    sleep()

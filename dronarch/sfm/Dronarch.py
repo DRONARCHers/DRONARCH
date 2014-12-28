@@ -290,7 +290,7 @@ class Dronarch:
 
 if __name__ == '__main__':
     test = False
-    use_old_data=False
+    use_old_data=True
     send_email = True
 
     if not use_old_data:
