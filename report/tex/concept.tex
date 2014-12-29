@@ -1,0 +1,168 @@
+\documentclass{paper}
+%Use this line instead if you want to use running heads (i.e. headers on each page):
+%\documentclass[runningheads]{llncs}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+%\usepackage{multimedia}
+\usepackage{mathtools}
+\usepackage{paratype}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{nameref}
+\usepackage{url}
+\usepackage{hyperref}
+\captionsetup{compatibility=false}
+
+
+\begin{document}
+	\title{DRONARCH - Konzept}
+	\subtitle{Drone Supported Reconstruction Of Natural Environment and Archaeological and Cultural Heritage}
+	
+	\author{Niclas Scheuing}
+	
+	\maketitle
+	\tableofcontents
+	
+	
+	\section{Motivation}
+		Eine Kernaktivität der Archäologie ist auch heute neben Prospektion und Auswertung das Durchführen von Ausgrabungen.
+		Das Ziel dabei ist möglichst viele Informationen aus den Funden, Befunden und weiteren kontextbezogenen Quellen aus der Grabung und ihrem Umfeld zu erhalten und diese in Form von Funden, Bildern, Texten und Messdaten festzuhalten.
+		Das Erfassen dieser Informationen ist ein äusserst entscheidender Punkt, da nach der Ausgrabung die Grabung selbst oft zerstört wird und teils bereits durch die Ausgrabung Befunde zerstört werden.
+		
+		\subsection{Klassische Dokumentation}
+			[TODO: Quelle benötigt]
+			Klassischerweise werden Funde und Befunde vermessen und als Foto und Skizze in Bild und in Text festgehalten.
+
+			\paragraph{Fotos} haben den Vorteil, dass sie schnell gemacht sind und ein wenig verfälschtes Abbild erstellen. Je nach Lichtverhältnissen und Perspektive kann es jedoch schwierig sein gute Fotos zu machen.
+			
+			\paragraph{Skizzen} sind nicht abhängig von Licht und Perspektive, beinhalten die Interpretation des Zeichners. Dies erste Interpretation ist nützlich da sie die Auswertung vereinfacht, sie ist aber auch eine Verfälschung.
+			
+			\paragraph{Textbeschreibungen} sind wie Skizzen Interpretation. Sie lassen beliebig Freiheit Feinheiten zu beschreiben, sind aber schwieriger auszuwerten, da das Lesen eine weiter Interpretation darstellt.
+			
+			\paragraph{Vermessungen} von Funden helfen die verschiedenen Fragmente der Dokumentation in einen Zusammenhang zu bringen und Unterstützen statistische Auswertungen.
+			
+			\mbox{}
+			
+			Fotos, Pläne und Skizzen sind auf eine zweidimensionale Ansicht beschränkt, es muss also eine Projektion vom drei auf 2 Dimensionen stattfinden. Doch für das beschriebene Objekt, sei es nun eine ganze Grabung oder einzelne Befunde, ist die räumliche Struktur oft entscheidend.
+			So kann man von einem Graben zwar einen Querschnitt an einer bestimmten Stelle und einen Aufriss abbilden, verliert so aber noch immer die Information über den Querschnitt an allen anderen Stellen.  
+			[TODO: Besseres Beispiel oder Bilder]\\
+		
+		\subsection{Dreidimensionale Dokumentation}
+			Um diese fehlende dritte Dimension zu ergänzen, ist man weitgehend auf computergestützte Methoden angewiesen. Verschiedene Verfahren sind in der Lage dreidimensionale (3D) Modelle von Objekten zu erstellen, die am Computer weiterverarbeitet und ausgewertet werden können (\autoref{scan_methods}).
+			
+			3D Modelle entsprechen in ihrer Dimensionalität der Realität und das Problem einer Projektion entfällt.
+			Wie bei Fotos ist das Erfassen von Farben möglich, zudem ist auch die Form bekannt.
+			
+			\paragraph{Vorteile}
+			\begin{itemize}
+				\item
+					Intuitive und schnelle Interpretation einer grosser Menge visueller Daten
+				\item
+					Projektion entfällt und damit gehen weniger Informationen verloren
+				\item
+					Beliebige Projektion für Auswertung und Publikation möglich
+				\item
+					Automatisierte Auswertung möglich
+				\item
+					Nützlich für Öffentlichkeitsarbeit
+			\end{itemize}
+			
+			\paragraph{Nachteile}
+			\begin{itemize}
+				\item
+					Spezielle Ausrüstung und Wissen benötigt
+				\item
+					Zusätzlicher Aufwand während der Grabung
+				\item
+					Viele Unterschiedliche Verfahren mit stark unterschiedlichem Aufwand und Resultaten
+				\item
+					Genauigkeit und Korrektheit der Modelle sind schwierig prüfbar
+			\end{itemize}
+			
+		\subsection{Drohnen}
+			Beim Erstellen eines 3D Modells mittels Bildern oder Videos ist der Prozess vom Erstellen der Aufnahmen zentral. Gute Aufnahmen mit einer klaren Systematik erstellt, führen oft zu einem besseren Resultat.
+			Um diesen Schritt zu automatisieren und Bilder gleichmässiger Qualität zu garantieren bietet es sich an Drohnen zu verwenden.
+			
+			\paragraph{Vorteile}
+			\begin{itemize}
+				\item
+					Systematisches und effizientes Aufnehmen von Bildern
+				\item
+					Zerstörung und kontaktfrei: Kein Kontakt zu Befunden und Funden
+				\item
+					Weniger Wissen und Erfahrung zum Erstellen guter Bilder nötig
+				\item
+					Erfordert wenig Zeit
+				\item
+					Automatische Verbesserung des Modells möglich durch einfügen von fehlenden Aufnahmen aus exakt berechneter Position
+			\end{itemize}
+			
+			\paragraph{Nachteile}
+			\begin{itemize}
+				\item
+					Möglicher Absturz der Drohne könnte Funde und Befunde beschädigen
+				\item
+					Mittelmässige Bildqualität
+				\item
+					Boden und Gruben schwierig zu Filmen, da Kamera nach vorne/unten montiert
+				\item
+					Kurze Flugdauer. Nur ca. 15 min bevor der Akku leer ist
+				\item
+					Materialkosten (ca. 300.- für das von mir verwendete Modell)
+				\item
+					Zusätzliches und empfindliches Material auf der Grabung
+			\end{itemize}
+			
+	
+	
+	\section{3D Modell Erfassen}\label{scan_methods}
+		Im Folgenden sind die wichtigsten Verfahren, die in DRONARCH verwendet werden erklärt
+		
+		\subsection{Structure from Motion und Multiview Stereo}
+			Structure from Motion (SfM) und Multiview Stereo (MS) sind zwei Verfahren aus der Computer Vision mit denen recht exakte Pointclouds (siehe \autoref{app:point_cloud})
+		
+		\subsubsection{Structure from Motion}
+			Ist ein Verfahren zum Generieren einer sparse Point Cloud, das nur Bilder als Eingabe verwendet.
+			Ähnlichkeiten in Bildern werden erkannt und verwendet um die Kameraposition und die 3D Punkte der Szene zu bestimmen.
+			SfM erfordert keine spezielle Ausrüstung und es existieren verschiedene Implementierungen davon, einige frei verfügbar.
+		
+		\subsubsection{Multiview Stereo}
+			Aus mehreren Bildern, deren geometrische Beziehung untereinander bekannt ist, werden mittels Multiview Stereo in eine dense Point Cloud transformiert. Die Positionen der Kamera, können mittels SfM bestimmt werden.
+			
+%	\section{Verwendete Technologie}
+%		\subsection{Bundle Adjustment}
+%		
+%			\subsubsection{Bundler}
+%			
+%		\subsection{Multiview Stereo}
+%			\subsubsection{PMVS und CMVS}
+			
+		
+			
+				
+
+	
+	\begin{appendix}
+		\section{Begriffe}
+			\subsection{Point Cloud}\label{app:point_cloud}
+				Eine Point Cloud (Punktwolke) ist eine Menge von Punkten im 3D Raum. Die Punkte sind nicht miteinander verbunden, noch enthalten sie Informationen über Orientierung oder benachbarte Punkte. Die meisten 3D Scanner produzieren Point Clouds, die zu einem Mesh weiterverarbeitet werden können.
+				Sind die Punkte dicht beieinander, spricht man von einer \emph{dense} (dicht) Point Cloud. Ansonsten nennt man sie \emph{sparse} (licht, locker).
+			
+			\subsection{Mesh}\label{app:mesh}
+				Verbindet man mehrere Punkte zu einer Fläche, meist zu Dreiecken, enthält man ein Mesh. Dies hat eine klare Orientierung und setzt Punkte in Verbindung mit ihren Nachbarn. Enthält ein Mesh keine Löcher, nennt man es watertight (wasserdicht).
+			
+	\end{appendix}
+	
+	\addcontentsline{toc}{section}{\numberline{}List of Figures}
+	\listoffigures
+	
+	\addcontentsline{toc}{section}{\numberline{}Bibliography}
+	\bibliographystyle{apalike}
+%	\bibliographystyle{nicks}
+	\nocite{*}
+	\bibliography{dronarch}
+\end{document}
+	

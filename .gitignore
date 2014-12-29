@@ -1,1 +1,15 @@
 *.pyc
+*.asv
+*.aux
+*.log
+*.gz
+~$*
+\~\$*
+*.out
+*.snm
+*.toc
+*.m~
+*.orig
+*.lof
+*.blg
+*.bbl
