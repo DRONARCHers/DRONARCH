@@ -1,4 +1,6 @@
 from dronarch.helpers.parallel_exe import parallel_exe
+from dronarch.helpers import helpers
+from dronarch.helpers.img_manipulations import check_and_resize_all
 
 __author__ = 'niclas'
 
@@ -20,7 +22,7 @@ def do_calibration(images_names, show_corners=False):
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
     row = 9
-    col=6
+    col= 6
 
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
     objp = np.zeros((row*col,3), np.float32)
@@ -64,17 +66,15 @@ def do_calibration(images_names, show_corners=False):
     return (mtx, dist, camera_matrix, roi)
 
 
-def undistort((mtx, dist, camera_matrix, roi), imgs, dest_imgs, crop=True, parallel=False):
+def undistort((mtx, dist, camera_matrix, roi), imgs, dest_imgs, crop=True):
     if not len(imgs) == len(dest_imgs):
         debug(2,'Could not undistort, lists imgs and dest_imgs have different length')
         return
 
     #parallel execution needs reforming of parameters
     params = [[imgs[i], dest_imgs[i], mtx, dist, camera_matrix, roi, crop] for i in range(len(imgs))]
-    if parallel:
-        parallel_exe(undistort_parallel, params)
-    else:
-        undistort_parallel(params)
+    parallel_exe(undistort_parallel, params)
+
 
 
 def undistort_parallel(params):
@@ -92,17 +92,22 @@ def undistort_parallel(params):
 
     #undistort image
     undist_img = cv2.undistort(img, mtx, dist, None, camera_matrix)
+    # cv2.imshow('image', undist_img)
+    # cv2.waitKey(5000)
+    # cv2.destroyAllWindows()
+
 
     # crop the image
     if crop:
+        margin = 0
         x,y,w,h = roi
-        undist_img = undist_img[y:y+h, x:x+w]
+        undist_img = undist_img[y:y+h, x+margin:x+w-margin]
 
     #save new image
     cv2.imwrite(dest_img,undist_img)
 
 
-def calibrate(calib_img_dir, img_dir, dest_dir, calib_dest_dir, img_endings, parallel=False, crop=True):
+def calibrate(calib_img_dir, img_dir, dest_dir, calib_dest_dir, img_endings,max_size, crop=False):
     debug(0, 'Estimating camera calibration using images from directory ', calib_img_dir)
     calib_imgs = get_files_with_ending(calib_img_dir, img_endings)
     imgs = get_files_with_ending(img_dir, img_endings)
@@ -126,34 +131,43 @@ def calibrate(calib_img_dir, img_dir, dest_dir, calib_dest_dir, img_endings, par
     if len(calib_imgs)==0 or len(imgs)==0 or len(dest_imgs)==0:
         debug(2,'Calibration can not be executed. The specified folders are invalid or don\'t contain images.')
         return
-    calib_para = do_calibration(calib_imgs)
+
+    #resize calib_img if needed
+    resized_files,orig_files,scale,new_size = check_and_resize_all(src_dir=calib_img_dir, dest_dir=calib_dest_dir, max_size=max_size, formats=img_endings, use_images_with_same_size_only=True)
+
+    calib_para = do_calibration(resized_files, show_corners=False)
+
+    #TODO: Use for debuggin only
+    write_to_calib_file('../../config/first_calib.txt', calib_para, scale_factor=scale)
 
 
     #Undistort input images
     debug(0, 'Undistort images from directory ', img_dir)
-    undistort(calib_para,imgs=imgs, dest_imgs=dest_imgs, crop=crop, parallel=parallel)
+    undistort(calib_para,imgs=imgs, dest_imgs=dest_imgs, crop=crop)
+
+    # show_image(imgs[0])
 
     #undistort calibration images
-    undistort(calib_para,imgs=calib_imgs, dest_imgs=dest_calib_img, crop=crop, parallel=parallel)
+    undistort(calib_para,imgs=resized_files, dest_imgs=dest_calib_img, crop=crop)
 
     debug(0, 'Calibration done.')
     timestamp()
-    return dest_calib_img
+    return dest_calib_img, scale
 
-def calibrate_two_times(calib_img_dir, img_dir, dest_dir, img_endings, calib_file_path, calib_dest_dir, parallel=False, crop=True):
+def calibrate_two_times(calib_img_dir, img_dir, dest_dir, img_endings, calib_file_path, calib_dest_dir, max_size, crop=True):
     #Do first calibration and undistort all images
-    calib_imgs = calibrate(calib_img_dir=calib_img_dir, img_dir=img_dir, dest_dir=dest_dir, img_endings=img_endings, calib_dest_dir=calib_dest_dir, parallel=parallel, crop=crop)
+    calib_imgs,scale = calibrate(calib_img_dir=calib_img_dir, img_dir=img_dir, dest_dir=dest_dir, img_endings=img_endings, calib_dest_dir=calib_dest_dir, max_size=max_size, crop=crop)
 
     debug(0, 'Do second calibration to generate calibration file for bundler')
     calib_para = do_calibration(calib_imgs)
 
-    write_to_calib_file(calib_file_path=calib_file_path, calib_para=calib_para)
+    write_to_calib_file(calib_file_path=calib_file_path, calib_para=calib_para, scale_factor=scale)
 
-def write_to_calib_file(calib_file_path, calib_para):
+def write_to_calib_file(calib_file_path, calib_para, scale_factor):
     with open(calib_file_path, 'w+') as file:
         dist = calib_para[1]
         camera_matrix = calib_para[2]
-        matrix_str = ' '.join([str(camera_matrix[i,j]) for i in range(3) for j in range(3)])
+        matrix_str = ' '.join([str(camera_matrix[i,j]) if i==2 and j==2 else str(camera_matrix[i,j]/scale_factor) for i in range(3) for j in range(3)])
         dist_str = ' '.join([str(dist[0,i]) for i in range(dist.size)])
         file.write('1\n')
         file.write(matrix_str+'\n')
@@ -161,6 +175,11 @@ def write_to_calib_file(calib_file_path, calib_para):
 
     debug(0, 'Saved calibration file: ', calib_file_path)
 
+def show_image(image_file):
+    img = cv2.imread(image_file)
+    cv2.imshow('image', img)
+    cv2.waitKey(5000)
+    cv2.destroyAllWindows()
 
 if __name__ =='__main__':
     calibrate('../../vid_calib/', '../../roaming/vid_imgs/', '../../roaming/vid_imgs/calib_', ['jpg','JPG','jpeg','JPEG'], crop=False)

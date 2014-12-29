@@ -3,14 +3,14 @@ import os
 import sys
 import shutil
 #DRONARCH internal
-import video2image, img_manipulations
-from dronarch.helpers import helpers
+import video2image
+from dronarch.helpers import helpers, img_manipulations
 from dronarch.helpers.debug import debug
 from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
 from pmvs import run_pmvs
 from cmvs import run_cmvs
-from CameraCalibration import calibrate,calibrate_two_times
+from CameraCalibration import calibrate_two_times
 
 #external imports
 
@@ -43,9 +43,9 @@ class Dronarch:
 
     img_max_size = (2000,2000)
 
-    vid_imgs_per_sec = 10
-    vid_start_frame = 25*10
-    vid_no_images = 30 #*vid_imgs_per_sec
+    vid_imgs_per_sec = 5
+    vid_start_frame = 50
+    vid_no_images = 250 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -202,22 +202,24 @@ class Dronarch:
         return tup
 
 
-    def start_execution(self, use_old_data=False, do_calibration=True):
+    def start_execution(self, use_old_data=False, do_calibration=True, do_bundler=True, do_pmvs=True):
         helpers.start_stopwatch()
         if not use_old_data:
             #create images from videos and store them
-            video_imgs = video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir,
+            video_imgs,vid_img_scale, vid_img_size = video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir,
                                                                   dest_dir=self.vid_dest_dir,
-                                                                  formats=self.video_formats,
+                                                                  video_formats=self.video_formats,
+                                                                  image_formats=self.img_formats,
                                                                   imgs_per_sec=self.vid_imgs_per_sec,
                                                                   start_frame=self.vid_start_frame,
-                                                                  no_images=self.vid_no_images)
+                                                                  no_images=self.vid_no_images,
+                                                                  max_size=self.img_max_size)
 
 
             #copy single images to temp dictionary and resize if needed
-            imgs, orig_imgs = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
+            imgs,orig_imgs,img_scale,img_size  = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
                                                           dest_dir=self.temp_img_dir,
-                                                          size=self.img_max_size,
+                                                          max_size=self.img_max_size,
                                                           formats=self.img_formats)
             if do_calibration:
                 if len(video_imgs)>0:
@@ -228,7 +230,9 @@ class Dronarch:
                                         calib_dest_dir=self.video_calib_dest_dir,
                                         calib_file_path=self.calib_file_path,
                                         img_endings=self.img_formats,
-                                        parallel=True)
+                                        max_size=vid_img_size,
+                                        crop=True
+                                        )
                 if len(imgs)>0:
                     #calibrate and undistort singel images
                     calibrate_two_times(calib_img_dir=self.img_calib_img_dir,
@@ -237,51 +241,58 @@ class Dronarch:
                                         calib_dest_dir=self.img_calib_dest_dir,
                                         calib_file_path=self.calib_file_path,
                                         img_endings=self.img_formats,
-                                        parallel=True)
+                                        max_size=img_size
+                                        )
         else:
             imgs = None
             video_imgs = None
             orig_imgs = None
 
-        #start bundler pipline
-        return_state_bundler = start_bundler(imgs_file=self.bundler_img_name_file,
-                                            match_file=self.bundler_match_file,
-                                            options_file=self.bundler_options_file,
-                                            output_file=self.bundler_output_file,
-                                            output_dir=self.bundler_output_dir,
-                                            img_dir= self.temp_img_dir,
-                                            bundler_bin_dir=self.bundler_bin_dir,
-                                            calib_file_path=self.calib_file_path,
-                                            imgs=imgs,
-                                            orig_imgs=orig_imgs,
-                                            vid_imgs=video_imgs,
-                                            use_old_data=use_old_data,
-                                            parallel=True,
-                                            match_radius=128
-                                            )
-        if not return_state_bundler == 0:
-            debug(2, 'Bundler finished with error code ', return_state_bundler)
-            exit(return_state_bundler)
+        if do_bundler:
+            #start bundler pipline
+            return_state_bundler = start_bundler(imgs_file=self.bundler_img_name_file,
+                                                match_file=self.bundler_match_file,
+                                                options_file=self.bundler_options_file,
+                                                output_file=self.bundler_output_file,
+                                                output_dir=self.bundler_output_dir,
+                                                img_dir= self.temp_img_dir,
+                                                bundler_bin_dir=self.bundler_bin_dir,
+                                                calib_file_path=self.calib_file_path,
+                                                imgs=imgs,
+                                                orig_imgs=orig_imgs,
+                                                vid_imgs=video_imgs,
+                                                use_old_data=use_old_data,
+                                                parallel=True,
+                                                match_radius=32,
+                                                init_imgs=(5,20)
+                                                )
+            if not return_state_bundler == 0:
+                debug(2, 'Bundler finished with error code ', return_state_bundler)
+                exit(return_state_bundler)
 
-        run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
-                         pmvs_temp_dir=self.pmvs_temp_dir,
-                         bundler_image_file=self.bundler_img_name_file,
-                         bundler_out_file=self.bundler_output_file
-        )
-        run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
-                 pmvs_temp_dir=self.pmvs_temp_dir,
-                 bundler_out_file=self.bundler_output_file
-        )
-        run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
-                 pmvs_temp_dir=self.pmvs_temp_dir,
-        )
+        if do_pmvs:
+            run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
+                             pmvs_temp_dir=self.pmvs_temp_dir,
+                             bundler_image_file=self.bundler_img_name_file,
+                             bundler_out_file=self.bundler_output_file
+            )
+            run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
+                     pmvs_temp_dir=self.pmvs_temp_dir,
+                     bundler_out_file=self.bundler_output_file,
+                     no_clusers=50
+            )
+            run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
+                     pmvs_temp_dir=self.pmvs_temp_dir,
+            )
         helpers.timestamp()
         debug(0, 'Execution of everything completed.')
 
 
 if __name__ == '__main__':
     test = False
-    use_old_data=False
+    use_old_data=True
+    send_email = True
+
     if not use_old_data:
         try:
             shutil.rmtree(Dronarch.temp_dir)
@@ -293,4 +304,9 @@ if __name__ == '__main__':
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
-        dron.start_execution(use_old_data=use_old_data, do_calibration=True)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=True)
+    if send_email:
+        t = helpers.elapsed_time()
+        h,h_rem = divmod(t,60*60)
+        m,s = divmod(h_rem, 60)
+        helpers.send_mail('Bundler finished. Took {}h {:02d}m {:02d}s to complete'.format(h,m,s))

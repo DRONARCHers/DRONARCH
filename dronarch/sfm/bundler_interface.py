@@ -9,7 +9,7 @@ from math import tan, pi
 from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
 from dronarch.helpers.parallel_exe import parallel_exe
-from img_manipulations import get_size
+from dronarch.helpers.img_manipulations import get_size
 
 
 __author__ = 'niclas'
@@ -32,6 +32,7 @@ def start_bundler(imgs_file,
                   vid_imgs=None,
                   video_fov=93,
                   match_radius=15,
+                  init_imgs=(0,5),
                   use_old_data= False,
                   parallel=False
 ):
@@ -124,15 +125,15 @@ def start_bundler(imgs_file,
             output=helpers.get_filename_from_path(output_file),
             output_all="bundle_",
             output_dir=output_dir,
-            # variable_focal_length=True,
+            variable_focal_length=True,
             # use_focal_estimate=True,
             # constrain_focal=True,
             # constrain_focal_weight=0.0001,
-            # estimate_distortion=True,
+            estimate_distortion=True,
             run_bundle=True,
-            intrinsics=calib_file_path,
-            init_pair1=0,
-            init_pair2=1
+            # intrinsics=calib_file_path,
+            init_pair1=init_imgs[0],
+            init_pair2=init_imgs[1]
     )
 
     debug(0,'Bundler pipline is finished.')

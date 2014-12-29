@@ -15,15 +15,9 @@ import rospy
 from sensor_msgs.msg import Image    	 # for receiving the video feed
 
 # We need to use resource locking to handle synchronization between GUI thread and ROS topic callbacks
-from threading import Lock
-import sched
-import time
 
 from cv_bridge import CvBridge
 import cv2
-from threading import Timer
-import numpy as np
-from subprocess import Popen
 
 # Some Constants
 CONNECTION_CHECK_PERIOD = 40
@@ -77,7 +71,7 @@ class DroneVideoDisplay:
 
 			cv2.imshow(winname='Video',mat=image)
 
-			# cv2.imwrite('img.jpg', image)
+			cv2.imwrite('img.jpg', image)
 
 
 	def ReceiveImage(self,data):
@@ -94,6 +88,5 @@ class DroneVideoDisplay:
 
 if __name__=='__main__':
 	# cv2.imshow('bl', np.ones([512,512,3]))
-
 	rospy.init_node('ardrone_video_display')
 	display = DroneVideoDisplay()

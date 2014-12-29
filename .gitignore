@@ -13,3 +13,6 @@
 *.lof
 *.blg
 *.bbl
+*.key.gz
+dronarch/helpers/mail.py
+

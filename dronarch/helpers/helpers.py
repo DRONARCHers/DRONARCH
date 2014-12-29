@@ -1,5 +1,5 @@
 import glob, re, os, shutil, subprocess, time
-
+from datetime import datetime
 from debug import debug
 
 __author__ = 'niclas'
@@ -25,6 +25,9 @@ def get_files_with_ending(folder, endings):
 
         #filter to keep matches only
         files = filter(lambda x: regex.match(x), files)
+
+        #sort images to guarantee deterministic order
+        files.sort()
 
         return files
 
@@ -73,6 +76,24 @@ def start_stopwatch():
     global start_time
     start_time = time.time()
 def elapsed_time():
+    """
+    :return: Elapsed time since start in seconds
+    """
     return time.time()-start_time
+
 def timestamp():
     debug(0,'Time elapsed since start: {:.2f}sec'.format(elapsed_time()))
+
+def send_mail(message):
+    try:
+        import mail
+        ts = time.time()
+        time_stamp = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        msg =  'DRONARCH is notifiying you at {} and is telling you: '.format(time_stamp)
+        msg = msg +message
+        subject = 'Automatic DRONARCH notification'
+        mail.send_mail(to_adr='scheuing@students.unibe.ch', subject=subject, msg_content=msg)
+    except ImportError:
+        debug(1, 'Could not send email. Probably the email script is not available. Ignore this if you are not developer')
+if __name__=='__main__':
+    send_mail(message='Testing the mail implementation in helpers script of DRONARCH')

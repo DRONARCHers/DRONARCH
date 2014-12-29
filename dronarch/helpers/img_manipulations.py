@@ -5,7 +5,7 @@ from dronarch.helpers import helpers
 __author__ = 'niclas'
 
 
-def check_and_resize_all(src_dir, dest_dir, size, formats):
+def check_and_resize_all(src_dir, dest_dir, max_size, formats, use_images_with_same_size_only=False):
     """
     Scans the source directory and saves a scaled copy of each image, that is too large in the destination directory
 
@@ -17,11 +17,28 @@ def check_and_resize_all(src_dir, dest_dir, size, formats):
     """
     resized_files = []
     orig_files = []
-
+    scale = -1
+    size = (-1,-1)
     for file in helpers.get_files_with_ending(src_dir, formats): # all imgs in src_dir
         orig_files.append(file)
-        resized_files.append(check_and_resize(file, dest_dir, size))
-    return (resized_files,orig_files)
+        name, factor, current_size = check_and_resize(file, dest_dir, max_size)
+
+        #Use first scale factor as initial value
+        if scale==-1:
+            scale = factor
+            size = current_size
+
+        # If images needn't be the same size, just add them
+        if not use_images_with_same_size_only:
+            resized_files.append(name)
+        else: #only add images of the size as the first image
+            #Check whether the image is the same size as the first iamge
+            if factor==scale:
+                resized_files.append(name)
+            else:
+                debug(1, 'Image ',name, ' has been rejected. The size does not fit the other images')
+
+    return resized_files,orig_files,scale, size
 
 
 def check_and_resize(file, dest_dir, (height, width)):
@@ -36,7 +53,7 @@ def check_and_resize(file, dest_dir, (height, width)):
     (img_h, img_w, img_d) = img.shape
 
     if img_w>width or img_h > height: #check whether image is too large
-        img = resize(img, (height, width))
+        img,factor = resize(img, (height, width))
         (img_h_sm, img_w_sm, img_d_sm) = img.shape
 
         # create new file name
@@ -56,19 +73,24 @@ def check_and_resize(file, dest_dir, (height, width)):
         success =  cv2.imwrite(name, img)
 
         if success:
-            debug(0, 'Image is to large. Resized ',file, ' from ', img_h, ',',img_w, ' to ', img_h_sm, ',', img_w_sm,' and saved as ', name)
+            debug(0, 'Image is to large. Resized ',file, ' from ', img_h, ',',img_w, ' to ', img_h_sm, ',', img_w_sm,' The scale factor is '+str(factor),'  Saved as ', name)
         else:
             debug(2, 'Could not scale or store image ', file, ' to ', name)
     else: #is no resize is needed, just copy the file
         name = dest_dir + helpers.get_filename_from_path(file)
         success =  cv2.imwrite(name, img)
 
+        #If the size has not been changed, us old values
+        factor = 1
+        img_w_sm = img_w
+        img_h_sm = img_h
+
         if success:
             debug(0, 'Image ', file, ' has been copied to', dest_dir)
         else:
             debug(2, 'Could not scale or store image ', file, ' to ', name)
 
-    return name
+    return name, factor, (img_w_sm,img_h_sm)
 
 def resize(img, (height, width)):
     """
@@ -80,7 +102,7 @@ def resize(img, (height, width)):
     (img_h, img_w, img_d) = img.shape
     factor = min(float(width)/img_w, float(height)/img_h)
     img = cv2.resize(img, (0,0), fx=factor, fy=factor)
-    return img
+    return img,factor
 
 def get_size(image):
     img = cv2.imread(image)

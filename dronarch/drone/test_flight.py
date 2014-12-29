@@ -21,6 +21,7 @@ def start_ardrone():
     # if success ==1:
     #     exit(success)
     #
+    sleep(10)
     command = 'roslaunch tum_ardrone tum_ardrone.launch'
     p3 =  subprocess.Popen(command, shell=True)
     p3.wait()
@@ -41,9 +42,7 @@ def talk():
         pub.publish(msg)
         rate.sleep()
 
-start_new_thread(start_ros,())
-# sleep(10)
-rospy.init_node('talker', anonymous=True)
-start_new_thread(talk,())
-listen()
-sleep(99999)
+if __name__=='__main__':
+    start_new_thread(start_ardrone,())
+    rospy.init_node('dronarch', anonymous=True)
+    sleep()
