@@ -14,6 +14,7 @@
 \usepackage{nameref}
 \usepackage{url}
 \usepackage{hyperref}
+\usepackage{xcolor}
 \captionsetup{compatibility=false}
 
 
@@ -25,7 +26,8 @@
 	
 	\maketitle
 	\tableofcontents
-	
+
+%\chapter{Einleitung}	
 	
 	\section{Motivation}
 		Eine Kernaktivität der Archäologie ist auch heute neben Prospektion und Auswertung das Durchführen von Ausgrabungen.
@@ -34,19 +36,19 @@
 		
 		\subsection{Klassische Dokumentation}
 			[TODO: Quelle benötigt]
-			Klassischerweise werden Funde und Befunde vermessen und als Foto und Skizze in Bild und in Text festgehalten.
+			Klassischerweise werden Funde und Befunde vermessen und als Foto und Skizze in Bild, in Text und als Pläne und Profile festgehalten.
 
 			\paragraph{Fotos} haben den Vorteil, dass sie schnell gemacht sind und ein wenig verfälschtes Abbild erstellen. Je nach Lichtverhältnissen und Perspektive kann es jedoch schwierig sein gute Fotos zu machen.
 			
-			\paragraph{Skizzen} sind nicht abhängig von Licht und Perspektive, beinhalten die Interpretation des Zeichners. Dies erste Interpretation ist nützlich da sie die Auswertung vereinfacht, sie ist aber auch eine Verfälschung.
+			\paragraph{Skizzen} sind nicht abhängig von Licht und Perspektive, beinhalten aber die Interpretation des Zeichners. Dies erste Interpretation ist nützlich da sie die Auswertung vereinfacht, sie ist aber auch eine Verfälschung.
 			
 			\paragraph{Textbeschreibungen} sind wie Skizzen Interpretation. Sie lassen beliebig Freiheit Feinheiten zu beschreiben, sind aber schwieriger auszuwerten, da das Lesen eine weiter Interpretation darstellt.
 			
-			\paragraph{Vermessungen} von Funden helfen die verschiedenen Fragmente der Dokumentation in einen Zusammenhang zu bringen und Unterstützen statistische Auswertungen.
+			\paragraph{Pläne} von Grabungen helfen die verschiedenen Fragmente der Dokumentation in einen Zusammenhang zu bringen und metrische Messungen festzuhalten.
 			
 			\mbox{}
 			
-			Fotos, Pläne und Skizzen sind auf eine zweidimensionale Ansicht beschränkt, es muss also eine Projektion vom drei auf 2 Dimensionen stattfinden. Doch für das beschriebene Objekt, sei es nun eine ganze Grabung oder einzelne Befunde, ist die räumliche Struktur oft entscheidend.
+			Fotos, Pläne und Skizzen sind auf eine zweidimensionale Ansicht beschränkt, es muss also eine Projektion vom drei auf zwei Dimensionen stattfinden. Doch für das beschriebene Objekt, sei es nun eine ganze Grabung oder einzelne Befunde, ist die räumliche Struktur oft entscheidend.
 			So kann man von einem Graben zwar einen Querschnitt an einer bestimmten Stelle und einen Aufriss abbilden, verliert so aber noch immer die Information über den Querschnitt an allen anderen Stellen.  
 			[TODO: Besseres Beispiel oder Bilder]\\
 		
@@ -67,7 +69,7 @@
 				\item
 					Automatisierte Auswertung möglich
 				\item
-					Nützlich für Öffentlichkeitsarbeit
+					Öffentlichkeitswirksam
 			\end{itemize}
 			
 			\paragraph{Nachteile}
@@ -83,7 +85,7 @@
 			\end{itemize}
 			
 		\subsection{Drohnen}
-			Beim Erstellen eines 3D Modells mittels Bildern oder Videos ist der Prozess vom Erstellen der Aufnahmen zentral. Gute Aufnahmen mit einer klaren Systematik erstellt, führen oft zu einem besseren Resultat.
+			Beim Erstellen eines 3D Modells mittels Bildern oder Videos ist der Prozess des Erstellens der Aufnahmen zentral. Gute Aufnahmen mit einer klaren Systematik erstellt, führen oft zu einem besseren Resultat.
 			Um diesen Schritt zu automatisieren und Bilder gleichmässiger Qualität zu garantieren bietet es sich an Drohnen zu verwenden.
 			
 			\paragraph{Vorteile}
@@ -91,13 +93,13 @@
 				\item
 					Systematisches und effizientes Aufnehmen von Bildern
 				\item
-					Zerstörung und kontaktfrei: Kein Kontakt zu Befunden und Funden
+					Zerstörungs- und kontaktfrei: Kein Kontakt zu Befunden und Funden
 				\item
 					Weniger Wissen und Erfahrung zum Erstellen guter Bilder nötig
 				\item
 					Erfordert wenig Zeit
 				\item
-					Automatische Verbesserung des Modells möglich durch einfügen von fehlenden Aufnahmen aus exakt berechneter Position
+					Automatische Verbesserung des Modells möglich durch Einfügen von fehlenden Aufnahmen aus exakt berechneter Position
 			\end{itemize}
 			
 			\paragraph{Nachteile}
@@ -116,13 +118,104 @@
 					Zusätzliches und empfindliches Material auf der Grabung
 			\end{itemize}
 			
+	\section{DRONARCH}
+		Das Projekt \emph{Drone Supported Reconstruction Of Natural Environment and Archaeological and Cultural Heritage} (kurz \emph{DRONARCH}) umfasst eine Software, die mittels einer Drohne 3D Modelle einer Grabung erstellen soll.
+		
+		\subsection{Ziele} \label{einf:ziele}
+			DRONARCH verfolgt das Ziel die \emph{Machbarkeit} und \emph{Nützlichkeit} von 3D Modellen einer Grabung auszuwerten und eine drohnengestützter Dokumentation zu diskutieren.
+				
+			\subsubsection{Machbarkeit}
+				Die angewandten Verfahren sind in der Computer Vision gut erforscht und ihre Grenzen bekannt. Allerdings ist es oft schwer im Voraus zu sagen ob und wie gut eine 3D Rekonstruktion gelingen wird. Viele Faktoren spielen dabei eine Rolle, von der Aufnahme der Bilder bis zum Anpassen von Parametern und die Ergebnisse sind oft schwer zu interpretieren.
+				
+				Die Hauptfrage ist also, ob, mit welchem Aufwand und mit wie viel benötigtem Wissen sind diese Methoden anwendbar.
+			
+			\subsubsection{Nützlichkeit}
+				Wenn ein 3D Modell vorhanden ist, stellen sich Fragen nach dessen Verwendung.
+				Dies hängt in erster Linie von der Qualität des Modells ab. Kann man kleinste Verfärbungen und Steinchen erkennen und Distanzen abmessen, ist dies eine äusserst nützliche Form der Dokumentation und kann Pläne und Fotos gut ergänzen.
+				Ist die Qualität schlechter, kann das Modell als Visualisierung dienen um vorhandene Dokumentation einfacher in einen Kontext zu setzen.
+
+				In der Diskussion der Nützlichkeit sind folgende Aspekte zentral
+				\begin{itemize}
+					\item
+						Intuitive und natürliche Darstellung der Grabung. Welche neuen Möglichkeiten bietet das?
+					\item
+						Integration von anderen Dokumentationen. Insbesondere GIS- und metrische Messdaten
+					\item
+						Qualität, Fehler, Abweichungen von der Realität messen und beurteilen
+					\item
+						Bedienungsfreundlichkeit im Umgang mit dem Modell. Gebiete/Schichten manuell markieren, Querschnitte abbilden, Höhenprofile erstellen, ...
+					\item
+						Aufwand zum Erstellen des Modells
+					\item
+						Publikationsmöglichkeiten. Wie lassen sich 3D Inhalte publizieren.
+					\item
+						Anwendung in Prospektion und Zustandsüberwachung von archäologischen Befunden
+				\end{itemize}
+				
+				Diese Fragen zu beantworten, erfordert einige Versuche im Feld und etwas Erfahrung mit dieser Art von Dokumentation.
+				
+		\subsection{Methodik}
+			Um diese Fragen zu beantworten implementiere ich in einem ersten Schritt eine Software, die alle Schritte, vom Erfassen der Bilder bis zum fertigen Modell, mit möglichst wenig Nutzerunterstützung erledigt.			
+			Diese Software wird auf einer Grabung getestet um die Einsatzfähigkeit vor Ort zu prüfen.
+			Die gewonnenen Resultate werden für einer abschliessenden theoretische und praktische Beurteilung verwendet, in der die in \autoref{einf:ziele} genannten Punkte ausgewertet werden. 
+			
+			\subsubsection{Implementierung}
+				DRONARCH baut auf einer Vielzahl von bestehenden Systemen auf, die alle frei, meist sogar open-source verfügbar sind.
+				Dies sind insbesondere:
+				\begin{itemize}
+					\item
+					 	\emph{ROS} (Robot Operating System): Framework für Anwendungen aus der Robotik. ROS steuert die Drohne und übermittelt die Bilder an den Computer
+					\item
+						\emph{Bundler}: Bundle Adjusment Software
+					\item
+						\emph{CMVS} und \emph{PMVS}: Multiview Stereo Software
+					\item
+						\emph{OpenCV}: Framework für Computer Vision Anwendungen
+				\end{itemize}
+				Für weitere Details siehe \autoref{tech}.
+				Alle weiteren Aufgaben werden von der eigenen Software, die in der Programmiersprache Python geschrieben ist, gemacht.
+			
+			\subsubsection{Praxistests}
+				In einem oder mehreren Versuchen sollen archäologische Strukturen und Artefakte von der Drohne erfasst werden und ein 3D Modell davon erstellt werden.
+				Dies soll die Schwierigkeiten in der Praxis und die mögliche Qualität eines so gewonnenen Modells aufzeigen.
+				Vermutlich wird etwas Erfahrung die Qualität stark verbessern können, weshalb mehrere Versuche erstrebenswert sind.
+			
+			\subsubsection{Auswertung}
+				Auf Grund der in \autoref{einf:ziele} genannten Kriterien kann das Verfahren evaluiert werden. Um die Auswertung nicht von einer Implementierung und wenigen Testversuchen abhängig zu machen, wird eine theoretische Diskussion das Potential und die Risiken von 3D Modellen und den gewählten Verfahren erörtern.
+				Die praktischen Resultate sollen die Erkenntnisse verifizieren und vertieft auf praktische Aspekte eingehen.
+		
+		\subsection{Zwischenresultate}
+			Die neuen Zwischenresultate, die ich während der Entwicklung erstelle, publiziere ich auf dem Wiki des Github Repositories von DRONARCH \cite{dronarch:github}.		
+
+		\subsection{Erwartete Resultate}
+			\subsubsection{Point Cloud und Mesh}
+				Aufgrund der Momentanen Resultate, erwarte ich, dass es möglich ist mit der Drohne eine ziemliche gute dense Point Cloud zu erstellen.
+				Die Qualität variiert im Moment noch sehr stark und es oft schwer zu sagen an was es scheitert.
+				Es kann gut sein, dass letztlich gute Resultat einige Anläufe benötigen werden.
+				
+				Ein brauchbares Mesh konnte ich daraus noch nicht erzeugen, sollte aber machbar sein.
+				
+				Den Schritt von Point Cloud zu Mesh wird aber vermutlich nicht einfach automatisierbar sein, da die Point Cloud einiges an manueller Bearbeitung braucht und man etwas an Parametern schrauben muss, bis die Resultate gut sind.
+			
+			\subsubsection{Komplette Automatisierung}
+				Die angewandten Verfahren zur Rekonstruktion des 3D Modells haben eine ganze Menge an Parametern, die die Qualität stark beeinflussen. Diese kann man nicht automatisch anpassen. Ich hoffe eine Einstellung zu finden, die für die meisten Fälle funktioniert, eventuell wird es aber doch etwas Nutzereingabe benötigen.
+					
+
+			
+			
+			
+			
+				
+	\section*{\textcolor{red}{\emph{[TODO: Die nachfolgenden Absätze sind soweit nur Entwurf]}}}
+%\chapter{Verwandte Publikationen}
 	
-	
+			
+%\chapter{3D Rekonstruktion}	
 	\section{3D Modell Erfassen}\label{scan_methods}
 		Im Folgenden sind die wichtigsten Verfahren, die in DRONARCH verwendet werden erklärt
 		
 		\subsection{Structure from Motion und Multiview Stereo}
-			Structure from Motion (SfM) und Multiview Stereo (MS) sind zwei Verfahren aus der Computer Vision mit denen recht exakte Pointclouds (siehe \autoref{app:point_cloud})
+			\emph{Structure from Motion} (SfM) und \emph{Multiview Stereo} (MS) sind zwei Verfahren aus der Computer Vision mit denen \emph{Point Clouds} (siehe \autoref{app:point_cloud}) aus Bildern gewonnen werden können.
 		
 		\subsubsection{Structure from Motion}
 			Ist ein Verfahren zum Generieren einer sparse Point Cloud, das nur Bilder als Eingabe verwendet.
@@ -132,13 +225,13 @@
 		\subsubsection{Multiview Stereo}
 			Aus mehreren Bildern, deren geometrische Beziehung untereinander bekannt ist, werden mittels Multiview Stereo in eine dense Point Cloud transformiert. Die Positionen der Kamera, können mittels SfM bestimmt werden.
 			
-%	\section{Verwendete Technologie}
-%		\subsection{Bundle Adjustment}
-%		
-%			\subsubsection{Bundler}
-%			
-%		\subsection{Multiview Stereo}
-%			\subsubsection{PMVS und CMVS}
+	\section{Verwendete Technologie} \label{tech}
+		\subsection{Bundle Adjustment}
+		
+			\subsubsection{Bundler}
+			
+		\subsection{Multiview Stereo}
+			\subsubsection{PMVS und CMVS}
 			
 		
 			
@@ -160,7 +253,8 @@
 	\listoffigures
 	
 	\addcontentsline{toc}{section}{\numberline{}Bibliography}
-	\bibliographystyle{apalike}
+%	\bibliographystyle{apalike}
+	\bibliographystyle{alpha}
 %	\bibliographystyle{nicks}
 	\nocite{*}
 	\bibliography{dronarch}
