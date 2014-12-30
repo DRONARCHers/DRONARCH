@@ -82,7 +82,12 @@ def elapsed_time():
     return time.time()-start_time
 
 def timestamp():
-    debug(0,'Time elapsed since start: {:.2f}sec'.format(elapsed_time()))
+    debug(0,'Time elapsed since start: ', time_string(elapsed_time()) )
+
+def time_string(t):
+    h,h_rem = divmod(t,60*60)
+    m,s = divmod(h_rem, 60)
+    return '{}h {:02d}m {:02d}s '.format(int(h),int(m),int(s))
 
 def send_mail(message):
     try:
@@ -95,5 +100,8 @@ def send_mail(message):
         mail.send_mail(to_adr='scheuing@students.unibe.ch', subject=subject, msg_content=msg)
     except ImportError:
         debug(1, 'Could not send email. Probably the email script is not available. Ignore this if you are not developer')
+
 if __name__=='__main__':
-    send_mail(message='Testing the mail implementation in helpers script of DRONARCH')
+    # send_mail(message='Testing the mail implementation in helpers script of DRONARCH')
+    start_stopwatch()
+    print time_string(elapsed_time())
