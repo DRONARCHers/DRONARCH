@@ -305,7 +305,7 @@ if __name__ == '__main__':
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
-        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=True)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=False)
     if send_email:
         t = helpers.elapsed_time()
         t = helpers.time_string(t)
