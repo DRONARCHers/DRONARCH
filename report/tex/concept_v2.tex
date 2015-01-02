@@ -9,7 +9,7 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{caption}
-\usepackage{natbib}
+%\usepackage{natbib}
 \usepackage{subcaption}
 \usepackage{nameref}
 \usepackage{url}
@@ -19,14 +19,16 @@
 
 
 \begin{document}
+	
 	\title{DRONARCH - Konzept}
 	\subtitle{Drone Supported Reconstruction Of Natural Environment and Archaeological and Cultural Heritage}
 	
 	\author{Niclas Scheuing}
-	
+	\pagenumbering{roman} \setcounter{page}{1}
 	\maketitle
 	\tableofcontents
-
+%	\clearpage
+	\pagenumbering{arabic} \setcounter{page}{1}
 %\chapter{Einleitung}	
 	
 	\section{Motivation}
@@ -131,9 +133,6 @@
 			
 			\subsubsection{Nützlichkeit}
 				Wenn ein 3D Modell vorhanden ist, stellen sich Fragen nach dessen Verwendung.
-				Dies hängt in erster Linie von der Qualität des Modells ab. Kann man kleinste Verfärbungen und Steinchen erkennen und Distanzen abmessen, ist dies eine äusserst nützliche Form der Dokumentation und kann Pläne und Fotos gut ergänzen.
-				Ist die Qualität schlechter, kann das Modell als Visualisierung dienen um vorhandene Dokumentation einfacher in einen Kontext zu setzen.
-
 				In der Diskussion der Nützlichkeit sind folgende Aspekte zentral
 				\begin{itemize}
 					\item
@@ -187,21 +186,57 @@
 		\subsection{Zwischenresultate}
 			Die neuen Zwischenresultate, die ich während der Entwicklung erstelle, publiziere ich auf dem Wiki des Github Repositories von DRONARCH \cite{dronarch:github}.		
 
-		\subsection{Erwartete Resultate}
+	\section{Erwartete Resultate}
+		Für das Projekt habe ich gewisse Erwartungen an die Resultate, kann aber noch nicht abschliessend beurteilen, wie gut diese zutreffen werden.
+		\subsection{Technisches}
+			Von technischer Seite ist vieles eine Frage des Zeitaufwandes, der praktischen Versuchsreihen im Feld und deren Auswertung. Die Momentanen Einschätzungen sind die folgenden:
 			\subsubsection{Point Cloud und Mesh}
-				Aufgrund der Momentanen Resultate, erwarte ich, dass es möglich ist mit der Drohne eine ziemliche gute dense Point Cloud zu erstellen.
+				Aufgrund erster Zwischenresultate erwarte ich, dass es möglich ist mit der Drohne eine ziemliche gute dense Point Cloud zu erstellen.
 				Die Qualität variiert im Moment noch sehr stark und es oft schwer zu sagen an was es scheitert.
 				Es kann gut sein, dass letztlich gute Resultat einige Anläufe benötigen werden.
 				
-				Ein brauchbares Mesh konnte ich daraus noch nicht erzeugen, sollte aber machbar sein.
+				Ein brauchbares Mesh konnte ich daraus noch nicht erzeugen, da die Point Cloud noch viele Ausreisser hat. Ich hoffe aber mit besserem Bildmaterial robustere Resultate zu erzeugen, die sich im ein brauchbares Mesh umwandeln lassen. Ob ein Mesh nützlicher ist als eine Point Cloud, muss sich noch zeigen. Ein Vorteil wäre die Verwendung von Texturen, die sehr feine Details besser darstellen können, als eine Point Cloud.
 				
 				Den Schritt von Point Cloud zu Mesh wird aber vermutlich nicht einfach automatisierbar sein, da die Point Cloud einiges an manueller Bearbeitung braucht und man etwas an Parametern schrauben muss, bis die Resultate gut sind.
 			
 			\subsubsection{Komplette Automatisierung}
-				Die angewandten Verfahren zur Rekonstruktion des 3D Modells haben eine ganze Menge an Parametern, die die Qualität stark beeinflussen. Diese kann man nicht automatisch anpassen. Ich hoffe eine Einstellung zu finden, die für die meisten Fälle funktioniert, eventuell wird es aber doch etwas Nutzereingabe benötigen.
-					
-
+				Die angewandten Verfahren zur Rekonstruktion des 3D Modells haben eine ganze Menge an Parametern, die die Qualität stark beeinflussen. Diese kann man nicht automatisch anpassen. Ich hoffe eine Einstellung zu finden, die für die meisten Fälle funktioniert, eventuell wird  aber doch etwas Nutzereingabe nötig sein.
+		
+		\subsection{Archäologisches}
+			Ich möchte einige Punkte aus den formulierten Zielen betrachten
 			
+			\subsubsection{Intuitive und natürliche Darstellung der Grabung. Welche neuen Möglichkeiten bietet das?}
+				Dies hängt in erster Linie von der Qualität des Modells ab. Kann man kleinste Verfärbungen und Steinchen erkennen und Distanzen abmessen, ist dies eine äusserst nützliche Form der Dokumentation und kann Pläne und Fotos gut ergänzen.
+				Ist die Qualität schlechter, kann das Modell als Visualisierung dienen um vorhandene Dokumentation einfacher in einen Kontext zu setzen.
+				
+			\subsubsection{Integration von anderen Dokumentationen. Insbesondere GIS- und metrische Messdaten}
+				Das Tool MeshLab \cite{meshlab:home} verfügt über die Möglichkeit Point Clouds und Meshes zu skalieren, transformieren und rotieren. Zudem lassen sich weitere Plugins programmieren. Es sollte möglich sein in manueller Nachbearbeitung ein Modell in einen bestimmten Massstab zu transformieren und die Koordinaten, die bereits bekannt sein müssen, anzuzeigen. Der erforderliche Programmieraufwand liegt aber eventuell nicht im zeitlichen Rahmen dieses Projektes. Wahrscheinlich wurden ähnliche Plugins bereits von anderen Forschungsgruppen entwickelt (bspw. \cite{arch:dens_ster_excav}).
+				
+				Stimmt der Massstab, kann man in Meshlab auch Distanzen zwischen Punkte messen und so anhand des Modells Messungen durchführen, die auf der Grabung nicht gemacht wurden.
+				Umgekehrt lassen sich Messungen der Grabung schlecht in das Modell integrieren, sollten sie dem Modell widersprechen. Stimmen sie überein, dienen sie zwar als Bestätigung des Modells, bringen aber keinen weiteren Nutzen im Umgang mit und der Interpretation des Modells.
+
+			\subsubsection{Qualität, Fehler, Abweichungen von der Realität messen und beurteilen}
+				\paragraph{Fehlerklassen}
+				Es gibt grob zwei Klassen von Fehlern, die unterschiedlich erkannt und behandelt werden können
+								
+				Wie bei allen digitalen Messmethoden enthält auch eine 3D Point Cloud Fehler, die durch Ungenauigkeiten der Kamera, der zugrunde liegenden Algorithmen, sogar Eigenschaften der PC Architektur entstehen. Man spricht dabei von \emph{Noise}.
+				Noise ist eine unvermeidbare Fehlerquelle und die Auftretenden falschen Punkte, \emph{Outliers}, müssen gefiltert werden. Dieses Filtern entfernt aber meist auch korrekte Details. Es ist also ein Abwägen zwischen Detaillevel und Fehlerlevel.
+				
+				Die zweite Art von Fehlern ist eine inkonsistentes Modell: Das gesammte Modell ist verzogen, Wände verdoppeln sich, Löcher treten auf.
+				Diese Fehler entstehen meist durch schlechtes Bildmaterial und kann oft durch kleine Anpassungen behoben werden. Ich denke, dass etwas Erfahrung schnell aufzeigen wird, wie solche Fehler am besten zu verhindern sind
+				 \paragraph{Fehler Schätzung}
+				Der Fehler des Modells lässt sich nie exakt errechnen. Um die Abweichung zu messen, ist ein korrektes Modell notwendig. Dieses ist in der Praxis aber nie gegeben ist.
+				Es bestehen verschiedene Möglichkeiten den Fehler zu schätzen.
+				
+				Grobe Fehler sind beim betrachten des Modells oft gleich ersichtlich. Dies gilt für die meisten Fehler der zweiten genannten Klasse.
+				
+				Messungen vor Ort können mit dem Modell verglichen und so für einzelne Punkte Fehler festgestellt werden. Damit kann man Fehler der zweiten Klasse erkennen.
+				
+				Galeazzi et al. \cite{arch:laser_vs_dense_stereo} verglichen Laser Scans und Dense Stereo Matching (siehe \autoref{mvs}). Diese ermöglicht zwei 3D Modelle exakt zu vergleichen. Dabei ist a priori nicht klar welches Modell der Realität besser entspricht, die Laser Scans sind aber etabliert und generell von sehr hoher Genauigkeit. Die Resultate sind natürlich nicht direkt übertragbar, geben aber eine grobe Vorstellung.
+				
+				Einfache Objekte, wie ein Würfel oder eine glatte Mauer können exakt vermessen werden und eine 3D Rekonstruktion mittels dieser Daten mit einer durch DRONARCH erstellten Rekonstruktion verglichen werden.
+				Die Aussagekraft dieser Methode ist allerdings stark limitiert, da die Qualität der Rekonstruktion sehr stark von der abgebildeten Szene abhängt und deshalb ein Vergleich zwischen verschiedenen Szenen schwierig ist.
+				
 			
 			
 			
@@ -222,7 +257,7 @@
 			Ähnlichkeiten in Bildern werden erkannt und verwendet um die Kameraposition und die 3D Punkte der Szene zu bestimmen.
 			SfM erfordert keine spezielle Ausrüstung und es existieren verschiedene Implementierungen davon, einige frei verfügbar.
 		
-		\subsubsection{Multiview Stereo}
+		\subsubsection{Multiview Stereo/Dense Stereo Matching}\label{mvs}
 			Aus mehreren Bildern, deren geometrische Beziehung untereinander bekannt ist, werden mittels Multiview Stereo in eine dense Point Cloud transformiert. Die Positionen der Kamera, können mittels SfM bestimmt werden.
 			
 	\section{Verwendete Technologie} \label{tech}
@@ -249,12 +284,12 @@
 			
 	\end{appendix}
 	
-	\addcontentsline{toc}{section}{\numberline{}List of Figures}
-	\listoffigures
+%	\addcontentsline{toc}{section}{\numberline{}List of Figures}
+%	\listoffigures
 	
 	\addcontentsline{toc}{section}{\numberline{}Bibliography}
 %	\bibliographystyle{apalike}
-	\bibliographystyle{alpha}
+	\bibliographystyle{IEEEtran}
 %	\bibliographystyle{nicks}
 	\nocite{*}
 	\bibliography{dronarch}
