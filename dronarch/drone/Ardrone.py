@@ -45,10 +45,13 @@ class Ardrone:
             self.ros_running = False
     def call_service(self, service_name, service_class, msg):
         talker.call_service(service_name=service_name, service_class=service_class, msg=msg)
+
+    def capture_imgs(self):
+        pass
 if __name__=='__main__':
     with Ardrone() as ardrone:
         ardrone.call_service(service_name='/ardrone/setledanimation', service_class=LedAnim, msg=(4, 1, 10))
-        sleep(10)
+        sleep(10000)
 
 
 
