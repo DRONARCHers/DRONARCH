@@ -18,14 +18,13 @@ from sensor_msgs.msg import Image    	 # for receiving the video feed
 
 from cv_bridge import CvBridge
 import cv2
+from threading import Lock
 
 # Some Constants
-CONNECTION_CHECK_PERIOD = 40
-GUI_UPDATE_PERIOD = 20
 
 class DroneVideoDisplay:
 
-	def __init__(self):
+	def __init__(self, GUI_UPDATE_PERIOD):
 
 		# Subscribe to the drone's video feed, calling self.ReceiveImage when a new frame is received
 		self.subVideo   = rospy.Subscriber('/ardrone/image_raw',Image,self.ReceiveImage)

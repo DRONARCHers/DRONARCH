@@ -75,6 +75,8 @@ class Dronarch:
     video_formats = ['avi','mpeg','mov']
     img_formats = ['jpeg','jpg','JPG','JPEG','bmp', 'BMP']
 
+    dron = None
+
 
     #TODO: ALL DIRECTORIES (that must be created and removes ) HAVE TO BE IN THIS LIST.
     dirs = [temp_dir,
@@ -289,10 +291,15 @@ class Dronarch:
         debug(0, 'Execution of everything completed.')
 
 
+def get_instance():
+    if Dronarch.dron == None:
+        Dronarch.dron = Dronarch()
+    return Dronarch.dron
+
 if __name__ == '__main__':
     test = False
     use_old_data=True
-    send_email = False
+    send_email = True
 
     if not use_old_data:
         try:
@@ -300,13 +307,14 @@ if __name__ == '__main__':
         except OSError:
             pass
 
-    dron = Dronarch()
+    dron = Dronarch.get_instance()
     if test:
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
         dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=False)
-    if send_email:
-        t = helpers.elapsed_time()
-        t = helpers.time_string(t)
-        helpers.send_mail('Bundler finished. Took {} to complete'.format(t))
+
+        if send_email:
+            t = helpers.elapsed_time()
+            t = helpers.time_string(t)
+            helpers.send_mail('Bundler finished. Took {} to complete'.format(t))

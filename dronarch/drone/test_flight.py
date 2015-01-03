@@ -17,10 +17,7 @@ def start_ardrone():
     #start ardrone driver
     command = 'roslaunch tum_ardrone ardrone_driver.launch'
     p2 =  subprocess.Popen(command, shell=True)
-    #
-    # if success ==1:
-    #     exit(success)
-    #
+
     sleep(10)
     command = 'roslaunch tum_ardrone tum_ardrone.launch'
     p3 =  subprocess.Popen(command, shell=True)
