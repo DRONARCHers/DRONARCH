@@ -1,0 +1,21 @@
+Photo_tourist: http://phototour.cs.washington.edu/Photo_Tourism.pdf
+
+Book on Ilias (computer Vision)
+
+Parallel bundle adjustment: http://grail.cs.washington.edu/projects/mcba/
+
+Bundle Adjustment - A Modern Synthesis: http://lear.inrialpes.fr/pubs/2000/TMHF00/Triggs-va99.pdf
+
+git structure from motion project homepage: http://www.cs.cornell.edu/projects/bigsfm/
+
+http://www.di.ens.fr/cmvs/
+http://www.di.ens.fr/willow/pdfs/cvpr07a.pdf
+http://grail.cs.washington.edu/pub/papers/furukawa2010tim.pdf
+
+building rome on a cloudless day: http://web.engr.illinois.edu/~slazebni/publications/eccv10_rome.pdf
+
+seeing double: http://www.cs.sfu.ca/~pingtan/Papers/cvpr12_sfm.pdf
+
+duplicate structures: http://research.microsoft.com/pubs/147401/roberts-cvpr11.pdf
+
+building rome in a day: http://grail.cs.washington.edu/rome/rome_paper.pdf

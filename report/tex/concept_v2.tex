@@ -1,0 +1,297 @@
+\documentclass{paper}
+%Use this line instead if you want to use running heads (i.e. headers on each page):
+%\documentclass[runningheads]{llncs}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+%\usepackage{multimedia}
+\usepackage{mathtools}
+\usepackage{paratype}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{nameref}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\captionsetup{compatibility=false}
+
+
+\begin{document}
+	
+	\title{DRONARCH - Konzept}
+	\subtitle{Drone Supported Reconstruction Of Natural Environment and Archaeological and Cultural Heritage}
+	
+	\author{Niclas Scheuing}
+	\pagenumbering{roman} \setcounter{page}{1}
+	\maketitle
+	\tableofcontents
+%	\clearpage
+	\pagenumbering{arabic} \setcounter{page}{1}
+%\chapter{Einleitung}	
+	
+	\section{Motivation}
+		Eine Kernaktivität der Archäologie ist auch heute neben Prospektion und Auswertung das Durchführen von Ausgrabungen.
+		Das Ziel dabei ist möglichst viele Informationen aus den Funden, Befunden und weiteren kontextbezogenen Quellen aus der Grabung und ihrem Umfeld zu erhalten und diese in Form von Funden, Bildern, Texten und Messdaten festzuhalten.
+		Das Erfassen dieser Informationen ist ein äusserst entscheidender Punkt, da nach der Ausgrabung die Grabung selbst oft zerstört wird und teils bereits durch die Ausgrabung Befunde zerstört werden.
+		
+		\subsection{Klassische Dokumentation}
+			[TODO: Quelle benötigt]
+			Klassischerweise werden Funde und Befunde vermessen und als Foto und Skizze in Bild, in Text und als Pläne und Profile festgehalten.
+
+			\paragraph{Fotos} haben den Vorteil, dass sie schnell gemacht sind und ein wenig verfälschtes Abbild erstellen. Je nach Lichtverhältnissen und Perspektive kann es jedoch schwierig sein gute Fotos zu machen.
+			
+			\paragraph{Skizzen} sind nicht abhängig von Licht und Perspektive, beinhalten aber die Interpretation des Zeichners. Dies erste Interpretation ist nützlich da sie die Auswertung vereinfacht, sie ist aber auch eine Verfälschung.
+			
+			\paragraph{Textbeschreibungen} sind wie Skizzen Interpretation. Sie lassen beliebig Freiheit Feinheiten zu beschreiben, sind aber schwieriger auszuwerten, da das Lesen eine weiter Interpretation darstellt.
+			
+			\paragraph{Pläne} von Grabungen helfen die verschiedenen Fragmente der Dokumentation in einen Zusammenhang zu bringen und metrische Messungen festzuhalten.
+			
+			\mbox{}
+			
+			Fotos, Pläne und Skizzen sind auf eine zweidimensionale Ansicht beschränkt, es muss also eine Projektion vom drei auf zwei Dimensionen stattfinden. Doch für das beschriebene Objekt, sei es nun eine ganze Grabung oder einzelne Befunde, ist die räumliche Struktur oft entscheidend.
+			So kann man von einem Graben zwar einen Querschnitt an einer bestimmten Stelle und einen Aufriss abbilden, verliert so aber noch immer die Information über den Querschnitt an allen anderen Stellen.  
+			[TODO: Besseres Beispiel oder Bilder]\\
+		
+		\subsection{Dreidimensionale Dokumentation}
+			Um diese fehlende dritte Dimension zu ergänzen, ist man weitgehend auf computergestützte Methoden angewiesen. Verschiedene Verfahren sind in der Lage dreidimensionale (3D) Modelle von Objekten zu erstellen, die am Computer weiterverarbeitet und ausgewertet werden können (\autoref{scan_methods}).
+			
+			3D Modelle entsprechen in ihrer Dimensionalität der Realität und das Problem einer Projektion entfällt.
+			Wie bei Fotos ist das Erfassen von Farben möglich, zudem ist auch die Form bekannt.
+			
+			\paragraph{Vorteile}
+			\begin{itemize}
+				\item
+					Intuitive und schnelle Interpretation einer grosser Menge visueller Daten
+				\item
+					Projektion entfällt und damit gehen weniger Informationen verloren
+				\item
+					Beliebige Projektion für Auswertung und Publikation möglich
+				\item
+					Automatisierte Auswertung möglich
+				\item
+					Öffentlichkeitswirksam
+			\end{itemize}
+			
+			\paragraph{Nachteile}
+			\begin{itemize}
+				\item
+					Spezielle Ausrüstung und Wissen benötigt
+				\item
+					Zusätzlicher Aufwand während der Grabung
+				\item
+					Viele Unterschiedliche Verfahren mit stark unterschiedlichem Aufwand und Resultaten
+				\item
+					Genauigkeit und Korrektheit der Modelle sind schwierig prüfbar
+			\end{itemize}
+			
+		\subsection{Drohnen}
+			Beim Erstellen eines 3D Modells mittels Bildern oder Videos ist der Prozess des Erstellens der Aufnahmen zentral. Gute Aufnahmen mit einer klaren Systematik erstellt, führen oft zu einem besseren Resultat.
+			Um diesen Schritt zu automatisieren und Bilder gleichmässiger Qualität zu garantieren bietet es sich an Drohnen zu verwenden.
+			
+			\paragraph{Vorteile}
+			\begin{itemize}
+				\item
+					Systematisches und effizientes Aufnehmen von Bildern
+				\item
+					Zerstörungs- und kontaktfrei: Kein Kontakt zu Befunden und Funden
+				\item
+					Weniger Wissen und Erfahrung zum Erstellen guter Bilder nötig
+				\item
+					Erfordert wenig Zeit
+				\item
+					Automatische Verbesserung des Modells möglich durch Einfügen von fehlenden Aufnahmen aus exakt berechneter Position
+			\end{itemize}
+			
+			\paragraph{Nachteile}
+			\begin{itemize}
+				\item
+					Möglicher Absturz der Drohne könnte Funde und Befunde beschädigen
+				\item
+					Mittelmässige Bildqualität
+				\item
+					Boden und Gruben schwierig zu Filmen, da Kamera nach vorne/unten montiert
+				\item
+					Kurze Flugdauer. Nur ca. 15 min bevor der Akku leer ist
+				\item
+					Materialkosten (ca. 300.- für das von mir verwendete Modell)
+				\item
+					Zusätzliches und empfindliches Material auf der Grabung
+			\end{itemize}
+			
+	\section{DRONARCH}
+		Das Projekt \emph{Drone Supported Reconstruction Of Natural Environment and Archaeological and Cultural Heritage} (kurz \emph{DRONARCH}) umfasst eine Software, die mittels einer Drohne 3D Modelle einer Grabung erstellen soll.
+		
+		\subsection{Ziele} \label{einf:ziele}
+			DRONARCH verfolgt das Ziel die \emph{Machbarkeit} und \emph{Nützlichkeit} von 3D Modellen einer Grabung auszuwerten und eine drohnengestützter Dokumentation zu diskutieren.
+				
+			\subsubsection{Machbarkeit}
+				Die angewandten Verfahren sind in der Computer Vision gut erforscht und ihre Grenzen bekannt. Allerdings ist es oft schwer im Voraus zu sagen ob und wie gut eine 3D Rekonstruktion gelingen wird. Viele Faktoren spielen dabei eine Rolle, von der Aufnahme der Bilder bis zum Anpassen von Parametern und die Ergebnisse sind oft schwer zu interpretieren.
+				
+				Die Hauptfrage ist also, ob, mit welchem Aufwand und mit wie viel benötigtem Wissen sind diese Methoden anwendbar.
+			
+			\subsubsection{Nützlichkeit}
+				Wenn ein 3D Modell vorhanden ist, stellen sich Fragen nach dessen Verwendung.
+				In der Diskussion der Nützlichkeit sind folgende Aspekte zentral
+				\begin{itemize}
+					\item
+						Intuitive und natürliche Darstellung der Grabung. Welche neuen Möglichkeiten bietet das?
+					\item
+						Integration von anderen Dokumentationen. Insbesondere GIS- und metrische Messdaten
+					\item
+						Qualität, Fehler, Abweichungen von der Realität messen und beurteilen
+					\item
+						Bedienungsfreundlichkeit im Umgang mit dem Modell. Gebiete/Schichten manuell markieren, Querschnitte abbilden, Höhenprofile erstellen, ...
+					\item
+						Aufwand zum Erstellen des Modells
+					\item
+						Publikationsmöglichkeiten. Wie lassen sich 3D Inhalte publizieren.
+					\item
+						Anwendung in Prospektion und Zustandsüberwachung von archäologischen Befunden
+				\end{itemize}
+				
+				Diese Fragen zu beantworten, erfordert einige Versuche im Feld und etwas Erfahrung mit dieser Art von Dokumentation.
+				
+		\subsection{Methodik}
+			Um diese Fragen zu beantworten implementiere ich in einem ersten Schritt eine Software, die alle Schritte, vom Erfassen der Bilder bis zum fertigen Modell, mit möglichst wenig Nutzerunterstützung erledigt.			
+			Diese Software wird auf einer Grabung getestet um die Einsatzfähigkeit vor Ort zu prüfen.
+			Die gewonnenen Resultate werden für einer abschliessenden theoretische und praktische Beurteilung verwendet, in der die in \autoref{einf:ziele} genannten Punkte ausgewertet werden. 
+			
+			\subsubsection{Implementierung}
+				DRONARCH baut auf einer Vielzahl von bestehenden Systemen auf, die alle frei, meist sogar open-source verfügbar sind.
+				Dies sind insbesondere:
+				\begin{itemize}
+					\item
+					 	\emph{ROS} (Robot Operating System): Framework für Anwendungen aus der Robotik. ROS steuert die Drohne und übermittelt die Bilder an den Computer
+					\item
+						\emph{Bundler}: Bundle Adjusment Software
+					\item
+						\emph{CMVS} und \emph{PMVS}: Multiview Stereo Software
+					\item
+						\emph{OpenCV}: Framework für Computer Vision Anwendungen
+				\end{itemize}
+				Für weitere Details siehe \autoref{tech}.
+				Alle weiteren Aufgaben werden von der eigenen Software, die in der Programmiersprache Python geschrieben ist, gemacht.
+			
+			\subsubsection{Praxistests}
+				In einem oder mehreren Versuchen sollen archäologische Strukturen und Artefakte von der Drohne erfasst werden und ein 3D Modell davon erstellt werden.
+				Dies soll die Schwierigkeiten in der Praxis und die mögliche Qualität eines so gewonnenen Modells aufzeigen.
+				Vermutlich wird etwas Erfahrung die Qualität stark verbessern können, weshalb mehrere Versuche erstrebenswert sind.
+			
+			\subsubsection{Auswertung}
+				Auf Grund der in \autoref{einf:ziele} genannten Kriterien kann das Verfahren evaluiert werden. Um die Auswertung nicht von einer Implementierung und wenigen Testversuchen abhängig zu machen, wird eine theoretische Diskussion das Potential und die Risiken von 3D Modellen und den gewählten Verfahren erörtern.
+				Die praktischen Resultate sollen die Erkenntnisse verifizieren und vertieft auf praktische Aspekte eingehen.
+		
+		\subsection{Zwischenresultate}
+			Die neuen Zwischenresultate, die ich während der Entwicklung erstelle, publiziere ich auf dem Wiki des Github Repositories von DRONARCH \cite{dronarch:github}.		
+
+	\section{Erwartete Resultate}
+		Für das Projekt habe ich gewisse Erwartungen an die Resultate, kann aber noch nicht abschliessend beurteilen, wie gut diese zutreffen werden.
+		\subsection{Technisches}
+			Von technischer Seite ist vieles eine Frage des Zeitaufwandes, der praktischen Versuchsreihen im Feld und deren Auswertung. Die Momentanen Einschätzungen sind die folgenden:
+			\subsubsection{Point Cloud und Mesh}
+				Aufgrund erster Zwischenresultate erwarte ich, dass es möglich ist mit der Drohne eine ziemliche gute dense Point Cloud zu erstellen.
+				Die Qualität variiert im Moment noch sehr stark und es oft schwer zu sagen an was es scheitert.
+				Es kann gut sein, dass letztlich gute Resultat einige Anläufe benötigen werden.
+				
+				Ein brauchbares Mesh konnte ich daraus noch nicht erzeugen, da die Point Cloud noch viele Ausreisser hat. Ich hoffe aber mit besserem Bildmaterial robustere Resultate zu erzeugen, die sich im ein brauchbares Mesh umwandeln lassen. Ob ein Mesh nützlicher ist als eine Point Cloud, muss sich noch zeigen. Ein Vorteil wäre die Verwendung von Texturen, die sehr feine Details besser darstellen können, als eine Point Cloud.
+				
+				Den Schritt von Point Cloud zu Mesh wird aber vermutlich nicht einfach automatisierbar sein, da die Point Cloud einiges an manueller Bearbeitung braucht und man etwas an Parametern schrauben muss, bis die Resultate gut sind.
+			
+			\subsubsection{Komplette Automatisierung}
+				Die angewandten Verfahren zur Rekonstruktion des 3D Modells haben eine ganze Menge an Parametern, die die Qualität stark beeinflussen. Diese kann man nicht automatisch anpassen. Ich hoffe eine Einstellung zu finden, die für die meisten Fälle funktioniert, eventuell wird  aber doch etwas Nutzereingabe nötig sein.
+		
+		\subsection{Archäologisches}
+			Ich möchte einige Punkte aus den formulierten Zielen betrachten
+			
+			\subsubsection{Intuitive und natürliche Darstellung der Grabung. Welche neuen Möglichkeiten bietet das?}
+				Dies hängt in erster Linie von der Qualität des Modells ab. Kann man kleinste Verfärbungen und Steinchen erkennen und Distanzen abmessen, ist dies eine äusserst nützliche Form der Dokumentation und kann Pläne und Fotos gut ergänzen.
+				Ist die Qualität schlechter, kann das Modell als Visualisierung dienen um vorhandene Dokumentation einfacher in einen Kontext zu setzen.
+				
+			\subsubsection{Integration von anderen Dokumentationen. Insbesondere GIS- und metrische Messdaten}
+				Das Tool MeshLab \cite{meshlab:home} verfügt über die Möglichkeit Point Clouds und Meshes zu skalieren, transformieren und rotieren. Zudem lassen sich weitere Plugins programmieren. Es sollte möglich sein in manueller Nachbearbeitung ein Modell in einen bestimmten Massstab zu transformieren und die Koordinaten, die bereits bekannt sein müssen, anzuzeigen. Der erforderliche Programmieraufwand liegt aber eventuell nicht im zeitlichen Rahmen dieses Projektes. Wahrscheinlich wurden ähnliche Plugins bereits von anderen Forschungsgruppen entwickelt (bspw. \cite{arch:dens_ster_excav}).
+				
+				Stimmt der Massstab, kann man in Meshlab auch Distanzen zwischen Punkte messen und so anhand des Modells Messungen durchführen, die auf der Grabung nicht gemacht wurden.
+				Umgekehrt lassen sich Messungen der Grabung schlecht in das Modell integrieren, sollten sie dem Modell widersprechen. Stimmen sie überein, dienen sie zwar als Bestätigung des Modells, bringen aber keinen weiteren Nutzen im Umgang mit und der Interpretation des Modells.
+
+			\subsubsection{Qualität, Fehler, Abweichungen von der Realität messen und beurteilen}
+				\paragraph{Fehlerklassen}
+				Es gibt grob zwei Klassen von Fehlern, die unterschiedlich erkannt und behandelt werden können
+								
+				Wie bei allen digitalen Messmethoden enthält auch eine 3D Point Cloud Fehler, die durch Ungenauigkeiten der Kamera, der zugrunde liegenden Algorithmen, sogar Eigenschaften der PC Architektur entstehen. Man spricht dabei von \emph{Noise}.
+				Noise ist eine unvermeidbare Fehlerquelle und die Auftretenden falschen Punkte, \emph{Outliers}, müssen gefiltert werden. Dieses Filtern entfernt aber meist auch korrekte Details. Es ist also ein Abwägen zwischen Detaillevel und Fehlerlevel.
+				
+				Die zweite Art von Fehlern ist eine inkonsistentes Modell: Das gesammte Modell ist verzogen, Wände verdoppeln sich, Löcher treten auf.
+				Diese Fehler entstehen meist durch schlechtes Bildmaterial und kann oft durch kleine Anpassungen behoben werden. Ich denke, dass etwas Erfahrung schnell aufzeigen wird, wie solche Fehler am besten zu verhindern sind
+				 \paragraph{Fehler Schätzung}
+				Der Fehler des Modells lässt sich nie exakt errechnen. Um die Abweichung zu messen, ist ein korrektes Modell notwendig. Dieses ist in der Praxis aber nie gegeben ist.
+				Es bestehen verschiedene Möglichkeiten den Fehler zu schätzen.
+				
+				Grobe Fehler sind beim betrachten des Modells oft gleich ersichtlich. Dies gilt für die meisten Fehler der zweiten genannten Klasse.
+				
+				Messungen vor Ort können mit dem Modell verglichen und so für einzelne Punkte Fehler festgestellt werden. Damit kann man Fehler der zweiten Klasse erkennen.
+				
+				Galeazzi et al. \cite{arch:laser_vs_dense_stereo} verglichen Laser Scans und Dense Stereo Matching (siehe \autoref{mvs}). Diese ermöglicht zwei 3D Modelle exakt zu vergleichen. Dabei ist a priori nicht klar welches Modell der Realität besser entspricht, die Laser Scans sind aber etabliert und generell von sehr hoher Genauigkeit. Die Resultate sind natürlich nicht direkt übertragbar, geben aber eine grobe Vorstellung.
+				
+				Einfache Objekte, wie ein Würfel oder eine glatte Mauer können exakt vermessen werden und eine 3D Rekonstruktion mittels dieser Daten mit einer durch DRONARCH erstellten Rekonstruktion verglichen werden.
+				Die Aussagekraft dieser Methode ist allerdings stark limitiert, da die Qualität der Rekonstruktion sehr stark von der abgebildeten Szene abhängt und deshalb ein Vergleich zwischen verschiedenen Szenen schwierig ist.
+				
+			
+			
+			
+				
+	\section*{\textcolor{red}{\emph{[TODO: Die nachfolgenden Absätze sind soweit nur Entwurf]}}}
+%\chapter{Verwandte Publikationen}
+	
+			
+%\chapter{3D Rekonstruktion}	
+	\section{3D Modell Erfassen}\label{scan_methods}
+		Im Folgenden sind die wichtigsten Verfahren, die in DRONARCH verwendet werden erklärt
+		
+		\subsection{Structure from Motion und Multiview Stereo}
+			\emph{Structure from Motion} (SfM) und \emph{Multiview Stereo} (MS) sind zwei Verfahren aus der Computer Vision mit denen \emph{Point Clouds} (siehe \autoref{app:point_cloud}) aus Bildern gewonnen werden können.
+		
+		\subsubsection{Structure from Motion}
+			Ist ein Verfahren zum Generieren einer sparse Point Cloud, das nur Bilder als Eingabe verwendet.
+			Ähnlichkeiten in Bildern werden erkannt und verwendet um die Kameraposition und die 3D Punkte der Szene zu bestimmen.
+			SfM erfordert keine spezielle Ausrüstung und es existieren verschiedene Implementierungen davon, einige frei verfügbar.
+		
+		\subsubsection{Multiview Stereo/Dense Stereo Matching}\label{mvs}
+			Aus mehreren Bildern, deren geometrische Beziehung untereinander bekannt ist, werden mittels Multiview Stereo in eine dense Point Cloud transformiert. Die Positionen der Kamera, können mittels SfM bestimmt werden.
+			
+	\section{Verwendete Technologie} \label{tech}
+		\subsection{Bundle Adjustment}
+		
+			\subsubsection{Bundler}
+			
+		\subsection{Multiview Stereo}
+			\subsubsection{PMVS und CMVS}
+			
+		
+			
+				
+
+	
+	\begin{appendix}
+		\section{Begriffe}
+			\subsection{Point Cloud}\label{app:point_cloud}
+				Eine Point Cloud (Punktwolke) ist eine Menge von Punkten im 3D Raum. Die Punkte sind nicht miteinander verbunden, noch enthalten sie Informationen über Orientierung oder benachbarte Punkte. Die meisten 3D Scanner produzieren Point Clouds, die zu einem Mesh weiterverarbeitet werden können.
+				Sind die Punkte dicht beieinander, spricht man von einer \emph{dense} (dicht) Point Cloud. Ansonsten nennt man sie \emph{sparse} (licht, locker).
+			
+			\subsection{Mesh}\label{app:mesh}
+				Verbindet man mehrere Punkte zu einer Fläche, meist zu Dreiecken, enthält man ein Mesh. Dies hat eine klare Orientierung und setzt Punkte in Verbindung mit ihren Nachbarn. Enthält ein Mesh keine Löcher, nennt man es watertight (wasserdicht).
+			
+	\end{appendix}
+	
+%	\addcontentsline{toc}{section}{\numberline{}List of Figures}
+%	\listoffigures
+	
+	\addcontentsline{toc}{section}{\numberline{}Bibliography}
+%	\bibliographystyle{apalike}
+	\bibliographystyle{IEEEtran}
+%	\bibliographystyle{nicks}
+	\nocite{*}
+	\bibliography{dronarch}
+\end{document}
+	
