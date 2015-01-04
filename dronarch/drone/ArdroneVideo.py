@@ -22,23 +22,24 @@ from threading import Lock
 from multiprocessing import Process
 from time import sleep
 from dronarch.helpers.debug import debug
+from dronarch.helpers import helpers
 import rostopic
 import os.path
 
 from thread import start_new_thread
 
 class ArdroneVideo:
-    def __init__(self, FPS, img_out_dir, show_image=False, save_image=True):
-        if not self.ros_core_is_running():
+    def __init__(self, img_out_dir, show_image=False, save_image=True):
+        if not helpers.ros_core_is_running():
             debug(1, 'Can\'t start ArdroneVideo, roscore not running')
         else:
-            rospy.init_node('dronarch_video', anonymous=True)
+            pass
+            # rospy.init_node('dronarch_video', anonymous=True)
         if not os.path.isdir(img_out_dir):
             debug(1, 'Invalid directory for output images from drone: ', img_out_dir, '. Using ./ instead')
             self.img_out_dir = './'
         else:
             self.img_out_dir = img_out_dir
-        self.FPS = FPS
         self.show_image = show_image
         self.save_image = save_image
 
@@ -52,9 +53,9 @@ class ArdroneVideo:
         self.img_nr = 0
 
 
-    def __enter__(self):
+    def start_video(self, FPS):
         if self.ros_core_is_running():
-            self.process = start_new_thread(self.schedule_redraw, (self.FPS,))
+            self.process = start_new_thread(self.schedule_redraw, (FPS,))
         else:
             debug(1, 'Can\'t start image extraction from drone, roscore not running')
         return self
@@ -70,7 +71,7 @@ class ArdroneVideo:
             self.redraw_callback()
             sleep(time)
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def stop_video(self):
         self.running = False
         try:
             self.process.kill()
@@ -107,15 +108,10 @@ class ArdroneVideo:
         finally:
             self.imageLock.release()
 
-    def ros_core_is_running(self):
-        try:
-            # Checkif rosmaster is running or not.
-            rostopic.get_topic_class('/rosout')
-            is_rosmaster_running = True
-        except rostopic.ROSTopicIOException as e:
-            is_rosmaster_running = False
-        return is_rosmaster_running
+
 
 if __name__=='__main__':
-    with ArdroneVideo(FPS=3, img_out_dir='../../roaming/vid_imgs/', show_image=True) as video:
-        sleep(10)
+    video =  ArdroneVideo(FPS=3, img_out_dir='../../roaming/vid_imgs/', show_image=True)
+    video.start_video()
+    sleep(10)
+    video.stop_video()

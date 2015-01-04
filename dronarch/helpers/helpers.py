@@ -1,6 +1,7 @@
 import glob, re, os, shutil, subprocess, time
 from datetime import datetime
 from debug import debug
+import rostopic
 
 __author__ = 'niclas'
 
@@ -100,6 +101,15 @@ def send_mail(message):
         mail.send_mail(to_adr='scheuing@students.unibe.ch', subject=subject, msg_content=msg)
     except ImportError:
         debug(1, 'Could not send email. Probably the email script is not available. Ignore this if you are not developer')
+
+def ros_core_is_running():
+        try:
+            # Checkif rosmaster is running or not.
+            rostopic.get_topic_class('/rosout')
+            is_rosmaster_running = True
+        except rostopic.ROSTopicIOException as e:
+            is_rosmaster_running = False
+        return is_rosmaster_running
 
 if __name__=='__main__':
     # send_mail(message='Testing the mail implementation in helpers script of DRONARCH')

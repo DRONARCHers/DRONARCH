@@ -290,11 +290,11 @@ class Dronarch:
         helpers.timestamp()
         debug(0, 'Execution of everything completed.')
 
-
-def get_instance():
-    if Dronarch.dron == None:
-        Dronarch.dron = Dronarch()
-    return Dronarch.dron
+    @classmethod
+    def get_instance(self):
+        if Dronarch.dron == None:
+            Dronarch.dron = Dronarch()
+        return Dronarch.dron
 
 if __name__ == '__main__':
     test = False
