@@ -14,5 +14,5 @@
 *.blg
 *.bbl
 *.key.gz
-dronarch/helpers/mail.py
+dronarch/helpers/mail_nick.py
 

@@ -1,8 +1,14 @@
+"""
+Provides functions for image manipulation such as resizing
+"""
+
+__author__ = 'niclas'
+
 import cv2
 from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
 
-__author__ = 'niclas'
+
 
 
 def check_and_resize_all(src_dir, dest_dir, max_size, formats, use_images_with_same_size_only=False):
@@ -105,6 +111,11 @@ def resize(img, (height, width)):
     return img,factor
 
 def get_size(image):
+    """
+    Returns the size in pixel of an image
+    :param image:
+    :return: (height, width, color depth)
+    """
     img = cv2.imread(image)
     (img_h, img_w, img_d) = img.shape
     return (img_h, img_w, img_d)
