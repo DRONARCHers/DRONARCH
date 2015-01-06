@@ -15,4 +15,4 @@
 *.bbl
 *.key.gz
 dronarch/helpers/mail_nick.py
-
+*/.directory

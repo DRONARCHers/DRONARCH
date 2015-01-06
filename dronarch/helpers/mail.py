@@ -40,7 +40,7 @@ def send_mail(to_adr, subject, msg_content):
         print 'Message "{}" sent'.format(subject)
     except smtplib.SMTPAuthenticationError:
         server.close()
-        print 'Could connect to server. Authentication problem'
+        print 'Could not connect to server. Authentication problem'
 
     server.close()
 

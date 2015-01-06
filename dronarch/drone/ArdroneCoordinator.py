@@ -32,3 +32,19 @@ class ArdroneCoordinator:
 
     def land(self):
         self.ros.land()
+
+    def takeoff(self):
+        self.takeoff()
+
+    def execute_command(self, command):
+        if command == ArdroneCommands.land:
+            self.land()
+        elif command == ArdroneCommands.takeoff:
+            self.takeoff()
+        elif command == ArdroneCommands.anim_leds:
+            self.anim_led()
+
+class ArdroneCommands:
+    land = 'land'
+    takeoff = 'takeoff'
+    anim_leds = 'anim_leds'

@@ -10,7 +10,7 @@ from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
 from pmvs import run_pmvs
 from cmvs import run_cmvs
-from CameraCalibration import calibrate_two_times
+from camera_calibration import calibrate_two_times
 
 #external imports
 
