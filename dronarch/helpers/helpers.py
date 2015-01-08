@@ -117,13 +117,13 @@ def send_mail(message):
     :return:
     """
     try:
-        import mail
+        import mail_nick
         ts = time.time()
         time_stamp = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         msg =  'DRONARCH is notifiying you at {} and is telling you: '.format(time_stamp)
         msg = msg +message
         subject = 'Automatic DRONARCH notification'
-        mail.send_dronarch_mail(subject=subject, msg_content=msg)
+        mail_nick.send_dronarch_mail(subject=subject, msg_content=msg)
     except ImportError:
         debug(1, 'Could not send email. Probably the email script is not available. Ignore this if you are not developer')
 

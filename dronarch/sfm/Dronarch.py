@@ -45,8 +45,8 @@ class Dronarch:
     img_max_size = (2000,2000)
 
     vid_imgs_per_sec = 2
-    vid_start_frame = 10
-    vid_no_images = 100 #*vid_imgs_per_sec
+    vid_start_frame = 5
+    vid_no_images = 10000 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -206,7 +206,6 @@ class Dronarch:
 
 
     def start_execution(self, use_old_data=False, do_calibration=True, do_bundler=True, do_pmvs=True):
-        helpers.start_stopwatch()
         if not use_old_data:
             #create images from videos and store them
             video_imgs,vid_img_scale, vid_img_size = video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir,
@@ -266,23 +265,23 @@ class Dronarch:
                                                 vid_imgs=video_imgs,
                                                 use_old_data=use_old_data,
                                                 parallel=True,
-                                                match_radius=128,
-                                                init_imgs=(2,5)
+                                                match_radius=64,
+                                                init_imgs=(7,8)
                                                 )
             if not return_state_bundler == 0:
                 debug(2, 'Bundler finished with error code ', return_state_bundler)
                 exit(return_state_bundler)
 
         if do_pmvs:
-            run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
-                             pmvs_temp_dir=self.pmvs_temp_dir,
-                             bundler_image_file=self.bundler_img_name_file,
-                             bundler_out_file=self.bundler_output_file
-            )
+            # run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
+            #                  pmvs_temp_dir=self.pmvs_temp_dir,
+            #                  bundler_image_file=self.bundler_img_name_file,
+            #                  bundler_out_file=self.bundler_output_file
+            # )
             run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
                      pmvs_temp_dir=self.pmvs_temp_dir,
                      bundler_out_file=self.bundler_output_file,
-                     no_clusers=50
+                     no_clusers=20
             )
             run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
                      pmvs_temp_dir=self.pmvs_temp_dir,
@@ -298,7 +297,7 @@ class Dronarch:
 
 if __name__ == '__main__':
     test = False
-    use_old_data=True
+    use_old_data = True
     send_email = True
 
     if not use_old_data:
@@ -312,6 +311,7 @@ if __name__ == '__main__':
         import doctest
         doctest.testmod(extraglobs={'dron': dron})
     else:
+        helpers.start_stopwatch()
         dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=False)
 
         if send_email:

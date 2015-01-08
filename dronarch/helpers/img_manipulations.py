@@ -79,7 +79,7 @@ def check_and_resize(file, dest_dir, (height, width)):
         success =  cv2.imwrite(name, img)
 
         if success:
-            debug(0, 'Image is to large. Resized ',file, ' from ', img_h, ',',img_w, ' to ', img_h_sm, ',', img_w_sm,' The scale factor is '+str(factor),'  Saved as ', name)
+            debug(0, 'Image is too large. Resized ',file, ' from ', img_h, ',',img_w, ' to ', img_h_sm, ',', img_w_sm,' The scale factor is '+str(factor),'  Saved as ', name)
         else:
             debug(2, 'Could not scale or store image ', file, ' to ', name)
     else: #is no resize is needed, just copy the file
