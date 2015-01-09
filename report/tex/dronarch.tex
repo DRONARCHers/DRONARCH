@@ -1,0 +1,57 @@
+\documentclass[a4paper]{report}
+%Use this line instead if you want to use running heads (i.e. headers on each page):
+%\documentclass[runningheads]{llncs}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+%\usepackage{multimedia}
+\usepackage{mathtools}
+\usepackage{paratype}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{nameref}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\usepackage[affil-it]{authblk}
+
+\captionsetup{compatibility=false}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+
+
+
+\begin{document}
+	
+	\title{DRONARCH - Drone Supported Reconstruction Of Natural Environment and Archaeological and Cultural Heritage}
+	
+	\author{Niclas Scheuing}
+	\date{2014}
+	\affil{Institut für Archäologische Wissenschaften, Archäologie der Römischen Provinzen, Universität Bern}
+	
+	\pagenumbering{roman} \setcounter{page}{1}
+	\maketitle
+	\tableofcontents
+	\clearpage
+	\pagenumbering{arabic} \setcounter{page}{1}
+	
+	\include{chapters/einleitung}	
+	
+
+	
+	\begin{appendix}
+		\include{chapters/appendix}		
+	\end{appendix}
+	
+	%	\addcontentsline{toc}{section}{\numberline{}List of Figures}
+	%	\listoffigures
+	
+	\addcontentsline{toc}{section}{\numberline{}Bibliography}
+	%	\bibliographystyle{apalike}
+	\bibliographystyle{IEEEtran}
+	%	\bibliographystyle{nicks}
+	\nocite{*}
+	\bibliography{dronarch}
+\end{document}
