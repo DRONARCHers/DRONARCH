@@ -205,7 +205,7 @@ class Dronarch:
         return tup
 
 
-    def start_execution(self, use_old_data=False, do_calibration=True, do_bundler=True, do_pmvs=True):
+    def start_execution(self, use_old_data=False, do_calibration=True, do_bundler=True, do_bundler_2_pmvs=True, do_pmvs=True):
         if not use_old_data:
             #create images from videos and store them
             video_imgs,vid_img_scale, vid_img_size = video2image.check_and_extract_all_videos(src_dir=self.orig_img_dir,
@@ -273,11 +273,12 @@ class Dronarch:
                 exit(return_state_bundler)
 
         if do_pmvs:
-            # run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
-            #                  pmvs_temp_dir=self.pmvs_temp_dir,
-            #                  bundler_image_file=self.bundler_img_name_file,
-            #                  bundler_out_file=self.bundler_output_file
-            # )
+            if do_bundler_2_pmvs:
+                run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
+                                 pmvs_temp_dir=self.pmvs_temp_dir,
+                                 bundler_image_file=self.bundler_img_name_file,
+                                 bundler_out_file=self.bundler_output_file
+                )
             run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
                      pmvs_temp_dir=self.pmvs_temp_dir,
                      bundler_out_file=self.bundler_output_file,
@@ -312,7 +313,7 @@ if __name__ == '__main__':
         doctest.testmod(extraglobs={'dron': dron})
     else:
         helpers.start_stopwatch()
-        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=False)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=False, do_bundler_2_pmvs=False)
 
         if send_email:
             t = helpers.elapsed_time()
