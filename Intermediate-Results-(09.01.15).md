@@ -10,6 +10,8 @@ I worked with a images resolution of 3000x2000px, the larges I've ever tried so 
 
 ### Results
 The following are the resulting dense point clouds.
+The detail level varies quite a bit. Also the multi-view stereo part is done in several patches for memory reasons. These patches overlap sometimes with different point density. So the quality can be enhanced with some manual post-processing.
+Note that there are still many holes in the model. I'm trying to tweak the pipeline such that these get smaller. I also tried to make a mesh in MeshLab again, but it keeps crashing. @simplay: I'll get back to you the next days :-)
 ![Overview of remains of the Roman amphitheater in Rossfeld, Bern](https://github.com/DRONARCHers/DRONARCH/blob/master/results/09_01_15/overview.png)
 ![Top view of remains of the Roman amphitheater in Rossfeld, Bern](https://github.com/DRONARCHers/DRONARCH/blob/master/results/09_01_15/top.png)
 ![Center view of remains of the Roman amphitheater in Rossfeld, Bern](https://github.com/DRONARCHers/DRONARCH/blob/master/results/09_01_15/inside.png)
