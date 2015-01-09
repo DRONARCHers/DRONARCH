@@ -340,9 +340,19 @@ def sift_images(images, verbose=False, parallel=False):
     key_filenames = []
 
     if parallel:
-        key_filenames = parallel_exe(sift_image, images, max_threads=5)
-        # pool = Pool(processes=no_processors-2) #otherwise he system will freeze
-        # key_filenames = pool.map(sift_image, images)
+        #if the images are large, extracting features requires lots of memory. So less threads should be used in parallel
+        img_size = get_size(images[0])
+        if img_size[0]>3000 or img_size[1]>3000:
+            threads=2
+        elif img_size[0]>2500 or img_size[1]>2500:
+            threads=3
+        elif img_size[0]>2000 or img_size[1]>2000:
+            threads=4
+        else:
+            threads = 5
+        debug(0, 'Using {} threads for feature detection'.format(threads))
+
+        key_filenames = parallel_exe(sift_image, images, max_threads=threads)
     else:
         for image in images:
             key_filenames.append(sift_image(image, verbose=verbose))
@@ -352,11 +362,13 @@ def sift_images(images, verbose=False, parallel=False):
 def match_images(key_files, matches_file, radius, verbose=False):
     """Executes KeyMatchFull to match key points in images."""
 
+    time = helpers.time_string(sum([i for i in range(len(key_files))]))
+    debug(0, 'Maching of {} images will take between {} and {} (I guess)'.format(len(key_files), helpers.time_string(len(key_files)*30), time))
+
     with tempfile.NamedTemporaryFile(delete=False) as fp:
         for key in key_files:
             fp.write(key + '\n')
         keys_file = fp.name
-
 
     #execute match
     command = ' '.join([MATCH_BIN, keys_file, matches_file, str(radius)])
@@ -398,3 +410,4 @@ def set_lib_path(bundler_bin_dir):
         env['LD_LIBRARY_PATH'] = bundler_lib_path
 
     ENV = env
+

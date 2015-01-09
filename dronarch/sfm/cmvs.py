@@ -24,9 +24,9 @@ def run_cmvs(cmvs_bin_folder, pmvs_temp_dir, bundler_out_file, no_clusers=50):
     debug(0, 'GenOptions')
     level = 1
     csize = 1
-    threshold = 0.8
+    threshold = 0.7
     wsize = 20
-    minImageNum = 4
+    minImageNum = 2
     CPU = cpu_count()
 
     command = cmvs_bin_folder+'genOption ./ '+' '.join([str(level), str(csize), str(threshold), str(wsize), str(minImageNum), str(CPU)])
