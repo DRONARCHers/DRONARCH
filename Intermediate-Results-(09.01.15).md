@@ -9,3 +9,6 @@ I worked with a images resolution of 3000x2000px, the larges I've ever tried so 
 ### Results
 The following are the resulting dense point clouds.
 ![Overview of remains of the Roman amphitheater in Rossfeld, Bern](https://github.com/DRONARCHers/DRONARCH/blob/master/results/09_01_15/overview.png)
+![Top view of remains of the Roman amphitheater in Rossfeld, Bern](https://github.com/DRONARCHers/DRONARCH/blob/master/results/09_01_15/top.png)
+![Center view of remains of the Roman amphitheater in Rossfeld, Bern](https://github.com/DRONARCHers/DRONARCH/blob/master/results/09_01_15/inside.png)
+![Detail view of remains of the Roman amphitheater in Rossfeld, Bern](https://github.com/DRONARCHers/DRONARCH/blob/master/results/09_01_15/detail.png)
