@@ -1,8 +1,8 @@
 from __future__ import print_function
-import sys
-
 __author__ = 'niclas'
+# All debugging and logging messages happen through this script
 
+#logging levels
 levels = {0:'Debug', 1: 'Warning', 2: 'Error'}
 
 def debug(level,*message):
@@ -13,9 +13,12 @@ def debug(level,*message):
     :param level:
     :return:
     """
+    msg = ''.join([str(arg) for arg in message ])
     if level in levels.keys():
-        print(levels[level],': ', ''.join([str(arg) for arg in message ]))
+        print(levels[level],': ', msg)
     else:
-        print('Invalid debug level ',level, 'has to be one of ', levels)
+        print('Invalid debug level {} for message "{}". Has to be one of {}'.format(level,msg,levels))
 
-# debug(1, 'some ', ' more ', 23)
+if __name__=='__main__':
+    debug(1, 'some ', ' more ', 23)
+    debug(999, 'A message')

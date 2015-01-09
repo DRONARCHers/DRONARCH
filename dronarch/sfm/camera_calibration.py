@@ -1,9 +1,3 @@
-from dronarch.helpers.parallel_exe import parallel_exe
-from dronarch.helpers import helpers
-from dronarch.helpers.img_manipulations import check_and_resize_all
-
-__author__ = 'niclas'
-
 """
 Camera Calibration using the OpenCV functionalities.
 Checkerboard calibration is used.
@@ -11,10 +5,16 @@ Based on the code from the tutorial: http://docs.opencv.org/doc/tutorials/calib3
 and http://docs.opencv.org/trunk/doc/py_tutorials/py_calib3d/py_calibration/py_calibration.html#calibration
 """
 
+__author__ = 'niclas'
+
 import numpy as np
 import cv2
+
+#dronarch imports
 from dronarch.helpers.helpers import get_files_with_ending,timestamp
 from dronarch.helpers.debug import debug
+from dronarch.helpers.parallel_exe import parallel_exe
+from dronarch.helpers.img_manipulations import check_and_resize_all
 
 
 def do_calibration(images_names, show_corners=False):
@@ -183,12 +183,3 @@ def show_image(image_file):
 
 if __name__ =='__main__':
     calibrate('../../vid_calib/', '../../roaming/vid_imgs/', '../../roaming/vid_imgs/calib_', ['jpg','JPG','jpeg','JPEG'], crop=False)
-
-
-    # mean_error = 0
-    # for i in xrange(len(objpoints)):
-    #     imgpoints2, _ = cv2.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)
-    #     error = cv2.norm(imgpoints[i],imgpoints2, cv2.NORM_L2)/len(imgpoints2)
-    #     mean_error += error
-    #
-    # print "total error: ", mean_error/len(objpoints)

@@ -1,35 +1,42 @@
-import glob, re, os, shutil, subprocess, time
+"""
+Contains a number of mixed helper functions
+"""
+__author__ = 'niclas'
+
+import glob, re, os, shutil, subprocess, time, rostopic
 from datetime import datetime
 from debug import debug
 
-__author__ = 'niclas'
 
+
+#Used for the timer/timestamp
 global start_time
 
+
 def get_files_with_ending(folder, endings):
-        """
-        Scan the folder for files with specified ending and return them as a list
-        :param folder: The folder to be searched
-        :param endings: List containing the endings without the dot. .e.g. ['avi', 'mpeg']
-        :return:
-        """
+    """
+    Scan the folder for files with specified ending and return them as a list
+    :param folder: The folder to be searched
+    :param endings: List containing the endings without the dot. .e.g. ['avi', 'mpeg']
+    :return:
+    """
 
-        #get all files
-        files = glob.glob(folder+'*')
+    #get all files
+    files = glob.glob(folder+'*')
 
-        #compile the most epic regex patterne ever
-        pattern = ''.join([''+end+'|' for end in endings])
-        #add brackets and remove last pipe
-        pattern = '.*\.('+pattern[0:-1]+')$'
-        regex = re.compile(pattern, re.IGNORECASE)
+    #compile the most epic regex patterne ever
+    pattern = ''.join([''+end+'|' for end in endings])
+    #add brackets and remove last pipe
+    pattern = '.*\.('+pattern[0:-1]+')$'
+    regex = re.compile(pattern, re.IGNORECASE)
 
-        #filter to keep matches only
-        files = filter(lambda x: regex.match(x), files)
+    #filter to keep matches only
+    files = filter(lambda x: regex.match(x), files)
 
-        #sort images to guarantee deterministic order
-        files.sort()
+    #sort images to guarantee deterministic order
+    files.sort()
 
-        return files
+    return files
 
 def move_command(path1, path2):
     """
@@ -73,8 +80,13 @@ def get_filename_from_path(path):
 
 
 def start_stopwatch():
+    """
+    Start the gobal stopwatch
+    :return:
+    """
     global start_time
     start_time = time.time()
+
 def elapsed_time():
     """
     :return: Elapsed time since start in seconds
@@ -82,14 +94,28 @@ def elapsed_time():
     return time.time()-start_time
 
 def timestamp():
+    """
+    Prints a timestamp to the dronarch.helpers.debug
+    :return:
+    """
     debug(0,'Time elapsed since start: ', time_string(elapsed_time()) )
 
 def time_string(t):
+    """
+    Returns a formated string of an integer representing time in seconds
+    :param t:
+    :return:
+    """
     h,h_rem = divmod(t,60*60)
     m,s = divmod(h_rem, 60)
     return '{}h {:02d}m {:02d}s '.format(int(h),int(m),int(s))
 
 def send_mail(message):
+    """
+    Send an email to the address specified in the mail.py file to notify that dronarch has completed
+    :param message:
+    :return:
+    """
     try:
         import mail
         ts = time.time()
@@ -97,9 +123,22 @@ def send_mail(message):
         msg =  'DRONARCH is notifiying you at {} and is telling you: '.format(time_stamp)
         msg = msg +message
         subject = 'Automatic DRONARCH notification'
-        mail.send_mail(to_adr='scheuing@students.unibe.ch', subject=subject, msg_content=msg)
+        mail.send_dronarch_mail(subject=subject, msg_content=msg)
     except ImportError:
         debug(1, 'Could not send email. Probably the email script is not available. Ignore this if you are not developer')
+
+def ros_core_is_running():
+    """
+    Check whether roscore is running
+    :return:
+    """
+    try:
+        # Checkif rosmaster is running or not.
+        rostopic.get_topic_class('/rosout')
+        is_rosmaster_running = True
+    except rostopic.ROSTopicIOException as e:
+        is_rosmaster_running = False
+    return is_rosmaster_running
 
 if __name__=='__main__':
     # send_mail(message='Testing the mail implementation in helpers script of DRONARCH')
