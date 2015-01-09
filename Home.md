@@ -14,6 +14,7 @@ DRONARCH is still in development
 * [(22.12.14) Results using the K matrix](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2822.12.14%29)
 * [(26.12.14)Dense point cloud - The first success](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2826.12.14%29)
 * [(28.12.14) Better dense point cloud](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2828.12.14%29)
+*[(09.01.15) Roman amphitheatre Engehalbinsel](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2809.01.15%29)
 
 The images to the intermediate results can be found in [the corresponding subfolder of results](https://github.com/DRONARCHers/DRONARCH/tree/master/results)
 ### Where does it go
