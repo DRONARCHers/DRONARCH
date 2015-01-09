@@ -1,4 +1,5 @@
 ### Roman amphitheater in Rossfeld, Engehalbinsel Bern
+I'm exited to show the first archaeological results of this project (even though there's not too much archaeological value in these yet :-) )!
 This week I took a set of 124 images and a video of the Roman amphitheater in the Rossfeld on the Engehalbinsel near Bern. The Roman vicus (city) Brenodurum is known on this peninsula, and before that a celtic settlement. Today the bath and the amphitheater is still visible, to be precise it is mostly a modern reconstruction. Still I regarded it is a good object for my tests.
 
 ### Long processing time
