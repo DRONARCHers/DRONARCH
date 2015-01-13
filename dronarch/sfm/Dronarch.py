@@ -5,7 +5,7 @@ import shutil
 #DRONARCH internal
 import video2image
 from dronarch.helpers import helpers, img_manipulations
-from dronarch.helpers.debug import debug
+from dronarch.helpers.debug import debug, clear_log_file
 from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
 from pmvs import run_pmvs
@@ -46,7 +46,7 @@ class Dronarch:
 
     vid_imgs_per_sec = 2
     vid_start_frame = 5
-    vid_no_images = 10000 #*vid_imgs_per_sec
+    vid_no_images = 1000 #*vid_imgs_per_sec
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -298,12 +298,13 @@ class Dronarch:
 
 if __name__ == '__main__':
     test = False
-    use_old_data = True
+    use_old_data = False
     send_email = True
 
     if not use_old_data:
         try:
             shutil.rmtree(Dronarch.temp_dir)
+            clear_log_file()
         except OSError:
             pass
 
@@ -313,7 +314,7 @@ if __name__ == '__main__':
         doctest.testmod(extraglobs={'dron': dron})
     else:
         helpers.start_stopwatch()
-        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=False, do_bundler_2_pmvs=False)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=True, do_bundler_2_pmvs=True)
 
         if send_email:
             t = helpers.elapsed_time()
