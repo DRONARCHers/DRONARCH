@@ -4,7 +4,7 @@ from dronarch.helpers.helpers import debug, execute_command
 from multiprocessing import cpu_count
 import os
 
-def run_cmvs(cmvs_bin_folder, pmvs_temp_dir, bundler_out_file, no_clusers=50):
+def run_cmvs(cmvs_bin_folder, pmvs_temp_dir, bundler_out_file, no_clusers=50, level=1, csize=1, threshold=0.7, wsize=20, minImageNum=3):
 
     #change to pmvs dir
     dir = os.getcwd()
@@ -22,11 +22,6 @@ def run_cmvs(cmvs_bin_folder, pmvs_temp_dir, bundler_out_file, no_clusers=50):
 
 
     debug(0, 'GenOptions')
-    level = 1
-    csize = 1
-    threshold = 0.7
-    wsize = 20
-    minImageNum = 2
     CPU = cpu_count()
 
     command = cmvs_bin_folder+'genOption ./ '+' '.join([str(level), str(csize), str(threshold), str(wsize), str(minImageNum), str(CPU)])

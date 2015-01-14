@@ -110,6 +110,9 @@ def time_string(t):
     m,s = divmod(h_rem, 60)
     return '{}h {:02d}m {:02d}s '.format(int(h),int(m),int(s))
 
+def date_string(time):
+    return datetime.fromtimestamp(time).strftime('%d.%m.%Y %H:%M:%S')
+
 def send_mail(message):
     """
     Send an email to the address specified in the mail.py file to notify that dronarch has completed
@@ -119,7 +122,7 @@ def send_mail(message):
     try:
         import mail_nick
         ts = time.time()
-        time_stamp = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        time_stamp = date_string(ts)
         msg =  'DRONARCH is notifiying you at {} and is telling you: '.format(time_stamp)
         msg = msg +message
         subject = 'Automatic DRONARCH notification'
@@ -144,3 +147,4 @@ if __name__=='__main__':
     # send_mail(message='Testing the mail implementation in helpers script of DRONARCH')
     start_stopwatch()
     print time_string(elapsed_time())
+    print date_string(time.time())

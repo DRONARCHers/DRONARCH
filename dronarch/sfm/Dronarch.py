@@ -5,7 +5,7 @@ import shutil
 #DRONARCH internal
 import video2image
 from dronarch.helpers import helpers, img_manipulations
-from dronarch.helpers.debug import debug
+from dronarch.helpers.debug import debug, clear_log_file
 from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
 from pmvs import run_pmvs
@@ -46,7 +46,21 @@ class Dronarch:
 
     vid_imgs_per_sec = 2
     vid_start_frame = 5
-    vid_no_images = 10000 #*vid_imgs_per_sec
+    vid_no_images = 1000 #*vid_imgs_per_sec
+
+    #Bundler stuff
+    bundler_match_radius=None
+    bundler_init_imgs = None
+
+    #PMVS stuff
+    # These are only a fallback value. If specified, the value in the dronarch.cfg file will be used
+    pmvs_no_clusters = None
+    pmvs_level=None
+    pmvs_csize=None
+    pmvs_threshold=None
+    pmvs_wsize=None
+    pmvs_minImageNum=None
+
 
     #Hardcoded Attributes
     #TODO: Should they be in the config file as well?
@@ -152,6 +166,22 @@ class Dronarch:
                 self.img_max_size = self.str2Tuple(value, int)
             elif key == 'calib_file_path':
                 self.calib_file_path = value
+            elif key == 'pmvs_no_clusters':
+                self.pmvs_no_clusters = value
+            elif key == 'pmvs_level':
+                self.pmvs_no_clusters = value
+            elif key == 'pmvs_csize':
+                self.pmvs_csize = value
+            elif key == 'pmvs_threshold':
+                self.pmvs_threshold = value
+            elif key == 'pmvs_wsize':
+                self.pmvs_wsize = value
+            elif key == 'pmvs_minImageNum':
+                self.pmvs_minImageNum = value
+            elif key == 'bundler_match_radius':
+                self.bundler_match_radius = value
+            elif key == 'bundler_init_imgs':
+                self.bundler_init_imgs = self.str2Tuple(value, int)
             else:
                 debug(1, 'Unknown entry: ',key, '=', value)
 
@@ -170,6 +200,13 @@ class Dronarch:
         if self.pmvs_bin_dir== '':
             debug(2, ' pmvs_bin_dir not initalized. Check config file ', self.config_file)
             return False
+        if self.pmvs_minImageNum==None or self.pmvs_wsize==None or self.pmvs_threshold==None or self.pmvs_csize==None or self.pmvs_level==None or self.pmvs_no_clusters==None:
+            debug(2, 'PMVS parameters pmvs_no_clusers, pmvs_level, pmvs_csize, pmvs_threshold, pmvs_wsize or pmvs_minImageNum not specified. Check config file ', self.config_file)
+            return False
+        if self.bundler_init_imgs == None or self.bundler_match_radius == None:
+            debug(2, 'Bundler parameters bundler_init_imgs or bundler_match_radius not specified. Check config file ', self.config_file)
+            return False
+
         else:
             debug(0, 'All attribures could be read from ', self.config_file)
             return True
@@ -282,7 +319,12 @@ class Dronarch:
             run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
                      pmvs_temp_dir=self.pmvs_temp_dir,
                      bundler_out_file=self.bundler_output_file,
-                     no_clusers=20
+                     no_clusers=self.pmvs_no_clusters,
+                     level=self.pmvs_level,
+                     csize=self.pmvs_csize,
+                     threshold=self.pmvs_threshold,
+                     wsize=self.pmvs_wsize,
+                     minImageNum=self.pmvs_minImageNum
             )
             run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
                      pmvs_temp_dir=self.pmvs_temp_dir,
@@ -304,6 +346,7 @@ if __name__ == '__main__':
     if not use_old_data:
         try:
             shutil.rmtree(Dronarch.temp_dir)
+            clear_log_file()
         except OSError:
             pass
 
@@ -313,7 +356,7 @@ if __name__ == '__main__':
         doctest.testmod(extraglobs={'dron': dron})
     else:
         helpers.start_stopwatch()
-        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=False, do_bundler_2_pmvs=False)
+        dron.start_execution(use_old_data=use_old_data, do_calibration=False, do_bundler=False, do_bundler_2_pmvs=True)
 
         if send_email:
             t = helpers.elapsed_time()
