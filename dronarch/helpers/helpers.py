@@ -113,6 +113,9 @@ def time_string(t):
 def date_string(time):
     return datetime.fromtimestamp(time).strftime('%d.%m.%Y %H:%M:%S')
 
+def current_data_string_for_filename():
+    return datetime.fromtimestamp(time.time()).strftime('%d-%m-%Y_%H-%M-%S')
+
 def send_mail(message):
     """
     Send an email to the address specified in the mail.py file to notify that dronarch has completed

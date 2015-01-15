@@ -8,7 +8,8 @@ __author__ = 'niclas'
 
 #logging levels
 levels = {0:'Debug', 1: 'Warning', 2: 'Error'}
-logfiles = ['../../roaming/dronarch.log','../../config/dronarch.log']
+global logfiles
+logfiles = []
 def debug(level,*message):
     """
     All Debug and Error messages should be sent to this function.
@@ -27,6 +28,7 @@ def debug(level,*message):
 
 def write_to_file(logfiles, message):
     for logfile in logfiles:
+
         with open(logfile, 'a+') as file:
             timestamp = datetime.fromtimestamp(time()).strftime('%d.%m.%Y %H:%M:%S')
             file.write(timestamp+': '+message+'\n')
@@ -34,6 +36,10 @@ def write_to_file(logfiles, message):
 def clear_log_file():
     for logfile in logfiles:
         remove(logfile)
+
+def set_logfiles(log):
+    global logfiles
+    logfiles = log
 
 if __name__=='__main__':
     debug(1, 'some ', ' more ', 23)
