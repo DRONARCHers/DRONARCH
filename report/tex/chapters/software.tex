@@ -1,5 +1,38 @@
-\chapter{Software DRONARCH}
-	\section{Computer Vision}
-		\subsection{Structure form Motion} \label{sfm}
-	\section{Implementierung}
-		\subsection{Verwendete Technologie}
+\chapter{DRONARCH}
+	Die Software DRONARCH bildet die Grundlage für die Untersuchung und Beantwortung der Fragestellung aus \autoref{frag:ziel}.
+	\section{Entwicklung}
+		Der folgende Abschnitt gibt einen Überblick über die Entwicklung und Ideen hinter DRONARCH. %TODO: bessere Formuliertung
+		
+		\paragraph{Drohnen}
+		Die Idee zur Verwendung von SfM in der Archäologie kam auf durch die Diskussion von Verwendung von Drohnen auf Grabungen. Luftbilder eignen sich recht gut für SfM \cite{ARP:ARP399, ARCM:ARCM667} und die verwendete Drohne Parrot AR 2.0 ist wendig genug um auch in Grabungszelten und Räumen zu fliegen. Die Verwendung von Drohnen hätte zudem den Vorteil, dass eine Grabung regelmässig, flächendeckend und automatisch erfasst werden könnte, was ansonsten ein grosser Aufwand ist.
+		Es hat sich allerdings gezeigt, dass die verwendete Steuerungssoftware nicht zuverlässig genug ist um die Drohne auf einer Grabung automatisch fliegen zu lassen und die Bildqualität nicht ausreicht.
+		Deshalb befasst sich diese Arbeit noch nicht detaillierter mit automatisierter Bilderfassung.
+		
+		\paragraph{Open-source}
+		In der Computer Vision Forschung wurde zum Glück verschiedene Software für SfM und MvS veröffentlicht, so dass nicht der ganze Prozess selbst implementiert werden musste.
+		Damit DRONARCH open-source veröffentlicht werden kann, müssen die verwendeten Programme und Libraries auch open-source verfügbar sein und keine Nutzungsbedingungen enthalten, in denen das Eigentum der Bilder und Modelle an Dritte abgetreten werden. Aus dem zweiten Grund kommen Onlinedienste meist kaum in Frage.
+		Die verwendete Software wird in \autoref{imp:tech} beschrieben.
+		
+		\paragraph{Eigener Code}
+		Die Entwicklung des Codes war von Anfang an auf Flexibilität und Einfachheit ausgerichtet, zwei Eigenschaften die zentral für den erfolgreichen Einsatz in der Archäologie sind.
+		Bilder können von Fotos, Videos oder einer Drohne eingelesen werden und der Prozess bis zu einer fertigen Pointcloud läuft ohne Nutzereingabe.
+		
+		\paragraph{Tests}
+		Während der Entwicklung wurden zahlreiche Tests durchgeführt und einige davon werden in \autoref{res:fall} ausgeführt.
+		
+		\paragraph{Fallstudien}
+		Das Herzstück der Arbeit bilden die Fallstudien an archäologischem Material, die die Möglichkeiten und Schwächen von DRONARCH aufzeigen sollen. Sie werden in \autoref{res:fall} ausführlich diskutiert.
+		
+	\section{Workflow}
+		Damit sich DRONARCH möglichst nahtlos in den archäologischen Alltag integrieren lässt, wurde ein klarer Workflow definiert, der zwischen Feld- und Schreibtischarbeiten unterscheidet.
+		
+		\subsection{Bilder Erfassen}
+			Als Eingabematerial kann DRONARCH Bilder und Videos verwenden. In \autoref{app:tip_foto}finden sich Details zum Aufnehmen guter Bilder.
+			Auch bereits vorhandenes Bildmaterial, das nicht für eine 3D Rekonstruktion gemacht wurde kann  verwendet werden, wie in \autoref{res:test_vorhandene_bilder} anhand eines Beispiels diskutiert wird.
+		
+		\subsection{Verarbeitung}
+		
+		\subsection{Auswertung}
+			Wie wird die Fragestellung mittels der Resultate durch dronarch beantwortet
+			\subsubsection{Fehlermessung}
+				

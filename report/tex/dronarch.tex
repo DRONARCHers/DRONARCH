@@ -15,12 +15,28 @@
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\usepackage[style=mla]{biblatex}
 
 \usepackage[affil-it]{authblk}
 
 \captionsetup{compatibility=false}
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 
+\makeatletter
+
+\DeclareCiteCommand{\textcite}
+{\iffootnote{\usebibmacro{cite:init}}{}%
+	\usebibmacro{prenote}}%
+{\usebibmacro{citeindex}%
+	\iffootnote
+	{\global\booltrue{cbx@mlafootnotes}%
+		\renewcommand*{\newunitpunct}{\addcomma\space}%
+		\usebibmacro{cite:mla:foot}}
+	{\usebibmacro{cite:mla}}}
+{}
+{\usebibmacro{mla:foot:postnote}}
+
+\makeatother
 
 
 \begin{document}
@@ -41,6 +57,7 @@
 	\include{chapters/fragestellung}
 	\include{chapters/related_work}
 	\include{chapters/software}
+	\include{chapters/implementierung}
 	\include{chapters/resultate}
 	
 	\begin{appendix}
@@ -52,7 +69,7 @@
 	
 	\addcontentsline{toc}{section}{\numberline{}Bibliography}
 	%	\bibliographystyle{apalike}
-	\bibliographystyle{IEEEtran}
+%	\bibliographystyle{IEEEtran}
 	%	\bibliographystyle{nicks}
 	\nocite{*}
 	\bibliography{dronarch}
