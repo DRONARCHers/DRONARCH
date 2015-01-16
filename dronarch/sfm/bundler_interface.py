@@ -76,7 +76,7 @@ def start_bundler(imgs_file,
         imgs_dict = OrderedDict()
         # If there are single images, extract focal length
         if len(imgs)>0:
-            orig_imgs = [dir+'/'+img for img in orig_imgs]
+            # orig_imgs = [dir+'/'+img for img in orig_imgs]
             orig_imgs_dict = extract_focal_length(images=orig_imgs, resized_imgs= imgs)
             for key, value in orig_imgs_dict.items():
                 #get path of resized/copied img and create key entry
