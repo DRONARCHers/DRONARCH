@@ -816,10 +816,10 @@ FUNCTION {format.vol.num.pages}
       "(" swap$ * ")" *
     }
   if$ *
-  eid empty$
-    { format.journal.pages }
-    { format.journal.eid }
-  if$
+  ",~" * write$
+  format.date
+  ",~" * write$
+  format.journal.pages
 }
 
 FUNCTION {format.chapter.pages}
@@ -922,7 +922,7 @@ FUNCTION {format.org.or.pub}
       if$
     }
   if$
-  t * format.date * ")"
+  format.date * ")"
 }
 FUNCTION {format.publisher.address}
 { publisher "publisher" bibinfo.warn format.org.or.pub
@@ -936,8 +936,10 @@ FUNCTION {article}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  ",~" * write$
   new.block
   format.title "title" output.check
+  ".~" * write$
   new.block
   crossref missing$
     {
@@ -945,22 +947,22 @@ FUNCTION {article}
       remove.dots
       "journal" bibinfo.check
       "journal" output.check
-      add.blank
-      format.date "year" output.check
-      date.block
+      "~" * write$
       format.vol.num.pages output
     }
     { format.article.crossref output.nonnull
       format.pages output
     }
   if$
-  format.issn output
-  format.doi output
-  new.block
-  format.note output
+  
+%  format.issn output
+ % format.doi output
+ % new.block
+  % format.note output
   fin.entry
   write.url
-}
+ }
+
 FUNCTION {book}
 { output.bibitem
     "~\\"
@@ -982,7 +984,7 @@ FUNCTION {book}
 %  add.period$ write$
   ",~" * write$
   format.btitle "title" output.check
-  ",~" * write$
+  "~" * write$
   crossref missing$
     { format.bvolume output
       new.block
@@ -995,9 +997,9 @@ FUNCTION {book}
       format.book.crossref output.nonnull
     }
   if$
-  format.edition output
-  format.date "year" output.check
-  "\newblock" * write$
+%  format.edition output
+ % format.date "year" output.check
+  new.block
   write.url
   fin.entry
 }
@@ -1260,7 +1262,6 @@ format.authors "author" output.check
 author format.key output
 new.block
 format.title "title" output.check
-format.date "date" output.check
 fin.entry
 write.url
 }
