@@ -15,29 +15,25 @@
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage{xcolor}
-\usepackage[style=mla]{biblatex}
+%\usepackage[style=mla]{biblatex}
 
 \usepackage[affil-it]{authblk}
 
 \captionsetup{compatibility=false}
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 
+
+\usepackage{ifthen}
+
+%remove [] around bibitems
 \makeatletter
-
-\DeclareCiteCommand{\textcite}
-{\iffootnote{\usebibmacro{cite:init}}{}%
-	\usebibmacro{prenote}}%
-{\usebibmacro{citeindex}%
-	\iffootnote
-	{\global\booltrue{cbx@mlafootnotes}%
-		\renewcommand*{\newunitpunct}{\addcomma\space}%
-		\usebibmacro{cite:mla:foot}}
-	{\usebibmacro{cite:mla}}}
-{}
-{\usebibmacro{mla:foot:postnote}}
-
+\renewcommand\@cite[2]{%
+	Ref.~#1\ifthenelse{\boolean{@tempswa}}
+	{,#2}{}
+	%{, \nolinebreak[3] #2}{}
+}
+\renewcommand\@biblabel[1]{#1}
 \makeatother
-
 
 \begin{document}
 	
@@ -68,9 +64,13 @@
 	%	\listoffigures
 	
 	\addcontentsline{toc}{section}{\numberline{}Bibliography}
-	%	\bibliographystyle{apalike}
+%		\bibliographystyle{apalike}
 %	\bibliographystyle{IEEEtran}
-	%	\bibliographystyle{nicks}
+	\bibliographystyle{nick_2}
 	\nocite{*}
+%	\printbibliography
 	\bibliography{dronarch}
+	
+
+	
 \end{document}
