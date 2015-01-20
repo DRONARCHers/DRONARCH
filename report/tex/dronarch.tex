@@ -28,12 +28,15 @@
 %remove [] around bibitems
 \makeatletter
 \renewcommand\@cite[2]{%
-	Ref.~#1\ifthenelse{\boolean{@tempswa}}
+	#1\ifthenelse{\boolean{@tempswa}}
 	{,#2}{}
 	%{, \nolinebreak[3] #2}{}
 }
 \renewcommand\@biblabel[1]{#1}
 \makeatother
+
+\newcommand{\etal}{u.a.}
+\def\dronarch{DRONARCH}
 
 \begin{document}
 	
@@ -53,7 +56,6 @@
 	\include{chapters/fragestellung}
 	\include{chapters/related_work}
 	\include{chapters/software}
-	\include{chapters/implementierung}
 	\include{chapters/resultate}
 	\include{chapters/fazit}
 	
