@@ -1,9 +1,22 @@
 \chapter{Fazit}
+
 	\section{Schwierigkeiten}
 		\subsection{Unkontrolliert, Detailgrad wählen}
 		
 	\section{Weitere Forschung}
-		\subsection{Automatisierte Bilderfassung}
-		\subsection{3D Druck}
+		Das Potential von 3D Scans, insbesondere von SfM, ist damit natürlich längst nicht ausgeschöpft. Dieser Ansatz zu einer effizienten exakten Dokumentationsweise und intuitiven natürlichen Darstellung bietet noch viele Möglichkeiten zur Verbesserung.
+		
 		\subsection{Fotos einbinden (Photo Tourism)}
+			Snavley \etal\ verwenden neben Point Clouds in ihrer Darstellung von Monumenten auch die originalen Fotos\citeu{Snavely:2006:PTE:1179352.1141964}. Dem Nutzer wird direkt in dem 3D Modell das Foto und dessen Position angezeigt. Damit werden Fotos direkt in das 3D Modell integriert und die Interpretation stark vereinfacht.
+			
+		\subsection{3D Druck}
+			Die Kantonsarchäologie Aargau hat von Vindonissa ein 3D Modell erstellt und dieses von einem 3D Drucker im Massstab 1:450 nachbauen lassen\citeu{arch:print_vindonissa}. Das selbe Verfahren lässt sich auf beliebige 3D Modelle anwenden, so auch auf Meshes, die mit SfM erstellt wurden.
+			
+		\subsection{Automatisierte Bilderfassung}
+			\dronarch\ wurde mit der Idee von automatischer Bilderfassung mittels Drohnen geboren und dieser Ansatz bietet viele Möglichkeiten. Mit Drohnen könnten die Fotos automatisch und periodisch erstellt werden und schwierig zugängliche Stellen problemlos erfasst werden. Das ein autonomes Navigieren auch mit günstigen Drohnen möglich ist wurde bereits gezeigt\citeu{klein07parallel, engel14ras, alvarez14iser}, die verfügbare Implementierung davon hat sich aber noch als zu wenig robust herausgestellt.
+			
+			Neben Drohnen könnten stationäre Kameras, die periodisch Fotos machen, eingesetzt werden.
+
+		\subsection{Performance Verbessern}
+			Die in \dronarch\ verwendete Software ist bei weitem nicht die schnellstmögliche und die Rechenzeit könnte durch Optimierungen drastisch verkürzt werden. Im Moment laufen viele Schritte nicht parallel und so könnte man etwa das mit \emph{Multicore Bundle Adjustment} Wu \etal\citeu{Wu11multicorebundle} den SfM Teil parallelisieren.
 	

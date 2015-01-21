@@ -847,20 +847,7 @@ FUNCTION {format.booktitle}
   booktitle "booktitle" bibinfo.check
 }
 FUNCTION {format.in.ed.booktitle}
-{ format.booktitle duplicate$ empty$ 'skip$
-    {
-      editor "editor" format.names.ed duplicate$ empty$ 'pop$
-        {
-          " " *
-          get.bbl.editor
-          capitalize
-          "(" swap$ * "), " *
-          * swap$
-          * }
-      if$
-      word.in swap$ *
-    }
-  if$
+{booktitle write$
 }
 FUNCTION {format.thesis.type}
 { type duplicate$ empty$
@@ -1078,7 +1065,6 @@ FUNCTION {incollection}
       format.chapter.pages output
       new.sentence
       format.edition output
-      format.isbn output
     }
     { format.incoll.inproc.crossref output.nonnull
       format.chapter.pages output
@@ -1096,36 +1082,42 @@ FUNCTION {inproceedings}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  ",~" * write$
   new.block
-  format.title "title" output.check
+  "" * title * ".~" * write$
   new.block
   crossref missing$
     { format.in.ed.booktitle "booktitle" output.check
       new.sentence
       publisher empty$
-        { format.organization.address output }
+      "" * write$
+        { format.organization.address output
+        }
         { organization "organization" bibinfo.check output
+          "" * write$
           format.publisher.address output
+          "" * write$
         }
       if$
       format.bvolume output
+      "" * write$
       format.number.series output
-      format.isbn output
-      format.issn output
+      "" * write$
     }
     { format.incoll.inproc.crossref output.nonnull
+    "" * write$
     }
   if$
   format.date "year" output.check
-  date.block
+  ",~" * write$
   add.blank
   format.pages "pages" output.check
-  format.doi output
-  new.block
-  format.note output
   fin.entry
   write.url
 }
+
+
+
 FUNCTION {conference} { inproceedings }
 FUNCTION {manual}
 { output.bibitem

@@ -4,7 +4,7 @@
 		Der folgende Abschnitt gibt einen Überblick über die Entwicklung und Ideen hinter \dronarch. %TODO: bessere Formuliertung
 		
 		\paragraph{Drohnen}
-		Die Idee zur Verwendung von SfM in der Archäologie kam auf durch die Diskussion von Verwendung von Drohnen auf Grabungen. Luftbilder eignen sich recht gut für SfM \cite{ARP:ARP399, ARCM:ARCM667} und die verwendete Drohne Parrot AR 2.0 ist wendig genug um auch in Grabungszelten und Räumen zu fliegen. Die Verwendung von Drohnen hätte zudem den Vorteil, dass eine Grabung regelmässig, flächendeckend und automatisch erfasst werden könnte, was ansonsten ein grosser Aufwand ist.
+		Die Idee zur Verwendung von SfM in der Archäologie kam auf durch die Diskussion von Verwendung von Drohnen auf Grabungen. Luftbilder eignen sich recht gut für SfM \citeu{ARP:ARP399, ARCM:ARCM667} und die verwendete Drohne Parrot AR 2.0 ist wendig genug um auch in Grabungszelten und Räumen zu fliegen. Die Verwendung von Drohnen hätte zudem den Vorteil, dass eine Grabung regelmässig, flächendeckend und automatisch erfasst werden könnte, was ansonsten ein grosser Aufwand ist.
 		Es hat sich allerdings gezeigt, dass die verwendete Steuerungssoftware nicht zuverlässig genug ist um die Drohne auf einer Grabung automatisch fliegen zu lassen und die Bildqualität nicht ausreicht.
 		Deshalb befasst sich diese Arbeit noch nicht detaillierter mit automatisierter Bilderfassung.
 		
@@ -35,7 +35,7 @@
 			Während der Berechnung ist keine weitere Nutzereingabe erforderlich.
 		
 		\subsection{Betrachtung}
-			Das Modell kann in einem ply-kompatiblen 3D Viewer (bspw. MeshLab \cite{meshlab:home}) betrachtet und falls nötig manuell weiter bearbeitet, etwa skaliert und orientiert, werden, damit Koordinaten, Himmelsrichtung und Höhe erkennbar ist.
+			Das Modell kann in einem ply-kompatiblen 3D Viewer (bspw. MeshLab \citeu{meshlab:home}) betrachtet und falls nötig manuell weiter bearbeitet, etwa skaliert und orientiert, werden, damit Koordinaten, Himmelsrichtung und Höhe erkennbar ist.
 
 	\section{Computer Vision}
 		Die in \dronarch\ verwendeten Verfahren kommen aus der \emph{Computer Vision}, einer Disziplin der Informatik, die sich mit der automatischen Verarbeitung visueller Informationen beschäftigt. Dazu gehören auch \emph{Structure from Motion} und \emph{Multiview Stereo}.
@@ -55,15 +55,18 @@
 			Dieser Schritt kann sehr lange dauern und benötigt viel Arbeitsspeicher, wenn ein detailreiches Modell erstellt werden soll.
 			
 	\section{Implementierung}  \label{imp:tech}
-		Da \dronarch\ ein open-source Projekt ist, darf eine kurze Aufführung der verwendeten Programme und Libraries und nicht fehlen. Mehr Details dazu in \autoref{app:imp}. Der Source Code ist auf github verfügbar \cite{dronarch:github}.
+		Da \dronarch\ ein open-source Projekt ist und auf solchen aufbaut, darf eine kurze Aufführung der verwendeten Programme und Libraries nicht fehlen. Mehr Details dazu in \autoref{app:imp}. Der Source Code ist auf github verfügbar \citeu{dronarch:github}.
 		
 		\subsection{Python}
-			Die Programmiersprache Python ist wegen seiner Einfachheit und der grossen Menge an verfügbaren Libraries beliebt.
+			Die Programmiersprache Python \citeu{python} ist wegen seiner Einfachheit und der grossen Menge an verfügbaren Libraries beliebt.
 			In \dronarch\ sind alle vorbereitenden Schritte und die Koordination der einzelnen Fragmente in Python geschrieben.
 			
 		\subsection{OpenCV}
-		
+			OpenCV \citeu{opencv} eine Sammlung von Computer Vision Algorithmen und bietet eine Schnittstelle für Python.
+						
 		\subsection{Bundler}
-		
+			Die SfM Implementierung Bundler \citeu{bundler:homepage} von Noah Snavely wurde für die Verarbeitung einer grossen Menge an Fotos aus dem Internet geschrieben. Snavely \etal\ verwenden Bundler unter anderem dafür Monumente \citeu{Snavely:2006:PTE:1179352.1141964} oder ganze Städte \citeu{Agarwal:2011:BRD:2001269.2001293} aus Fotos aus dem Internet zu rekonstruieren.
 
 		\subsection{PMVS und CMVS}
+			Die Kombination aus PMVS \citeu{pmvs:homepage} und CMVS \citeu{cmvs:homepage} ist für den MvS Schritt zuständig. Die Software stammt von Furukawa \etal \citeu{Furu:2010:PMVS} und wurde von ihnen für MvS mit unstrukturierten Bildern verwendet \citeu{Furu:2010}.
+		
