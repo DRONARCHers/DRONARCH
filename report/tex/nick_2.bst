@@ -1252,6 +1252,7 @@ FUNCTION {online}
 { output.bibitem
 format.authors "author" output.check
 author format.key output
+",~" * write$
 new.block
 format.title "title" output.check
 fin.entry
