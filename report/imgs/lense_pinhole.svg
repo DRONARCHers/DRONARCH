@@ -28,7 +28,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.3759521"
      inkscape:cx="829.88669"
-     inkscape:cy="384.95628"
+     inkscape:cy="385.31966"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -394,7 +394,7 @@
      inkscape:groupmode="layer"
      id="g5826"
      transform="translate(0,-308.2677)"
-     style="display:inline">
+     style="display:none">
     <path
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
@@ -428,7 +428,7 @@
          style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#00a6ff;fill-opacity:1;font-family:Sans;-inkscape-font-specification:Sans">Linse</tspan></text>
   </g>
   <g
-     style="display:inline"
+     style="display:none"
      inkscape:label="Layer 1 copy"
      inkscape:groupmode="layer"
      id="g3809"

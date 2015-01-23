@@ -1,10 +1,25 @@
 \chapter{Resultate}
 
-	\section{Scans kleiner Objekte}
-	
 	\section{Fallstudien}\label{res:fall}
 		
-		\subsection{Amphitheater Bern Engehalbinsel}
-			Durch seine klare und gut sichtbare oberirdische Struktur eignet sich das Amphitheater auf der Engehalbinsel bei Bern gut für einen 3D Rekonstruktion mittels SfM.
-			Die Fotos wurden mit einer Kompaktkamera und einer Auflösung von ca. 3000px auf 2000px von Hand und mit automatischer Einstellung in weniger als 10 Minuten Arbeit erfasst. 
+		\subsection{Gallorömisches Theater Bern Engehalbinsel}
+			Durch seine klare und gut sichtbare oberirdische Struktur eignet sich das gallorämische Theater des Vicus Brenodurum auf der Engehalbinsel bei Bern gut für einen 3D Rekonstruktion mittels SfM.
+			
+			Aufgrund von Terra-Sigilata und Münzen, die während einer Grabung im Jahre 1956 gefunden wurden, geht man davon aus, dass die Erbauung des Theaters in die zweite Hälfte des 2.Jh. n.Chr. datiert. Die heute sichtbaren Mauern umfassen eine Fläche von etwa 35 auf 25 Meter und weist eine Höhe bis zu 1.5 Meter auf\citeu{engehalb}.
+				
+							
+			\subsubsection{3D Modell}
+				Die Fotos wurden mit einer Kompaktkamera und einer Auflösung von ca. 3000px auf 2000px von Hand und mit automatischer Einstellung in weniger als 10 Minuten Arbeit erfasst.
+				\dronarch\ benötigte knapp 10h für den SfM Schritt, mit dem eine Sparse Point Cloud erstellt wurde. Siehe [TODO: Bild].
+				In weiteren 7h Rechenzeit wurde mittels MvS eine Point Cloud von 7 mio Punkten erstellt, die nach grober Bearbeitung auf 4 mio Punkte reduziert wurde. Siehe [TODO: Bild]
+
+			\subsubsection{Beobachtungen}
+				Die Point Cloud ist an Stellen mit optisch auffälliger Struktur, etwa die Mauer selbst, sehr detailreich und exakt. In uniformen Gegenden, wie dem Rasen in der Mitte, sind fast keine Punkte vorhanden, was das erstellen eines Meshs enorm erschwert.
+				
+				Bei den Mauern ist zu beobachten, dass der Detailgrad nicht gleichmässig ist. Stellen, die auf den Fotos mehr Details aufweisen, sind auch in der Rekonstruktion deutlich besser.
+				
 		\subsection{Test mit vorhandenen Bildern} \label{res:test_vorhandene_bilder}
+		
+	\section{Scans kleiner Objekte}
+		SfM erscheint auch attraktiv um einzelne kleine Objekte, wie Knochen oder Keramikfragmente, 3D zu erfassen und dokumentieren. In sieben Versuchen mit verschiedenen Objekten ist es allerdings weder mit \dronarch\ noch mit PhotoScan\autorefu{app:photoscan} gelungen eine vollständige Rekonstruktion zu machen. Deshalb kann das Verfahren auf kleine Objekte angewendet so nicht als brauchbare Alternative zu Laserscannern betrachtet werden
+			
