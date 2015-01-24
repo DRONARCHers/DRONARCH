@@ -1,12 +1,12 @@
 \chapter{Resultate}
-
+	Eine Reihe an Versuchen soll die Möglichkeiten und Grenzen von SfM und MvS Verfahren, insbesondere von \dronarch\ aufzeigen. Sämtliche hier präsentierte Resultate wurden mit \dronarch\ gemacht und PhotoScan\autorefu{app:photoscan} wurde zur Kontrolle der Ergebnisse verwendet, vor allem wenn eine Rekonstruktion misslang.
+	
 	\section{Fallstudien}\label{res:fall}
-		
+		Die Versuche sollten möglichst nahe am archäologischen Anwendungsgebiet liegen, weshalb die Versuchsorte, die im folgenden Abschnitt diskutiert werden, ausgewählt wurden.
 		\subsection{Gallorömisches Theater Bern Engehalbinsel}
 			Durch seine klare und gut sichtbare oberirdische Struktur eignet sich das gallorämische Theater des Vicus Brenodurum auf der Engehalbinsel bei Bern gut für einen 3D Rekonstruktion mittels SfM.
 			
-			Aufgrund von Terra-Sigilata und Münzen, die während einer Grabung im Jahre 1956 gefunden wurden, geht man davon aus, dass die Erbauung des Theaters in die zweite Hälfte des 2.Jh. n.Chr. datiert. Die heute sichtbaren Mauern umfassen eine Fläche von etwa 35 auf 25 Meter und weist eine Höhe bis zu 1.5 Meter auf\citeu{engehalb}.
-				
+			Aufgrund von Terra-Sigilata und Münzen, die während einer Grabung im Jahre 1956 gefunden wurden, geht man davon aus, dass die Erbauung des Theaters in die zweite Hälfte des 2.Jh. n.Chr. datiert. Die heute sichtbaren Mauern umfassen eine Fläche von etwa 35 auf 25 Meter und weist eine Höhe bis zu 1.5 Meter auf\citeu{engehalb}.	
 							
 			\subsubsection{3D Modell}
 				Die Fotos wurden mit einer Kompaktkamera und einer Auflösung von ca. 3000px auf 2000px von Hand und mit automatischer Einstellung in weniger als 10 Minuten Arbeit erfasst.
@@ -18,8 +18,25 @@
 				
 				Bei den Mauern ist zu beobachten, dass der Detailgrad nicht gleichmässig ist. Stellen, die auf den Fotos mehr Details aufweisen, sind auch in der Rekonstruktion deutlich besser.
 				
+				\autoref{ortho_amphi_meshlab} zeigt einen Vergleich einer orthogonale Projektion des Modells mit einem Plan des Theaters. Er zeigt nur kleine Abweichungen auf, die eher auf die manuelle Orientierung und Positionierung der Bilder zurückzuführen ist als auf einen Fehler im Modell.
+				\begin{figure}
+					\begin{subfigure}{0.4\textwidth}
+						\includegraphics[width=\textwidth]{amphi_ortho_meshl_sm}
+						\caption{Orthofoto der Point Cloud}
+					\end{subfigure}	
+					\begin{subfigure}{0.4\textwidth}
+						\includegraphics[width=\textwidth]{amphi_ortho_plan_edit_sm}
+						\caption{Plan des Theaters}
+					\end{subfigure}
+					\begin{subfigure}{\textwidth}
+						\includegraphics[width=\textwidth]{amphi_ortho_mesh_sm}
+					\end{subfigure}
+					\caption[Überlagerung von Plan und Orthofoto. Plan aus \cite{engehalb}]{Überlagerung von Plan und Orthofoto. Die Abweichung ist unten links ersichtlich.}
+					\label{ortho_amphi_meshlab}
+				\end{figure}
 		\subsection{Test mit vorhandenen Bildern} \label{res:test_vorhandene_bilder}
-		
+			TODO: Welche Bilder?
+			
 	\section{Scans kleiner Objekte}
 		SfM erscheint auch attraktiv um einzelne kleine Objekte, wie Knochen oder Keramikfragmente, 3D zu erfassen und dokumentieren. In sieben Versuchen mit verschiedenen Objekten ist es allerdings weder mit \dronarch\ noch mit PhotoScan\autorefu{app:photoscan} gelungen eine vollständige Rekonstruktion zu machen. Deshalb kann das Verfahren auf kleine Objekte angewendet so nicht als brauchbare Alternative zu Laserscannern betrachtet werden
-			
+		

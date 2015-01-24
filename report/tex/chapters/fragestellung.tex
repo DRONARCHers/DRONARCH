@@ -3,7 +3,7 @@
 	
 	\section{Ziel dieser Arbeit} \label{frag:ziel}
 		In dieser Arbeit werden Verfahren zur 3D Dokumentation präsentiert und deren technischen \emph{Möglichkeiten} und \emph{Nützlichkeit} für die Archäologie diskutiert.
-		Insbesondere wird \emph{Structure from Motion} (SfM, siehe \autoref{sfm}) als einfaches und günstiges Verfahren zum Erstellen von 3D Modellen betrachtet und mit anderen Methoden verglichen.
+		Insbesondere wird \emph{Structure from Motion}\autorefu{sfm} (SfM) als einfaches und günstiges Verfahren zum Erstellen von 3D Modellen betrachtet und mit anderen Methoden verglichen.
 		Anhand einiger Fallstudien soll die Möglichkeit der Integration in bestehende Grabungs- und Dokumentationspraxis und deren Vor- und Nachteile überprüft werden.
 		Die Hauptpunkte sind dabei:
 		\begin{itemize}
@@ -40,20 +40,20 @@
 			\subsubsection{Referenzpunkte}
 				Bevor die Fotos gemacht werden, misst man Referenzpunkte ein und markiert diese. Im fertigen Modell sind diese Punkte erkennbar und dienen einerseits zum Skalieren, Orientieren und Positionieren des Modells und andererseits zum Berechnen des Fehlers. Die Abweichung kann dann für jeden Punkt und für das gesamte Modell berechnet werden.
 				
-				Verhoeven \etal \citeu{ARCM:ARCM667} verwenden dazu auf den Fels aufgemalte Markierungen, die auf den Luftaufnahmen zu erkennen sind und berechnen daraus den RMSE (Root Mean Square Error).
+				Verhoeven \etal\citeu{ARCM:ARCM667} verwenden dazu auf den Fels aufgemalte Markierungen, die auf den Luftaufnahmen zu erkennen sind und berechnen daraus den RMSE (Root Mean Square Error).
 
 			\subsubsection{Vergleich mit anderen Methoden}
 				Zusätzlich zum durch SfM erstellten Modell, wird mittels einer anderen Methode ein zweites Modell erstellt, das als Referent dient. Dabei ist a priori nicht klar welches Modell der Realität besser entspricht, es ist also kein wirklicher Vergleich mit der Realität.
 				
-				Galeazzi \etal \citeu{arch:laser_vs_dense_stereo} verglichen Laser Scans und MvS. Laser Scans sind etabliert und bekannt für eine hohe Genauigkeit und eignet sich deshalb sehr gut als Referenz.
+				Galeazzi \etal\citeu{arch:laser_vs_dense_stereo} verglichen Laser Scans und MvS. Laser Scans sind etabliert und bekannt für eine hohe Genauigkeit und eignet sich deshalb sehr gut als Referenz.
 			
 		\subsection{Integration}
 			Die Verbindung des 3D Modells und der bestehenden Dokumentation ist hauptsächlich eine Frage des Aufwandes während der manuellen Nachbearbeitung. Mit entsprechender Software kann das Modell mit Koordinaten aus GIS versehen oder 2D Ansichten aus dem Modell extrahiert werden.
 			
-			Dellepiane \etal schreiben dazu: ''This method [SfM und MvS], if properly combined with other technologies such as Total Station or GPS (GNSS), can generate very powerful spatio-temporal information.'' \citeu{arch:dens_ster_excav}
+			Dellepiane \etal schreiben dazu: ''This method [SfM und MvS], if properly combined with other technologies such as Total Station or GPS (GNSS), can generate very powerful spatio-temporal information.''\citeu{arch:dens_ster_excav}
 		
 	\section{DRONARCH}
-		Als technische Grundlage für die Fallstudien dient die Software \dronarch\ \citeu{dronarch:github}, die im Rahmen dieser Arbeit geschrieben wurde und das SfM Verfahren verwendet.
-		Im Gegensatz zu bestehenden Publikationen, die sich mit SfM in der Archäologie beschäftigen \citeu{arch:laser_vs_dense_stereo, ARCM:ARCM667, ARP:ARP399, TUW-210216, DeReu20131108, the_cave, altai}, verwendet und publiziert \dronarch\ nur Open Source Software und will ein Werkzeug bieten mit wenig Geld und Zeitaufwand 3D Modell für den archäologischen Einsatz zu erstellen.
+		Als technische Grundlage für die Fallstudien dient die Software \dronarch\citeu{dronarch:github}, die im Rahmen dieser Arbeit geschrieben wurde und das SfM Verfahren verwendet.
+		Im Gegensatz zu bestehenden Publikationen, die sich mit SfM in der Archäologie beschäftigen\citeu{arch:laser_vs_dense_stereo, ARCM:ARCM667, ARP:ARP399, TUW-210216, DeReu20131108, the_cave, altai}, verwendet und publiziert \dronarch\ nur Open Source Software und will ein Werkzeug bieten mit wenig Geld und Zeitaufwand 3D Modell für den archäologischen Einsatz zu erstellen.
 
 	
