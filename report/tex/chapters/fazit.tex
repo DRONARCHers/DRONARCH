@@ -1,22 +1,45 @@
 \chapter{Fazit}
-
-	\section{Schwierigkeiten}
-		\subsection{Unkontrolliert, Detailgrad wählen}
+	Die Ergebnisse aus \autoref{resultate} und die vorangehende Forschung, die in \autoref{related:work} diskutiert wird, lagen nahe, dass SfM und MvS Verfahren in der Archäologie ausgesprochen nützlich sind.
+	
+	\section{Auswertung}	
+		Ergebnissen aus \autoref{res:fall} können nun mit der Fragestellung in \autoref{frag:ziel} ausgewertet werden.
 		
+		\paragraph{Mehrwert}
+			Das Modell ist trotz schlechten Bedingungen gut genug um Details in der Mauer und die geometrische Form des Theaters gut zu erkennen.
+			Durch die Löcher im Boden ist es für Öffentlichkeitsarbeit vermutlich nicht gut genug, gibt aber schon so auch dem ungeübten Auge eine gute Vorstellung der Situation.
+			Erstrebenswert wäre eine gleichmässigere Verteilung der Punkte um damit ein Mesh bilden zu können.
+						
+		\paragraph{Aufwand}
+			Das Ausnehmen der Fotos war in weniger als 20 Minuten getan und kann mit etwas Übung noch schneller vonstatten gehen, da für eine vergleichbare Qualität der Rekonstruktion auch die Hälfte der Bilder genügt hätten.
+			Weniger Bilder verkürzen auch die Berechnungszeit von bis zu 20 Stunden drastisch, da die benötigte Zeit nicht linear, sondern stärker, zunimmt.
+			Die lange Rechenzeit ist wenig problematisch, da die unbeaufsichtigt gemacht werden kann, sie führt aber zu einem Stromverbrauch von knapp 10KWh pro Rekonstruktion.
+						
+		\paragraph{Qualität}
+			Die Überlagerung eines Orthofotos und Planes in \autoref{ortho_amphi_meshlab} war die einzige angewandte Fehlermessung und ihre Aussagekraft ist beschränkt. Das Modell scheint aber demnach keine grossen Abweichung zu haben, die Geometrie stimmt sehr genau überein.
+			Einzelne abweichende Punkte können bei der Rekonstruktion mehr oder weniger streng verworfen werden, was aber auch korrekte Punkte entfernen kann. Hier braucht es etwas Erfahrung um ein bestmögliches Resultat zu erhalten.
+			
+		\paragraph{Integration}
+			Mit Hilfe eines Planes wurde ein Modell skaliert und orientiert\autorefu{ortho_amphi_meshlab}. Diese fand aber nur in 2 Dimensionen statt, da der Plan nur diese aufweist. Eine korrekte Referenzierung müsste über vermessene Kontrollpunkte passieren.
+			Die verwendete Software Meshlab\citeu{meshlab:home} unterstützt diese Ansätze ohne Plugins zu wenig, weitere Nachforschungen in diesem Punkt wären notwendig.
+			
+		\paragraph{Schwierigkeiten}
+			Die Hauptschwierigkeit war das Erstellen der Fotos, da nie klar ist, ob die Rekonstruktion mit den gemachten Bildern funktionieren wird, oder ob noch mehr Bilder benötigt werden. Auch hier wird Erfahrung helfen effizienter und sicher arbeiten zu können.
+			Diese Unsicherheit ist ein wesentlicher Kritikpunkt an dem Verfahren und zusammen mit der langen Rechenzeit eine starke Einschränkung für die Verwendung zu einer lückenlosen Dokumentation.
+				
 	\section{Weitere Forschung}
 		Das Potential von 3D Scans, insbesondere von SfM, ist damit natürlich längst nicht ausgeschöpft. Dieser Ansatz zu einer effizienten exakten Dokumentationsweise und intuitiven natürlichen Darstellung bietet noch viele Möglichkeiten zur Verbesserung.
 		
-		\subsection{Fotos einbinden (Photo Tourism)}
+		\paragraph{Verbesserte Visualisierung}
 			Snavley \etal\ verwenden neben Point Clouds in ihrer Darstellung von Monumenten auch die originalen Fotos\citeu{Snavely:2006:PTE:1179352.1141964}. Dem Nutzer wird direkt in dem 3D Modell das Foto und dessen Position angezeigt. Damit werden Fotos direkt in das 3D Modell integriert und die Interpretation stark vereinfacht.
 			
-		\subsection{3D Druck}
+		\paragraph{3D Druck}
 			Die Kantonsarchäologie Aargau hat von Vindonissa ein 3D Modell erstellt und dieses von einem 3D Drucker im Massstab 1:450 nachbauen lassen\citeu{arch:print_vindonissa}. Das selbe Verfahren lässt sich auf beliebige 3D Modelle anwenden, so auch auf Meshes, die mit SfM erstellt wurden.
 			
-		\subsection{Automatisierte Bilderfassung}
+		\paragraph{Automatisierte Bilderfassung}
 			\dronarch\ wurde mit der Idee von automatischer Bilderfassung mittels Drohnen geboren und dieser Ansatz bietet viele Möglichkeiten. Mit Drohnen könnten die Fotos automatisch und periodisch erstellt werden und schwierig zugängliche Stellen problemlos erfasst werden. Das ein autonomes Navigieren auch mit günstigen Drohnen möglich ist wurde bereits gezeigt\citeu{klein07parallel, engel14ras, alvarez14iser}, die verfügbare Implementierung davon hat sich aber noch als zu wenig robust herausgestellt.
 			
 			Neben Drohnen könnten stationäre Kameras, die periodisch Fotos machen, eingesetzt werden.
 
-		\subsection{Performance Verbessern}
+		\paragraph{Performance Verbessern}
 			Die in \dronarch\ verwendete Software ist bei weitem nicht die schnellstmögliche und die Rechenzeit könnte durch Optimierungen drastisch verkürzt werden. Im Moment laufen viele Schritte nicht parallel und so könnte man etwa das mit \emph{Multicore Bundle Adjustment} Wu \etal\citeu{Wu11multicorebundle} den SfM Teil parallelisieren.
 	

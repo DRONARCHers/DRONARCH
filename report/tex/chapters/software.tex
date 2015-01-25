@@ -26,16 +26,16 @@
 	\section{Workflow}
 		Damit sich \dronarch\ möglichst nahtlos in den archäologischen Alltag integrieren lässt, wurde ein klarer Workflow definiert, der zwischen Feld- und Schreibtischarbeiten unterscheidet.
 		
-		\subsection{Bilder Erfassen}
+		\paragraph{Bilder Erfassen}
 			Als Eingabematerial kann \dronarch\ Bilder und Videos verwenden.
 			Auch bereits vorhandenes Bildmaterial, das nicht für eine 3D Rekonstruktion gemacht wurde kann  verwendet werden, wie in \autoref{res:test_vorhandene_bilder} anhand eines Beispiels diskutiert wird.
 %			In \autoref{app:tip_foto}finden sich Details zum Aufnehmen guter Bilder.
 		
-		\subsection{Verarbeitung}
+		\paragraph{Verarbeitung}
 			Das Berechnung des 3D Modelles kann mehrere Stunden dauern und kann deshalb in der Regel schlecht vor Ort gemacht werden. Vor dem Start der Berechnung können verschiedene Parameter angepasst werden. %, die in \autoref{app:param} beschrieben werden.
 			Während der Berechnung ist keine weitere Nutzereingabe erforderlich.
 		
-		\subsection{Betrachtung}
+		\paragraph{Betrachtung}
 			Das Modell kann in einem ply-kompatiblen 3D Viewer (bspw. MeshLab \citeu{meshlab:home}) betrachtet und falls nötig manuell weiter bearbeitet, etwa skaliert und orientiert, werden, damit Koordinaten, Himmelsrichtung und Höhe erkennbar ist.
 
 	\section{Computer Vision}
@@ -45,29 +45,42 @@
 		
 		\subsection{Structure from Motion} \label{sfm}
 			SfM berechnet aufgrund mehrerer Bilder des gleichen Objekts ein grobes 3D Modell davon und die relativen Kamerapositionen. Es wird gleichzeitig die 3D Struktur des Objektes (Structure) errechnet und von wo und mit welcher Orientierung und Brennweite die Fotos gemacht wurden (Motion).
-			Die gewonnene Point Cloud ist noch nicht dicht genug, da sie nur auf wenigen optisch auffälligen Punkten basiert und sie weisst einen nicht bekannten Massstab auf, der durch Referenzpunkte manuell skaliert werden muss.
+			Die gewonnene Point Cloud ist noch nicht dicht genug\autorefu{amphi_sparse}, da sie nur auf wenigen optisch auffälligen Punkten basiert und sie weisst einen nicht bekannten Massstab auf, der durch Referenzpunkte manuell skaliert werden muss.
 			
 			Der grosse Vorteil von SfM ist, dass die Eingabebilder kaum Einschränkungen unterliegen. Sie müssen weder kalibriert sein, noch die selben Kameraeinstellungen wie Brennweite und Belichtungszeit verwenden, können sogar von verschiedenen Kameras stammen.
 			
 			Die Rekonstruktion durch SfM kann auch scheitern. Das wird entweder während der Berechnung automatisch bemerkt, oder erst beim Betrachten des Modells. Um das zu verhindern ist die Wahl der ersten zwei Bilder wichtig. Mehr Details dazu finden sich in \autoref{app:tip_foto}.
-								
+			\begin{figure}
+				\begin{subfigure}{0.5\textwidth}
+					\includegraphics[width=\textwidth]{amphi_meshlab_sparse00_sm}
+					\caption{Sparse Point Cloud}
+					\label{amphi_sparse}
+				\end{subfigure}
+				\begin{subfigure}{0.5\textwidth}
+					\includegraphics[width=\textwidth]{amphi_meshlab_dense00_sm}
+					\caption{Dense Point Cloud}
+					\label{amphi_dense}
+				\end{subfigure}
+				\caption{Das gallorömische Theater Engehalbinsel als sparse und dense Point Cloud}
+				\label{amphi_pointclouds}
+			\end{figure}			
 		\subsection{Multiview Stereo} \label{mvs}
-			Nach SfM ist jede Kameraposition bekannt und dadurch wie zwei Bilder zueinander stehen. Diese Information nutzt man für eine Triangulation jedes Pixels. Dadurch entsteht eine sehr dichte Point Cloud und abhängig von den Einstellungen und der Auflösung der Fotos kann ein sehr detailreiches Modell erstellt werden.
+			Nach SfM ist jede Kameraposition bekannt und dadurch wie zwei Bilder zueinander stehen. Diese Information nutzt man für eine Triangulation jedes Pixels. Dadurch entsteht eine sehr dichte Point Cloud\autorefu{amphi_dense} und abhängig von den Einstellungen und der Auflösung der Fotos kann ein sehr detailreiches Modell erstellt werden.
 			Dieser Schritt kann sehr lange dauern und benötigt viel Arbeitsspeicher, wenn ein detailreiches Modell erstellt werden soll.
-			
+
 	\section{Implementierung}  \label{imp:tech}
 		Da \dronarch\ ein open-source Projekt ist und auf solchen aufbaut, darf eine kurze Aufführung der verwendeten Programme und Libraries nicht fehlen. Mehr Details dazu in \autoref{app:imp}. Der Source Code ist auf github verfügbar \citeu{dronarch:github}.
 		
-		\subsection{Python}
+		\paragraph{Python}
 			Die Programmiersprache Python \citeu{python} ist wegen seiner Einfachheit und der grossen Menge an verfügbaren Libraries beliebt.
 			In \dronarch\ sind alle vorbereitenden Schritte und die Koordination der einzelnen Fragmente in Python geschrieben.
 			
-		\subsection{OpenCV}
+		\paragraph{OpenCV}
 			OpenCV \citeu{opencv} eine Sammlung von Computer Vision Algorithmen und bietet eine Schnittstelle für Python.
 						
-		\subsection{Bundler}
+		\paragraph{Bundler}
 			Die SfM Implementierung Bundler \citeu{bundler:homepage} von Noah Snavely wurde für die Verarbeitung einer grossen Menge an Fotos aus dem Internet geschrieben. Snavely \etal\ verwenden Bundler unter anderem dafür Monumente \citeu{Snavely:2006:PTE:1179352.1141964} oder ganze Städte \citeu{Agarwal:2011:BRD:2001269.2001293} aus Fotos aus dem Internet zu rekonstruieren.
 
-		\subsection{PMVS und CMVS}
+		\paragraph{PMVS und CMVS}
 			Die Kombination aus PMVS \citeu{pmvs:homepage} und CMVS \citeu{cmvs:homepage} ist für den MvS Schritt zuständig. Die Software stammt von Furukawa \etal \citeu{Furu:2010:PMVS} und wurde von ihnen für MvS mit unstrukturierten Bildern verwendet \citeu{Furu:2010}.
 		

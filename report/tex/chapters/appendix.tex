@@ -2,11 +2,11 @@
 		\section{Point Cloud}\label{app:point_cloud}
 			Eine Point Cloud (Punktwolke) ist eine Menge von Punkten im 3D Raum. Die Punkte sind weder miteinander verbunden, noch enthalten sie Informationen über Orientierung oder benachbarte Punkte. Die meisten 3D Scanner produzieren Point Clouds, die zu einem Mesh weiterverarbeitet werden können.
 			Sind die Punkte dicht beieinander, spricht man von einer \emph{dense} (dicht) Point Cloud. Ansonsten nennt man sie \emph{sparse} (licht, locker).
-			[TODO: Bild]
+			Siehe \autoref{amphi_pointclouds}.
 		
 		\section{Mesh}\label{app:mesh}
 			Verbindet man mehrere Punkte einer Point Cloud zu einer Fläche, meist zu Dreiecken, enthält man ein Mesh. Dies hat eine klare Orientierung und setzt Punkte in Verbindung mit ihren Nachbarn. Enthält ein Mesh keine Löcher, nennt man es \emph{watertight} (wasserdicht).
-			[TODO: Bild]
+			Siehe \autoref{app:mesh}.
 		
 		\section{Orthofoto} \label{app:orthofoto}
 			Fotos einer üblichen Kamera, die nach dem Prinzip einer Lochkamera funktionieren, projizieren alle Lichtstrahlen, die durch den Brennpunkt fallen, auf die Bildfläche. Siehe \autoref{app:pinhole}.
@@ -41,5 +41,26 @@
 	\section{Computer Vision} \label{app:imp:comp_vis}
 	
 \chapter{Vergleich mit Agisoft PhotoScan}\label{app:photoscan}
-	Das Programm PhotoScan von Agisoft\citeu{agisoft} implementiert die selben Schritte wie \dronarch\ und wurde in der Archäologie schon mehrfach verwendet und dokumentiert\citeu{arch:laser_vs_dense_stereo, ARCM:ARCM667, ARP:ARP399, DeReu20131108,  altai}. Ein Versuch 
+	Das Programm PhotoScan von Agisoft\citeu{agisoft} implementiert die selben Schritte wie \dronarch\ und wurde in der Archäologie schon mehrfach verwendet und dokumentiert\citeu{arch:laser_vs_dense_stereo, ARCM:ARCM667, ARP:ARP399, DeReu20131108,  altai}.
+	
+	\begin{figure}
+		\vspace*{-4.5cm}
+		\begin{subfigure}{\textwidth}
+			\includegraphics[width=\textwidth]{mesh_wire}
+			\label{app:agi_wire}
+			\caption{Mesh als Wireframe dargestellt}
+		\end{subfigure}
+		\begin{subfigure}{\textwidth}
+			\includegraphics[width=\textwidth]{mesh_solid}
+			\label{app:agi_solid}
+			\caption{Mesh gerendert mit virtueller Beleuchtung}
+		\end{subfigure}
+		\begin{subfigure}{\textwidth}
+			\includegraphics[width=\textwidth]{mesh_tex}
+			\label{app:agi_tex}
+			\caption{Mesh mit Texturen}
+		\end{subfigure}
+		\caption{Gallorömisches Theater Engehalbinsel. Rekonstruktion mit PhotoScan.}
+		\label{app:mesh}
+	\end{figure}
 	
