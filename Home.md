@@ -9,7 +9,9 @@ This is a project for the for the research group _Archäologie der Römischen Pr
 
 ### Where is it now
 
-A first version of the report is done and can be found [here](https://github.com/DRONARCHers/DRONARCH/blob/master/report/tex/dronarch.pdf).
+(27.01.15) A first version of the report is done and can be found [here](https://github.com/DRONARCHers/DRONARCH/blob/master/report/tex/dronarch.pdf).
+
+Some more intermediate results:
 
 * [(09.01.15) Roman amphitheatre Engehalbinsel](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2809.01.15%29)
 * [(28.12.14) Better dense point cloud](https://github.com/DRONARCHers/DRONARCH/wiki/Intermediate-Results-%2828.12.14%29)
