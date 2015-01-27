@@ -9,7 +9,7 @@ This is a project for the for the research group _Archäologie der Römischen Pr
 
 ### Where is it now
 
-(27.01.15) A first version of the report is done and can be found [here](https://github.com/DRONARCHers/DRONARCH/blob/master/report/tex/dronarch.pdf).
+* [(27.01.15) A first version of the report is done](https://github.com/DRONARCHers/DRONARCH/wiki/Results-v1.0)
 
 Some more intermediate results:
 
