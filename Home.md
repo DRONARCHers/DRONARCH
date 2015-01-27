@@ -28,6 +28,3 @@ There are some more ideas about the usage of IT in archaeology around and I hope
 
 ## Technology
 See [here](https://github.com/DRONARCHers/DRONARCH/wiki/Technology-used) for more.
-
-## Proposal
-The proposal defining the goal of this project can be found here: [Concept](https://github.com/DRONARCHers/DRONARCH/tree/master/concept)
