@@ -14,3 +14,9 @@ I uploaded some of these results on [sketchfab](https://sketchfab.com/dronarch).
 
 ### What's next
 I will try to further improve my results and take more image sets for reconstructions. I hope the weather will be fine for some nice day trips through Switzerland to visit some (archaeologically) nice places.
+
+### Results
+Some images from the report, just because there are no images on this page yet.
+![](https://github.com/DRONARCHers/DRONARCH/blob/master/report/imgs/amphi_meshlab_01.png)
+![](https://github.com/DRONARCHers/DRONARCH/blob/master/report/imgs/amphi_meshlab_02.png)
+![](https://github.com/DRONARCHers/DRONARCH/blob/master/report/imgs/amphi_meshlab_03.png)
