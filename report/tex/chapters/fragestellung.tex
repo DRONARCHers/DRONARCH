@@ -1,0 +1,61 @@
+\chapter{Fragestellung}
+	Die Idee 3D Strukturen in drei Dimensionen zu erfassen und darzustellen ist naheliegend, bedingt aber Aufnahmegeräte und Datenrepräsentation, die 3D Inhalte unterstützen. Dazu kommen neben aufwändigen Miniaturen nur computergestützte Verfahren in Frage.
+	
+	\section{Ziel dieser Arbeit} \label{frag:ziel}
+		In dieser Arbeit werden Verfahren zur 3D Dokumentation präsentiert und deren technischen \emph{Möglichkeiten} und \emph{Nützlichkeit} für die Archäologie diskutiert.
+		Insbesondere wird \emph{Structure from Motion}\autorefu{sfm} (SfM) als einfaches und günstiges Verfahren zum Erstellen von 3D Modellen betrachtet und mit anderen Methoden verglichen.
+		Anhand einer Fallstudie soll die Möglichkeit der Integration in bestehende Grabungs- und Dokumentationspraxis und deren Vor- und Nachteile überprüft werden.
+		Die Hauptpunkte sind dabei:
+		\begin{itemize}
+			\item
+			\emph{Mehrwert} der 3D Dokumentation gegenüber der 2D Dokumentation
+			\item
+			\emph{Aufwand} zum Erstellen eines 3D Modells
+			\item
+			\emph{Qualität} und Fehler eines gewonnen Modells
+			\item
+			\emph{Integration} anderer Dokumentationen, insbesondere GIS-Daten
+		\end{itemize}
+	
+	\section{Kriterien} \label{frag:kriterien} %TODO: Referenzen aktualisieren
+		Einer Diskussion aufgrund praktischer Resultat muss eine theoretische Reflexion der Möglichkeiten und Präzisierung der Fragestellung und  der Kriterien zur Auswertung vorangehen.
+		
+		\subsection{Mehrwert}
+			Der Mehrwert einer 3D Rekonstruktion hängt in erster Linie von dessen Qualität ab, je exakter das Modell, desto mehr Informationen sind darin dokumentiert.
+			
+			Wenig detaillierte Modell visualisieren geometrischen Zusammenhänge, Dimension, Orientierung und grob die farblichen Unterschiebe innerhalb einer Grabung. Siehe [TODO:Bild]. Die räumliche Darstellung vereinfacht es sich einen Überblick zu verschaffen und weitere Fragmente der Dokumentation zueinander in Bezug zu setzten.
+			Für Öffentlichkeitsarbeit lassen sich 3D Modell gut verwenden, da sie auch dem ungeübten Betrachter einfach und intuitiv die Situation aufzeigen.
+			
+			Bei höherer Qualität der Rekonstruktion sind auch Details wie Mauerfugen und kleinere Artefakte zu sehen. Als Dokumentation, im Sinne vom Erfassen möglichst vieler und genauer Informationen, ist dies ein sehr kompaktes und praktisches Format, da es neben den visuellen Informationen einer Fotografie auch die metrischen Informationen eines Planes und die geometrische Struktur mehrerer Skizzen vereint. 
+			
+		\subsection{Aufwand}
+			Der zeitliche Aufwand besteht zum Einen in einem aktiven Aufwand, das Aufnehmen der Fotos, das Starten der Software und eventuelle Nachbearbeitungen. Zum Andern besteht der passive Aufwand aus der Zeit, die zur Berechnung des Modells benötigt wird und keine Nutzerinteraktion erfordert.
+			
+			Der materielle Aufwand beschränkt sich auf eine Kamera und einen Computer. An den Computer sind keine besonderen Voraussetzungen gestellt, aber die Berechnung kann durch bessere Hardware stark beschleunigt werden.
+
+		\subsection{Qualität}
+			Dabei ist in erster Linie der Fehler oder die Korrektheit des Modells interessant. Die Korrektheit lässt sich nicht schlüssig beweisen, da dazu ein korrektes Referenzmodell existieren müsste.
+			Stattdessen gibt es verschiedene Methoden den Fehler zu schätzen.
+			
+			\subsubsection{Referenzpunkte}
+				Bevor die Fotos gemacht werden, misst man Referenzpunkte ein und markiert diese. Im fertigen Modell sind diese Punkte erkennbar und dienen einerseits zum Skalieren, Orientieren und Positionieren des Modells und andererseits zum Berechnen des Fehlers. Die Abweichung kann dann für jeden Punkt und für das gesamte Modell berechnet werden.
+				
+				Verhoeven \etal\citeu{ARCM:ARCM667} verwenden dazu auf den Fels aufgemalte Markierungen, die auf den Luftaufnahmen zu erkennen sind und berechnen daraus den RMSE (Root Mean Square Error).
+
+			\subsubsection{Vergleich mit anderen Methoden}
+				Zusätzlich zum durch SfM erstellten Modell, wird mittels einer anderen Methode ein zweites Modell erstellt, das als Referent dient. Dabei ist a priori nicht klar welches Modell der Realität besser entspricht, es ist also kein wirklicher Vergleich mit der Realität.
+				
+				Galeazzi \etal\citeu{arch:laser_vs_dense_stereo} verglichen Laser Scans mit MvS. Laser Scans sind etabliert und bekannt für eine hohe Genauigkeit und eignet sich deshalb sehr gut als Referenz.
+				
+				Eine 2D Projektion des Modelles kann ganz einfach mit einem bestehenden Plan verglichen werden, was ohne grossen Aufwand mit einem Grafikbearbeitungsprogramm möglich ist.
+			
+		\subsection{Integration}
+			Die Verbindung des 3D Modells und der bestehenden Dokumentation ist hauptsächlich eine Frage des Aufwandes während der manuellen Nachbearbeitung. Mit entsprechender Software kann das Modell mit Koordinaten aus GIS versehen oder 2D Ansichten aus dem Modell extrahiert werden.
+			
+			Dellepiane \etal schreiben dazu: ''This method [SfM und MvS], if properly combined with other technologies such as Total Station or GPS (GNSS), can generate very powerful spatio-temporal information.''\citeu{arch:dens_ster_excav}
+		
+	\section{DRONARCH}
+		Als technische Grundlage für die Fallstudien dient die Software \dronarch\citeu{dronarch:github}, die im Rahmen dieser Arbeit geschrieben wurde und das SfM Verfahren verwendet.
+		Im Gegensatz zu bestehenden Publikationen, die sich mit SfM in der Archäologie beschäftigen\citeu{arch:laser_vs_dense_stereo, ARCM:ARCM667, ARP:ARP399, TUW-210216, DeReu20131108, the_cave, altai}, verwendet und publiziert \dronarch\ nur Open Source Software und will ein Werkzeug bieten mit wenig Geld und Zeitaufwand 3D Modell für den archäologischen Einsatz zu erstellen.
+
+	
