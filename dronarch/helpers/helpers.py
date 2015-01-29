@@ -3,7 +3,7 @@ Contains a number of mixed helper functions
 """
 __author__ = 'niclas'
 
-import glob, re, os, shutil, subprocess, time, rostopic
+import glob, re, os, shutil, subprocess, time
 from datetime import datetime
 from debug import debug
 
@@ -132,19 +132,6 @@ def send_mail(message):
         mail_nick.send_dronarch_mail(subject=subject, msg_content=msg)
     except ImportError:
         debug(1, 'Could not send email. Probably the email script is not available. Ignore this if you are not developer')
-
-def ros_core_is_running():
-    """
-    Check whether roscore is running
-    :return:
-    """
-    try:
-        # Checkif rosmaster is running or not.
-        rostopic.get_topic_class('/rosout')
-        is_rosmaster_running = True
-    except rostopic.ROSTopicIOException as e:
-        is_rosmaster_running = False
-    return is_rosmaster_running
 
 if __name__=='__main__':
     # send_mail(message='Testing the mail implementation in helpers script of DRONARCH')

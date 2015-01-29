@@ -80,7 +80,7 @@ class Dronarch:
         self.archiv = self.base_dir+'old_roamings/'
         self.temp_dir = self.base_dir+'roaming/'
         self.orig_img_dir = self.base_dir+'imgs/'
-        self.temp_dir = os.path.abspath(self.temp_dir)+'/'
+        self.temp_dir = os.path.abspath(self.temp_dir).replace('\\','/')+'/'
         self.vid_dest_dir = self.temp_dir+'vid_imgs/'
         self.temp_img_dir = self.temp_dir+'temp_imgs/'
         self.video_calib_dest_dir = self.temp_dir+'temp_vid_calib_imgs/'
