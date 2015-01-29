@@ -28,7 +28,6 @@ def debug(level,*message):
 
 def write_to_file(logfiles, message):
     for logfile in logfiles:
-
         with open(logfile, 'a+') as file:
             timestamp = datetime.fromtimestamp(time()).strftime('%d.%m.%Y %H:%M:%S')
             file.write(timestamp+': '+message+'\n')

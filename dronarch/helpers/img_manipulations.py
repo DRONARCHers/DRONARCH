@@ -4,7 +4,7 @@ Provides functions for image manipulation such as resizing
 
 __author__ = 'niclas'
 
-import cv2
+import cv2,os
 from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
 
@@ -55,35 +55,37 @@ def check_and_resize(file, dest_dir, (height, width)):
     :param (height, width): Maximum dimension
     :return:
     """
-    img = cv2.imread(file)
+    dest_dir_name = helpers.express_path(dest_dir)
+    file_name = helpers.express_path(file)
+    img = cv2.imread(file_name)
     (img_h, img_w, img_d) = img.shape
+
+
+    #CAUTION: bundler only accepts files ending with exactly .jpg or .bmp. .JPG or jpeg is not allowed
+    name_decomp = file[-1].split('.')
+    if name_decomp[-1] in ['JPG','JPEG','jpeg', 'jpg']:
+        name_decomp[-1] = 'jpg'
+    elif name_decomp[-1] in ['BMP', 'bmp']:
+        name_decomp[-1] = 'bmp'
+    else:
+        debug(2, 'File ',file_name, 'has invalid format.')
+
+    # create new file name
+    name_ending = '.'.join(name_decomp)
+    name_list = dest_dir + [name_ending]
+    name = helpers.express_path(name_list)
 
     if img_w>width or img_h > height: #check whether image is too large
         img,factor = resize(img, (height, width))
         (img_h_sm, img_w_sm, img_d_sm) = img.shape
 
-        # create new file name
-        name = file.split('/')
-        name = ''.join([dest_dir,name[-1]])
-
-        #CAUTION: bundler only accepts files ending with exactly .jpg or .bmp. .JPG or jpeg is not allowed
-        name_decomp = name.split('.')
-        if name_decomp[-1] in ['JPG','JPEG','jpeg', 'jpg']:
-            name_decomp[-1] = 'jpg'
-        elif name_decomp[-1] in ['BMP', 'bmp']:
-            name_decomp[-1] = 'bmp'
-        else:
-            debug(2, 'File ',name, 'has invalid format.')
-
-        name = '.'.join(name_decomp)
-        success =  cv2.imwrite(name, img)
+        success = cv2.imwrite(name, img)
 
         if success:
-            debug(0, 'Image is too large. Resized ',file, ' from ', img_h, ',',img_w, ' to ', img_h_sm, ',', img_w_sm,' The scale factor is '+str(factor),'  Saved as ', name)
+            debug(0, 'Image is too large. Resized ',file_name, ' from ', img_h, ',',img_w, ' to ', img_h_sm, ',', img_w_sm,' The scale factor is '+str(factor),'  Saved as ', name)
         else:
-            debug(2, 'Could not scale or store image ', file, ' to ', name)
+            debug(2, 'Could not scale or store image ', file_name, ' to ', name)
     else: #is no resize is needed, just copy the file
-        name = dest_dir + helpers.get_filename_from_path(file)
         success =  cv2.imwrite(name, img)
 
         #If the size has not been changed, us old values
@@ -92,11 +94,11 @@ def check_and_resize(file, dest_dir, (height, width)):
         img_h_sm = img_h
 
         if success:
-            debug(0, 'Image ', file, ' has been copied to', dest_dir)
+            debug(0, 'Image ', file_name, ' has been copied to', dest_dir)
         else:
-            debug(2, 'Could not scale or store image ', file, ' to ', name)
+            debug(2, 'Could not scale or store image ', file_name, ' to ', name)
 
-    return name, factor, (img_w_sm,img_h_sm)
+    return name_list, factor, (img_w_sm,img_h_sm)
 
 def resize(img, (height, width)):
     """
@@ -116,7 +118,11 @@ def get_size(image):
     :param image:
     :return: (height, width, color depth)
     """
-    img = cv2.imread(image)
+    file_name = helpers.express_path(image)
+    if not os.path.isfile(file_name):
+        debug(2, 'Cannot read image ', file_name)
+        return
+    img = cv2.imread(file_name)
     (img_h, img_w, img_d) = img.shape
     return (img_h, img_w, img_d)
 

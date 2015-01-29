@@ -22,7 +22,7 @@ def get_files_with_ending(folder, endings):
     """
 
     #get all files
-    files = glob.glob(folder+'*')
+    files = glob.glob(express_path(folder)+os.path.sep+'*')
 
     #compile the most epic regex patterne ever
     pattern = ''.join([''+end+'|' for end in endings])
@@ -35,7 +35,7 @@ def get_files_with_ending(folder, endings):
 
     #sort images to guarantee deterministic order
     files.sort()
-
+    files = split_paths(files)
     return files
 
 def move_command(path1, path2):
@@ -74,8 +74,8 @@ def get_filename_from_path(path):
     :param path: Path of file
     :return: Filename
     """
-    name = path.split('/')
-    name = ''.join(name[-1])
+
+    name = path[-1]
     return name
 
 
@@ -132,6 +132,27 @@ def send_mail(message):
         mail_nick.send_dronarch_mail(subject=subject, msg_content=msg)
     except ImportError:
         debug(1, 'Could not send email. Probably the email script is not available. Ignore this if you are not developer')
+
+def express_path(path):
+    separator = os.path.sep
+    path_str = separator.join(path)
+    return path_str
+
+def express_paths(paths):
+    return [express_path(path) for path in paths]
+
+def split_path(string):
+    if '/' in string:
+        symbol = '/'
+    elif '\\' in string:
+        symbol = '\\'
+    else:
+        symbol='/'
+    path = string.split(symbol)
+    return path
+
+def split_paths(paths):
+    return [split_path(path) for path in paths]
 
 if __name__=='__main__':
     # send_mail(message='Testing the mail implementation in helpers script of DRONARCH')

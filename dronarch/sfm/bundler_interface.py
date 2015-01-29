@@ -47,7 +47,7 @@ def start_bundler(imgs_file,
 
     #Change to bundler dir
     dir = os.getcwd()
-    os.chdir(output_dir)
+    os.chdir(helpers.express_path(output_dir))
 
 
     #set bundler binary globals
@@ -80,7 +80,8 @@ def start_bundler(imgs_file,
             orig_imgs_dict = extract_focal_length(images=orig_imgs, resized_imgs= imgs)
             for key, value in orig_imgs_dict.items():
                 #get path of resized/copied img and create key entry
-                key = img_dir+helpers.get_filename_from_path(key)
+                key = helpers.split_path(key)
+                key = helpers.express_path(img_dir)+os.path.sep+helpers.get_filename_from_path(key)
                 imgs_dict[key] = value
 
         #merge the two dictionaries. This is a bit tricky, since the order should be kept, wich is not the case when using update()
@@ -89,13 +90,15 @@ def start_bundler(imgs_file,
             total_imgs_dict[key] = value
         for key,value in imgs_dict.items():
             total_imgs_dict[key] = value
-
+        if len(total_imgs_dict.keys()) == 0:
+            debug(2, 'Bundler did not get any images. Maybe the images are not in the correct folder.')
+            return 1
         #write all image pathes to a file. This will be used by bundler and meshlab
         write_file(total_imgs_dict, imgs_file)
 
         #get feature points
         debug(0, 'Start feature detection. This might take a while (up to several hours) and slow down your computer.')
-        keys = sift_images(total_imgs_dict.keys(), verbose=True, parallel=parallel) #parallel=True has lead to a system crash!!!
+        keys = sift_images(images=helpers.split_paths(total_imgs_dict.keys()), verbose=True, parallel=parallel)
         debug(0,'Feature detection done.')
         helpers.timestamp()
 
@@ -149,7 +152,7 @@ def write_file(img_dict, file_path):
     :param file_path:
     :return: The path of the created file
     """
-    with open(file_path, 'w+') as file:
+    with open(helpers.express_path(file_path), 'w+') as file:
             for image,focal_length in img_dict.items():
                 #use the  format bundler expects
                 if focal_length == None:
@@ -157,7 +160,7 @@ def write_file(img_dict, file_path):
                 else:
                     file.write(' '.join([image, '0', str(focal_length), '\n']))
             image_list_file = file.name
-    debug(0, 'Saved image file: ', file_path)
+    debug(0, 'Saved image file: ', helpers.express_path(file_path))
     return image_list_file
 
 
@@ -169,12 +172,15 @@ def extract_focal_length(images, resized_imgs, verbose=True):
     ret = OrderedDict()
     for i in range(len(images)):
         image = images[i]
+        image_name = helpers.express_path(image)
+
         new_image = resized_imgs[i]
+        new_image_name = helpers.express_path(new_image)
         if verbose:
-            debug(0, 'Extracting EXIF tags from image {0}'.format(image))
+            debug(0, 'Extracting EXIF tags from image {0}'.format(image_name))
 
         tags = {}
-        with open(image, 'rb') as fp:
+        with open(image_name, 'rb') as fp:
             img = Image.open(fp)
             if hasattr(img, '_getexif'):
                 exifinfo = img._getexif()
@@ -182,7 +188,7 @@ def extract_focal_length(images, resized_imgs, verbose=True):
                     for tag, value in exifinfo.items():
                         tags[ExifTags.TAGS.get(tag, tag)] = value
 
-        ret[new_image] = None
+        ret[new_image_name] = None
 
         # Extract Focal Length
         focalN, focalD = tags.get('FocalLength', (0, 1))
@@ -222,9 +228,9 @@ def extract_focal_length(images, resized_imgs, verbose=True):
             continue
 
         # Compute Focal Length in Pixels
-        ret[new_image] = img_width * (focal_length / ccd_width)
+        ret[new_image_name] = img_width * (focal_length / ccd_width)
         if verbose:
-            debug(0,'Focal length (pixels) = {0}'.format(ret[new_image]))
+            debug(0,'Focal length (pixels) = {0}'.format(ret[new_image_name]))
 
     return ret
 
@@ -336,7 +342,6 @@ def sift_images(images, verbose=False, parallel=False):
 
     If 'parallel' is True, the function executes SIFT in parallel.
     """
-
     key_filenames = []
 
     if parallel:
@@ -351,8 +356,8 @@ def sift_images(images, verbose=False, parallel=False):
         else:
             threads = 5
         debug(0, 'Using {} threads for feature detection'.format(threads))
-
-        key_filenames = parallel_exe(sift_image, images, max_threads=threads)
+        image_names = helpers.express_paths(images)
+        key_filenames = parallel_exe(sift_image, image_names, max_threads=threads)
     else:
         for image in images:
             key_filenames.append(sift_image(image, verbose=verbose))
@@ -385,13 +390,13 @@ def set_bundler_bins(bundler_bin_dir):
     global BUNDLER_BIN, SIFT_BIN, MATCH_BIN
 
     if sys.platform == 'win32' or sys.platform == 'cygwin':
-        bundler_bin = os.path.join(bundler_bin_dir, "Bundler.exe")
-        sift_bin = os.path.join(bundler_bin_dir, "siftWin32.exe")
-        match_bin = os.path.join(bundler_bin_dir, "KeyMatchFull.exe")
+        bundler_bin = os.path.join(helpers.express_path(bundler_bin_dir), "Bundler.exe")
+        sift_bin = os.path.join(helpers.express_path(bundler_bin_dir), "siftWin32.exe")
+        match_bin = os.path.join(helpers.express_path(bundler_bin_dir), "KeyMatchFull.exe")
     else:
-        bundler_bin = os.path.join(bundler_bin_dir, "bundler")
-        sift_bin = os.path.join(bundler_bin_dir, "sift")
-        match_bin = os.path.join(bundler_bin_dir, "KeyMatchFull")
+        bundler_bin = os.path.join(helpers.express_path(bundler_bin_dir), "bundler")
+        sift_bin = os.path.join(helpers.express_path(bundler_bin_dir), "sift")
+        match_bin = os.path.join(helpers.express_path(bundler_bin_dir), "KeyMatchFull")
 
     BUNDLER_BIN = bundler_bin
     SIFT_BIN = sift_bin
@@ -402,7 +407,7 @@ def set_lib_path(bundler_bin_dir):
 
     # Add lib folder to LD_LIBRARY_PATH
     env = dict(os.environ)
-    bundler_lib_path = os.path.join(bundler_bin_dir, "../lib")
+    bundler_lib_path = os.path.join(helpers.express_path(bundler_bin_dir), "../lib")
 
     if env.has_key('LD_LIBRARY_PATH'):
         env['LD_LIBRARY_PATH'] = env['LD_LIBRARY_PATH'] + ':' + bundler_lib_path

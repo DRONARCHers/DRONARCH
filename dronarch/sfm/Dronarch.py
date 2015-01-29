@@ -1,3 +1,4 @@
+
 #standard python imports
 import os
 import sys
@@ -77,23 +78,22 @@ class Dronarch:
         #TODO: Should they be in the config file as well?
 
         #directories
-        self.archiv = self.base_dir+'old_roamings/'
-        self.temp_dir = self.base_dir+'roaming/'
-        self.orig_img_dir = self.base_dir+'imgs/'
-        self.temp_dir = os.path.abspath(self.temp_dir).replace('\\','/')+'/'
-        self.vid_dest_dir = self.temp_dir+'vid_imgs/'
-        self.temp_img_dir = self.temp_dir+'temp_imgs/'
-        self.video_calib_dest_dir = self.temp_dir+'temp_vid_calib_imgs/'
-        self.img_calib_dest_dir = self.temp_dir+'temp_img_calib_imgs/'
-        self.bundler_output_dir = self.temp_dir+'bundler/'
-        self.pmvs_temp_dir = self.temp_dir+'pmvs/'
+        self.archiv = self.base_dir+['old_roamings']
+        self.temp_dir = self.base_dir+['roaming']
+        self.orig_img_dir = self.base_dir+['imgs']
+        self.vid_dest_dir = self.temp_dir+['vid_imgs']
+        self.temp_img_dir = self.temp_dir+['temp_imgs']
+        self.video_calib_dest_dir = self.temp_dir+['temp_vid_calib_imgs']
+        self.img_calib_dest_dir = self.temp_dir+['temp_img_calib_imgs']
+        self.bundler_output_dir = self.temp_dir+['bundler']
+        self.pmvs_temp_dir = self.temp_dir+['pmvs']
 
 
         #bundler files
-        self.bundler_img_name_file = self.bundler_output_dir+'all_imgs.txt'
-        self.bundler_match_file =  self.bundler_output_dir+'matches'
-        self.bundler_options_file = self.bundler_output_dir+'options.txt'
-        self.bundler_output_file = self.bundler_output_dir+'bundle.out'
+        self.bundler_img_name_file = self.bundler_output_dir+['all_imgs.txt']
+        self.bundler_match_file =  self.bundler_output_dir+['matches']
+        self.bundler_options_file = self.bundler_output_dir+['options.txt']
+        self.bundler_output_file = self.bundler_output_dir+['bundle.out']
 
 
         #formats
@@ -113,8 +113,8 @@ class Dronarch:
         self.make_dirs(self.dirs)
 
         #logfiles
-        self.logfiles = [self.base_dir+'roaming/dronarch.log',self.base_dir+'config/dronarch.log']
-        set_logfiles(self.logfiles)
+        self.logfiles = [self.temp_dir+['dronarch.log'], self.base_dir+['config','dronarch.log'] ]
+        set_logfiles(helpers.express_paths(self.logfiles))
 
     def read_config_file(self, config_file):
         """
@@ -153,13 +153,13 @@ class Dronarch:
         """
         for key,value in entries.items():
             if key == 'base_dir':
-                self.base_dir= value
+                self.base_dir= self.str_2_path(value)
             elif key=='bundler_bin_dir':
-                self.bundler_bin_dir = value
+                self.bundler_bin_dir = self.str_2_path(value)
             elif key == 'cmvs_bin_dir':
-                self.cmvs_bin_dir = value;
+                self.cmvs_bin_dir = self.str_2_path(value)
             elif key == 'pmvs_bin_dir':
-                self.pmvs_bin_dir = value
+                self.pmvs_bin_dir = self.str_2_path(value)
             elif key == 'vid_imgs_per_sec':
                 self.vid_imgs_per_sec = value
             elif key == 'vid_start_frame':
@@ -167,9 +167,9 @@ class Dronarch:
             elif key =='vid_no_images':
                 self.vid_no_images = value
             elif key == 'vid_calib_img_dir':
-                self.vid_calib_img_dir = value
+                self.vid_calib_img_dir = self.str_2_path(value)
             elif key == 'img_calib_img_dir':
-                self.img_calib_img_dir = value
+                self.img_calib_img_dir = self.str_2_path(value)
             elif key == 'img_max_size':
                 self.img_max_size = self.str2Tuple(value, int)
             elif key == 'calib_file_path':
@@ -211,6 +211,17 @@ class Dronarch:
             else:
                 debug(1, 'Unknown entry: ',key, '=', value)
 
+    def str_2_path(self, string):
+        """
+        Splits a path separated with / or \ into a list of its components
+        :param string:
+        :return:
+        >>> dron.str_2_path(r'c:\aba\buu')
+        ['c:', 'aba', 'buu']
+        >>> dron.str_2_path('/home/user/blub.md')
+        ['', 'home', 'user', 'blub.md']
+        """
+        return helpers.split_path(string)
 
     def check_attriburtes(self):
         """
@@ -249,9 +260,9 @@ class Dronarch:
         :return:
         """
         for dir in dirs:
-            if not os.path.exists(dir):
-                os.makedirs(dir)
-        debug(0, 'Created directories: ', dirs)
+            if not os.path.exists(helpers.express_path(dir)):
+                os.makedirs(helpers.express_path(dir))
+        debug(0, 'Created directories: ', helpers.express_paths(dirs))
 
     def str2Tuple(self, string, data_type):
         """
@@ -399,10 +410,10 @@ if __name__ == '__main__':
             # debug(0, 'Move {} to '.format(dron.temp_dir, dron.archiv))
             # helpers.move_command(path1=dron.temp_dir, path2=dron.archiv)
             clear_log_file()
-            debug(0, 'Delete {}'.format(dron.temp_dir))
-            shutil.rmtree(dron.temp_dir)
-            debug(0, 'Create dirs {}'.format(dron.dirs))
+            debug(0, 'Delete {}'.format(helpers.express_path(dron.temp_dir)))
+            shutil.rmtree(helpers.express_path(dron.temp_dir))
             dron.make_dirs(dron.dirs)
+            debug(0, 'Create dirs {}'.format(helpers.express_paths(dron.dirs)))
         except OSError:
             pass
     # else:
@@ -415,8 +426,8 @@ if __name__ == '__main__':
             #     debug(0, 'Remove ', dron.pmvs_temp_dir)
             #     shutil.rmtree(dron.pmvs_temp_dir)
     if test:
-        import doctest
-        doctest.testmod(extraglobs={'dron': dron})
+        from doctest import testfile
+        testfile('Dronarch.py', globs={'dron': dron})
     else:
         helpers.start_stopwatch()
         dron.start_execution(use_old_data=dron.use_old_data, do_calibration=dron.do_calibration, do_bundler=dron.do_bundler, do_bundler_2_pmvs=dron.do_bundler_2_pmvs, do_pmvs=dron.do_pmvs)
