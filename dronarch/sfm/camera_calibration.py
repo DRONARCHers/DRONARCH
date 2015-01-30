@@ -14,7 +14,7 @@ import cv2
 from dronarch.helpers.helpers import get_files_with_ending,timestamp
 from dronarch.helpers.debug import debug
 from dronarch.helpers.parallel_exe import parallel_exe
-from dronarch.helpers.img_manipulations import check_and_resize_all
+from dronarch.helpers.DronarchImage import check_and_resize_all
 
 
 def do_calibration(images_names, show_corners=False):

@@ -1,7 +1,7 @@
 import cv2,os,ntpath
 from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
-from dronarch.helpers.img_manipulations import check_and_resize_all
+from dronarch.helpers.DronarchImage import check_and_resize_all
 from math import ceil
 
 __author__ = 'niclas'
@@ -19,7 +19,7 @@ def check_and_extract_all_videos(src_dir, dest_dir,video_formats, image_formats,
             debug(0, 'Video ',video, ' processed.')
             helpers.timestamp()
 
-    resized_files,orig_files,scale, size = check_and_resize_all(src_dir=dest_dir, dest_dir=dest_dir, max_size=max_size, formats=image_formats, use_images_with_same_size_only=True)
+    resized_files,scale, size = check_and_resize_all(src_dir=dest_dir, dest_dir=dest_dir, max_size=max_size, formats=image_formats, use_images_with_same_size_only=True)
 
     debug(0, 'Extracting images from videos done.')
     helpers.timestamp()

@@ -5,8 +5,9 @@ import sys
 import shutil
 #DRONARCH internal
 import video2image
-from dronarch.helpers import helpers, img_manipulations
+from dronarch.helpers import helpers, DronarchImage
 from dronarch.helpers.debug import debug, clear_log_file, set_logfiles
+from dronarch.helpers.Path import Path
 from bundler_interface import start_bundler
 from bundler2pmvs import run_bundler2pmvs
 from pmvs import run_pmvs
@@ -39,13 +40,13 @@ class Dronarch:
 
     def __init__(self):
         #Attributes loaded from config file
-        self.base_dir = ''
-        self.bundler_bin_dir =''
-        self.cmvs_bin_dir = ''
-        self.pmvs_bin_dir = ''
-        self.vid_calib_img_dir = ''
-        self.img_calib_img_dir = ''
-        self.calib_file_path = ''
+        self.base_dir = Path()
+        self.bundler_bin_dir = Path()
+        self.cmvs_bin_dir = Path()
+        self.pmvs_bin_dir = Path()
+        self.vid_calib_img_dir = Path()
+        self.img_calib_img_dir = Path()
+        self.calib_file_path = Path()
 
         #this is only a fallback value. If specified, the value in the dronarch.cfg file will be used
         self.img_max_size = (2000,2000)
@@ -78,22 +79,22 @@ class Dronarch:
         #TODO: Should they be in the config file as well?
 
         #directories
-        self.archiv = self.base_dir+['old_roamings']
-        self.temp_dir = self.base_dir+['roaming']
-        self.orig_img_dir = self.base_dir+['imgs']
-        self.vid_dest_dir = self.temp_dir+['vid_imgs']
-        self.temp_img_dir = self.temp_dir+['temp_imgs']
-        self.video_calib_dest_dir = self.temp_dir+['temp_vid_calib_imgs']
-        self.img_calib_dest_dir = self.temp_dir+['temp_img_calib_imgs']
-        self.bundler_output_dir = self.temp_dir+['bundler']
-        self.pmvs_temp_dir = self.temp_dir+['pmvs']
+        self.archiv = self.base_dir.new_app_path(['old_roamings'])
+        self.temp_dir = self.base_dir.new_app_path(['roaming'])
+        self.orig_img_dir = self.base_dir.new_app_path(['imgs'])
+        self.vid_dest_dir = self.temp_dir.new_app_path(['vid_imgs'])
+        self.temp_img_dir = self.temp_dir.new_app_path(['temp_imgs'])
+        self.video_calib_dest_dir = self.temp_dir.new_app_path(['temp_vid_calib_imgs'])
+        self.img_calib_dest_dir = self.temp_dir.new_app_path(['temp_img_calib_imgs'])
+        self.bundler_output_dir = self.temp_dir.new_app_path(['bundler'])
+        self.pmvs_temp_dir = self.temp_dir.new_app_path(['pmvs'])
 
 
         #bundler files
-        self.bundler_img_name_file = self.bundler_output_dir+['all_imgs.txt']
-        self.bundler_match_file =  self.bundler_output_dir+['matches']
-        self.bundler_options_file = self.bundler_output_dir+['options.txt']
-        self.bundler_output_file = self.bundler_output_dir+['bundle.out']
+        self.bundler_img_name_file = self.bundler_output_dir.new_app_path(['all_imgs.txt'])
+        self.bundler_match_file =  self.bundler_output_dir.new_app_path(['matches'])
+        self.bundler_options_file = self.bundler_output_dir.new_app_path(['options.txt'])
+        self.bundler_output_file = self.bundler_output_dir.new_app_path(['bundle.out'])
 
 
         #formats
@@ -113,8 +114,8 @@ class Dronarch:
         self.make_dirs(self.dirs)
 
         #logfiles
-        self.logfiles = [self.temp_dir+['dronarch.log'], self.base_dir+['config','dronarch.log'] ]
-        set_logfiles(helpers.express_paths(self.logfiles))
+        self.logfiles = [self.temp_dir.new_app_path(['dronarch.log']), self.base_dir.new_app_path(['config','dronarch.log']) ]
+        set_logfiles(Path.express_paths(self.logfiles))
 
     def read_config_file(self, config_file):
         """
@@ -221,22 +222,23 @@ class Dronarch:
         >>> dron.str_2_path('/home/user/blub.md')
         ['', 'home', 'user', 'blub.md']
         """
-        return helpers.split_path(string)
+        path = Path(string)
+        return path
 
     def check_attriburtes(self):
         """
         Makes sure that the most important attributes are set before starting execution
         :return:
         """
-        if self.base_dir=='':
+        if self.base_dir==Path():
             debug(2, 'base_dir not initalized. Check config file ', self.config_file)
-        if self.bundler_bin_dir== '':
+        if self.bundler_bin_dir== Path():
             debug(2, 'bundler_bin_dir not initalized. Check config file ', self.config_file)
             return False
-        if self.cmvs_bin_dir== '':
+        if self.cmvs_bin_dir== Path():
             debug(2, 'cmvs_bin_dir not initalized. Check config file ', self.config_file)
             return False
-        if self.pmvs_bin_dir== '':
+        if self.pmvs_bin_dir== Path():
             debug(2, ' pmvs_bin_dir not initalized. Check config file ', self.config_file)
             return False
         if self.pmvs_minImageNum==None or self.pmvs_wsize==None or self.pmvs_threshold==None or self.pmvs_csize==None or self.pmvs_level==None or self.pmvs_no_clusters==None:
@@ -260,9 +262,9 @@ class Dronarch:
         :return:
         """
         for dir in dirs:
-            if not os.path.exists(helpers.express_path(dir)):
-                os.makedirs(helpers.express_path(dir))
-        debug(0, 'Created directories: ', helpers.express_paths(dirs))
+            if not os.path.exists(dir.express()):
+                os.makedirs(dir.express())
+        debug(0, 'Created directories: ', Path.express_paths(dirs))
 
     def str2Tuple(self, string, data_type):
         """
@@ -307,7 +309,7 @@ class Dronarch:
 
 
             #copy single images to temp dictionary and resize if needed
-            imgs,orig_imgs,img_scale,img_size  = img_manipulations.check_and_resize_all(src_dir=self.orig_img_dir,
+            imgs, img_scale, img_size  = DronarchImage.check_and_resize_all(src_dir=self.orig_img_dir,
                                                           dest_dir=self.temp_img_dir,
                                                           max_size=self.img_max_size,
                                                           formats=self.img_formats)
@@ -336,7 +338,6 @@ class Dronarch:
         else:
             imgs = None
             video_imgs = None
-            orig_imgs = None
 
         if do_bundler:
             #start bundler pipline
@@ -345,11 +346,9 @@ class Dronarch:
                                                 options_file=self.bundler_options_file,
                                                 output_file=self.bundler_output_file,
                                                 output_dir=self.bundler_output_dir,
-                                                img_dir= self.temp_img_dir,
                                                 bundler_bin_dir=self.bundler_bin_dir,
                                                 calib_file_path=self.calib_file_path,
                                                 imgs=imgs,
-                                                orig_imgs=orig_imgs,
                                                 vid_imgs=video_imgs,
                                                 use_old_data=use_old_data,
                                                 parallel=True,
@@ -410,10 +409,10 @@ if __name__ == '__main__':
             # debug(0, 'Move {} to '.format(dron.temp_dir, dron.archiv))
             # helpers.move_command(path1=dron.temp_dir, path2=dron.archiv)
             clear_log_file()
-            debug(0, 'Delete {}'.format(helpers.express_path(dron.temp_dir)))
-            shutil.rmtree(helpers.express_path(dron.temp_dir))
+            debug(0, 'Delete {}'.format(dron.temp_dir.express()))
+            shutil.rmtree(dron.temp_dir.express())
             dron.make_dirs(dron.dirs)
-            debug(0, 'Create dirs {}'.format(helpers.express_paths(dron.dirs)))
+            debug(0, 'Create dirs {}'.format(Path.express_paths(dron.dirs)))
         except OSError:
             pass
     # else:

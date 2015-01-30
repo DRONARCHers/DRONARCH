@@ -25,8 +25,8 @@ bundler binaries https://github.com/TheFrenchLeaf/Bundler.git
 sift binaries http://www.cs.ubc.ca/~lowe/keypoints/
 jhead http://www.sentex.net/~mwandel/jhead/
 ImageMagik www.imagemagick.org/script/binary-releases.php
-Python Imaging http://www.pythonware.com/products/pil/
-#add [PATH TO PIL]/Imaging-1.1.7 to PYTHONPATH
+Python Imaging (Pillow-2.7.0-cp27-none-win32.whl) http://www.lfd.uci.edu/~gohlke/pythonlibs/#pil
+#extract and add [PATH TO PILLOW]/Pillow-2.7.0-cp27-none-win32 to PYTHONPATH
 
 #pmvs/cmvs
 pmvs/cmvs binaries https://github.com/pmoulon/CMVS-PMVS

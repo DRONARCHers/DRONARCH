@@ -3,14 +3,14 @@ import sys
 import tempfile
 import gzip
 from collections import OrderedDict
-from PIL import Image, ExifTags
 from math import tan, pi
+from PIL import Image
 
 from dronarch.helpers.debug import debug
 from dronarch.helpers import helpers
 from dronarch.helpers.parallel_exe import parallel_exe
-from dronarch.helpers.img_manipulations import get_size
-from ccd_width import CCD_WIDTHS
+from dronarch.helpers.Path import Path
+
 
 __author__ = 'niclas'
 
@@ -24,10 +24,8 @@ def start_bundler(imgs_file,
                   options_file,
                   output_file,
                   output_dir,
-                  img_dir,
                   bundler_bin_dir,
                   calib_file_path,
-                  orig_imgs=None,
                   imgs=None,
                   vid_imgs=None,
                   video_fov=93,
@@ -40,14 +38,27 @@ def start_bundler(imgs_file,
     Starts the bundler pipline.
     To run the pipline with the old data, no imgs and vid_imgs lists have to be provided.
 
-    :param imgs: List of image pathes
-    :param vid_imgs: List of image pathes for the images retreived from videos
+    :param imgs_file:
+    :param match_file:
+    :param options_file:
+    :param output_file:
+    :param output_dir:
+    :param img_dir:
+    :param bundler_bin_dir:
+    :param calib_file_path:
+    :param imgs:        List of dronarch.helpers.Image containing the photos
+    :param vid_imgs:    List of dronarch.helpers.Image containing the images retreived from videos
+    :param video_fov:
+    :param match_radius:
+    :param init_imgs:
+    :param use_old_data:
+    :param parallel:
     :return:
     """
 
     #Change to bundler dir
     dir = os.getcwd()
-    os.chdir(helpers.express_path(output_dir))
+    os.chdir(output_dir.express())
 
 
     #set bundler binary globals
@@ -62,6 +73,9 @@ def start_bundler(imgs_file,
         debug(0, 'Start bundler pipline using new images.')
         helpers.timestamp()
 
+        #list of all images
+        all_images_list = imgs + vid_imgs
+
         #Use OrderedDictionary to keep order of frames
         vid_imgs_dict =OrderedDict()
 
@@ -72,17 +86,11 @@ def start_bundler(imgs_file,
             for frame in vid_imgs:
                 vid_imgs_dict[frame] = focal_length
 
-
         imgs_dict = OrderedDict()
         # If there are single images, extract focal length
+
         if len(imgs)>0:
-            # orig_imgs = [dir+'/'+img for img in orig_imgs]
-            orig_imgs_dict = extract_focal_length(images=orig_imgs, resized_imgs= imgs)
-            for key, value in orig_imgs_dict.items():
-                #get path of resized/copied img and create key entry
-                key = helpers.split_path(key)
-                key = helpers.express_path(img_dir)+os.path.sep+helpers.get_filename_from_path(key)
-                imgs_dict[key] = value
+            imgs_dict = extract_focal_length(images=imgs)
 
         #merge the two dictionaries. This is a bit tricky, since the order should be kept, wich is not the case when using update()
         total_imgs_dict = OrderedDict()
@@ -98,7 +106,7 @@ def start_bundler(imgs_file,
 
         #get feature points
         debug(0, 'Start feature detection. This might take a while (up to several hours) and slow down your computer.')
-        keys = sift_images(images=helpers.split_paths(total_imgs_dict.keys()), verbose=True, parallel=parallel)
+        keys = sift_images(images=all_images_list, verbose=True, parallel=parallel)
         debug(0,'Feature detection done.')
         helpers.timestamp()
 
@@ -116,20 +124,20 @@ def start_bundler(imgs_file,
 
 
     #set path for bundler logfile
-    bundler_log_file = output_dir+'bundler.log'
+    bundler_log_file = output_dir.new_app_path('bundler.log')
 
     debug(0, 'Start bundle adjustment. This might take a while (up to several hours).')
 
     #start bundler
     return_state = bundler(
-            image_list_file=imgs_file,
-            options_file=options_file,
-            logfile=bundler_log_file,
+            image_list_file=imgs_file.express(separator='/'),
+            options_file=options_file.express(separator='/'),
+            logfile=bundler_log_file.express(separator='/'),
             verbose=True,
-            match_table=match_file,
-            output=helpers.get_filename_from_path(output_file),
+            match_table=match_file.express(separator='/'),
+            output=output_file.get_filename(),
             output_all="bundle_",
-            output_dir=output_dir,
+            output_dir=output_dir.express(separator='/'),
             variable_focal_length=True,
             # use_focal_estimate=True,
             # constrain_focal=True,
@@ -145,6 +153,7 @@ def start_bundler(imgs_file,
     helpers.timestamp()
     os.chdir(dir)
     return return_state
+
 def write_file(img_dict, file_path):
     """
     Writes content of img_dict in a bundler specific format into a file
@@ -152,7 +161,7 @@ def write_file(img_dict, file_path):
     :param file_path:
     :return: The path of the created file
     """
-    with open(helpers.express_path(file_path), 'w+') as file:
+    with open(file_path.express(), 'w+') as file:
             for image,focal_length in img_dict.items():
                 #use the  format bundler expects
                 if focal_length == None:
@@ -160,86 +169,27 @@ def write_file(img_dict, file_path):
                 else:
                     file.write(' '.join([image, '0', str(focal_length), '\n']))
             image_list_file = file.name
-    debug(0, 'Saved image file: ', helpers.express_path(file_path))
+    debug(0, 'Saved image file: ', file_path)
     return image_list_file
 
-
-def extract_focal_length(images, resized_imgs, verbose=True):
+def extract_focal_length(images):
     """Extracts (pixel) focal length from images where available.
     The functions returns a dictionary of image, focal length pairs.
     If no focal length is extracted for an image, the second pair is None.
+    :param images list of dronarch.helpers.Images
     """
     ret = OrderedDict()
-    for i in range(len(images)):
-        image = images[i]
-        image_name = helpers.express_path(image)
-
-        new_image = resized_imgs[i]
-        new_image_name = helpers.express_path(new_image)
-        if verbose:
-            debug(0, 'Extracting EXIF tags from image {0}'.format(image_name))
-
-        tags = {}
-        with open(image_name, 'rb') as fp:
-            img = Image.open(fp)
-            if hasattr(img, '_getexif'):
-                exifinfo = img._getexif()
-                if exifinfo is not None:
-                    for tag, value in exifinfo.items():
-                        tags[ExifTags.TAGS.get(tag, tag)] = value
-
-        ret[new_image_name] = None
-
-        # Extract Focal Length
-        focalN, focalD = tags.get('FocalLength', (0, 1))
-        focal_length = float(focalN)/float(focalD)
-
-        # Extract Resolution
-        img_width,img_height,img_depth = get_size(new_image)
-
-
-        if img_width < img_height:
-            img_width,img_height = img_height,img_width
-
-
-        # Extract CCD Width (Prefer Lookup Table)
-        make_model = tags.get('Make', '') + ' ' + tags.get('Model', '')
-        if CCD_WIDTHS.has_key(make_model.strip()):
-            ccd_width = CCD_WIDTHS[make_model.strip()]
-        else:
-            fplaneN, fplaneD = tags.get('FocalPlaneXResolution', (0, 1))
-            if fplaneN != 0:
-                ccd_width = 25.4*float(img_width)*float(fplaneD)/float(fplaneN)
-                if verbose: debug(0,'Using CCD width from EXIF tags')
-            else:
-                ccd_width = 0
-
-        if verbose:
-            debug(0,'EXIF focal length = {0}mm' .format(focal_length),
-                    ', EXIF CCD width = {0}mm'.format(ccd_width),
-                    ', EXIF resolution = {0} x {1}'.format(img_width, img_height))
-            if ccd_width == 0:
-                debug(1,'No CCD width available for camera {0}]'.format(
-                    make_model))
-
-        if (img_width==0 or img_height==0 or focalN==0 or ccd_width==0):
-            if verbose:
-                debug(1,'Could not determine pixel focal length')
-            continue
-
-        # Compute Focal Length in Pixels
-        ret[new_image_name] = img_width * (focal_length / ccd_width)
-        if verbose:
-            debug(0,'Focal length (pixels) = {0}'.format(ret[new_image_name]))
-
+    for image in images:
+        ret[image.path.express()] = image.get_focal_length()
     return ret
+
 
 def calculate_focal_length_in_px(img_width, fov):
     focal_pixel = (float(img_width) * 0.5) / tan(fov * 0.5 * pi/180)
     return focal_pixel
 
 def focal_length_for_video(image, fov):
-    width, width, height = get_size(image)
+    width, width, height = image.get_size()
     return calculate_focal_length_in_px(width, fov)
 
 
@@ -294,12 +244,11 @@ def bundler(image_list_file, options_file, logfile, shell=False, *args, **kwargs
     return out
 
 
-def sift_image(image, verbose=False):
+def sift_image(image_and_bin, verbose=False):
+    image = image_and_bin[0]
+    sift_bin = image_and_bin[1]
+
     """Extracts SIFT features from a single image.  See sift_images."""
-
-
-
-
     pgm_filename = image.rsplit('.', 1)[0] + ".pgm"
     key_filename = image.rsplit('.', 1)[0] + ".key"
 
@@ -312,14 +261,13 @@ def sift_image(image, verbose=False):
     if verbose:
         with open(pgm_filename, 'rb') as fp_in:
             with open(key_filename, 'wb') as fp_out:
-                helpers.execute_command(SIFT_BIN, stdin=fp_in, stdout=fp_out)
+                helpers.execute_command(sift_bin, stdin=fp_in, stdout=fp_out)
     else:
         with open(pgm_filename, 'rb') as fp_in:
             with open(key_filename, 'wb') as fp_out:
                 with open(os.devnull, 'w') as fp_err:
-                    helpers.execute_command(SIFT_BIN, stdin=fp_in, stdout=fp_out, stderr=fp_err)
-                    # subprocess.call(SIFT_BIN, stdin=fp_in, stdout=fp_out,
-                    #                 stderr=fp_err)
+                    print sift_bin
+                    helpers.execute_command(sift_bin, stdin=fp_in, stdout=fp_out, stderr=fp_err)
 
     # Remove pgm file
     os.remove(pgm_filename)
@@ -344,9 +292,9 @@ def sift_images(images, verbose=False, parallel=False):
     """
     key_filenames = []
 
-    if parallel:
+    if parallel:# and False:
         #if the images are large, extracting features requires lots of memory. So less threads should be used in parallel
-        img_size = get_size(images[0])
+        img_size = images[0].get_size()
         if img_size[0]>3000 or img_size[1]>3000:
             threads=2
         elif img_size[0]>2500 or img_size[1]>2500:
@@ -355,64 +303,68 @@ def sift_images(images, verbose=False, parallel=False):
             threads=4
         else:
             threads = 5
+        memory = 50
+        threads = int(threads*memory/8)
+        if threads > len(images):
+            threads = len(images)
         debug(0, 'Using {} threads for feature detection'.format(threads))
-        image_names = helpers.express_paths(images)
-        key_filenames = parallel_exe(sift_image, image_names, max_threads=threads)
+        key_filenames = parallel_exe(sift_image, [(image.path.express(), SIFT_BIN) for image in images], max_threads=threads)
     else:
         for image in images:
-            key_filenames.append(sift_image(image, verbose=verbose))
+            key_filenames.append(sift_image((image.path.express(), SIFT_BIN), verbose=verbose))
+    key_filenames = Path.create_paths(key_filenames)
     return key_filenames
 
 
 def match_images(key_files, matches_file, radius, verbose=False):
     """Executes KeyMatchFull to match key points in images."""
 
-    time = helpers.time_string(sum([i for i in range(len(key_files))]))
+    time = helpers.time_string(sum([i*10 for i in range(len(key_files))]))
     debug(0, 'Maching of {} images will take between {} and {} (I guess)'.format(len(key_files), helpers.time_string(len(key_files)*30), time))
 
     with tempfile.NamedTemporaryFile(delete=False) as fp:
         for key in key_files:
-            fp.write(key + '\n')
+            fp.write(str(key) + '\n')
         keys_file = fp.name
-
+    keys_file = Path(keys_file)
     #execute match
-    command = ' '.join([MATCH_BIN, keys_file, matches_file, str(radius)])
+    command = ' '.join([MATCH_BIN, keys_file.express(), matches_file.express(), str(radius)])
     if verbose:
         helpers.execute_command(command, env=ENV)
     else:
         with open(os.devnull, 'w') as fp_out:
             helpers.execute_command(command,  stdout=fp_out, env=ENV)
 
-    os.remove(keys_file)
+    os.remove(keys_file.express())
 
 
 def set_bundler_bins(bundler_bin_dir):
     global BUNDLER_BIN, SIFT_BIN, MATCH_BIN
 
     if sys.platform == 'win32' or sys.platform == 'cygwin':
-        bundler_bin = os.path.join(helpers.express_path(bundler_bin_dir), "Bundler.exe")
-        sift_bin = os.path.join(helpers.express_path(bundler_bin_dir), "siftWin32.exe")
-        match_bin = os.path.join(helpers.express_path(bundler_bin_dir), "KeyMatchFull.exe")
+        bundler_bin = bundler_bin_dir.new_app_path("Bundler.exe")
+        sift_bin = bundler_bin_dir.new_app_path("siftWin32.exe")
+        match_bin = bundler_bin_dir.new_app_path("KeyMatchFull.exe")
     else:
-        bundler_bin = os.path.join(helpers.express_path(bundler_bin_dir), "bundler")
-        sift_bin = os.path.join(helpers.express_path(bundler_bin_dir), "sift")
-        match_bin = os.path.join(helpers.express_path(bundler_bin_dir), "KeyMatchFull")
+        bundler_bin = bundler_bin_dir.new_app_path("bundler")
+        sift_bin = bundler_bin_dir.new_app_path("sift")
+        match_bin = bundler_bin_dir.new_app_path("KeyMatchFull")
 
-    BUNDLER_BIN = bundler_bin
-    SIFT_BIN = sift_bin
-    MATCH_BIN = match_bin
+    BUNDLER_BIN = bundler_bin.express()
+    SIFT_BIN = sift_bin.express()
+    MATCH_BIN = match_bin.express()
 
 def set_lib_path(bundler_bin_dir):
     global ENV
 
     # Add lib folder to LD_LIBRARY_PATH
     env = dict(os.environ)
-    bundler_lib_path = os.path.join(helpers.express_path(bundler_bin_dir), "../lib")
+    bundler_lib_path = bundler_bin_dir.new_app_path(['..','lib'])
 
     if env.has_key('LD_LIBRARY_PATH'):
-        env['LD_LIBRARY_PATH'] = env['LD_LIBRARY_PATH'] + ':' + bundler_lib_path
+        env['LD_LIBRARY_PATH'] = env['LD_LIBRARY_PATH'] + ':' + bundler_lib_path.express()
     else:
-        env['LD_LIBRARY_PATH'] = bundler_lib_path
+        env['LD_LIBRARY_PATH'] = bundler_lib_path.express()
 
     ENV = env
 
