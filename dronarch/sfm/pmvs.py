@@ -11,6 +11,7 @@ def run_pmvs(pmvs_bin_folder, pmvs_temp_dir):
 
     debug(0, 'Starting PMVS. This might take a while.')
     option_files = glob(pmvs_temp_dir+'option-*')
+    option_files = sorted(option_files)
     for file in option_files:
         command = pmvs_bin_folder+'pmvs2 ./ '+get_filename_from_path(file)
         execute_command(command)

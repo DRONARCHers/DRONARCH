@@ -146,6 +146,8 @@ def ros_core_is_running():
         is_rosmaster_running = False
     return is_rosmaster_running
 
+
+
 if __name__=='__main__':
     # send_mail(message='Testing the mail implementation in helpers script of DRONARCH')
     start_stopwatch()

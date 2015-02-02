@@ -228,7 +228,7 @@ class Dronarch:
         if self.pmvs_bin_dir== '':
             debug(2, ' pmvs_bin_dir not initalized. Check config file ', self.config_file)
             return False
-        if self.pmvs_minImageNum==None or self.pmvs_wsize==None or self.pmvs_threshold==None or self.pmvs_csize==None or self.pmvs_level==None or self.pmvs_no_clusters==None:
+        if self.pmvs_minImageNum==None or self.pmvs_wsize==None or self.pmvs_threshold==None or self.pmvs_csize==None or self.pmvs_level==None: # or self.pmvs_no_clusters==None:
             debug(2, 'PMVS parameters pmvs_no_clusters, pmvs_level, pmvs_csize, pmvs_threshold, pmvs_wsize or pmvs_minImageNum not specified. Check config file ', self.config_file)
             return False
         if self.bundler_init_imgs == None or self.bundler_match_radius == None:
@@ -300,6 +300,7 @@ class Dronarch:
                                                           dest_dir=self.temp_img_dir,
                                                           max_size=self.img_max_size,
                                                           formats=self.img_formats)
+
             if do_calibration:
                 if len(video_imgs)>0:
                     #calibrate and undistort images from videos
@@ -350,6 +351,9 @@ class Dronarch:
                 exit(return_state_bundler)
 
         if do_pmvs:
+
+            used_img_size = img_manipulations.get_used_img_size(folders=[self.vid_dest_dir, self.temp_img_dir], endings=self.img_formats)
+
             if do_bundler_2_pmvs:
                 run_bundler2pmvs(bundler_bin_folder=self.bundler_bin_dir,
                                  pmvs_temp_dir=self.pmvs_temp_dir,
@@ -359,12 +363,12 @@ class Dronarch:
             run_cmvs(cmvs_bin_folder=self.cmvs_bin_dir,
                      pmvs_temp_dir=self.pmvs_temp_dir,
                      bundler_out_file=self.bundler_output_file,
-                     no_clusers=self.pmvs_no_clusters,
                      level=self.pmvs_level,
                      csize=self.pmvs_csize,
                      threshold=self.pmvs_threshold,
                      wsize=self.pmvs_wsize,
-                     minImageNum=self.pmvs_minImageNum
+                     minImageNum=self.pmvs_minImageNum,
+                     img_size=used_img_size
             )
             run_pmvs(pmvs_bin_folder=self.pmvs_bin_dir,
                      pmvs_temp_dir=self.pmvs_temp_dir,
@@ -403,7 +407,7 @@ if __name__ == '__main__':
             shutil.rmtree(dron.temp_dir)
             debug(0, 'Create dirs {}'.format(dron.dirs))
             dron.make_dirs(dron.dirs)
-        except OSError:
+        except OSError:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
             pass
     # else:
         # if dron.do_bundler or dron.do_pmvs:

@@ -120,6 +120,23 @@ def get_size(image):
     (img_h, img_w, img_d) = img.shape
     return (img_h, img_w, img_d)
 
+def get_used_img_size(folders, endings):
+    max_size = (0,0)
+    for folder in folders:
+        imgs = helpers.get_files_with_ending(folder=folder, endings=endings)
+        if len(imgs)>0:
+            size = get_size(imgs[0])
+            if size>max_size:
+                max_size = size
+    if max_size==(0,0):
+        default_size = (2000,2000)
+        debug(1, 'No files found to detect size. Using default of ',default_size)
+        return default_size
+    else:
+        debug(0, 'Maximum size is ', max_size[0:2])
+        return max_size[0:2]
+
 # check_and_resize('../imgs/IMG_0632.JPG','../temp_imgs/', (1000,1000))
 # check_and_resize_all(src_dir=Dronarch.orig_img_dir, dest_dir=Dronarch.temp_img_dir, size=(1000,1000), formats=Dronarch.img_formats)
 # print get_size('../imgs/IMG_0621.JPG')
+# print get_used_img_size(['../../roaming/temp_imgs/', '../../roaming/vid_imgs/'], ['jpg', 'JPG', 'jpeg', 'JPEG'])
