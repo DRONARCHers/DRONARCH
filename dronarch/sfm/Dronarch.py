@@ -92,7 +92,7 @@ class Dronarch:
 
         #bundler files
         self.bundler_img_name_file = self.bundler_output_dir.new_app_path(['all_imgs.txt'])
-        self.bundler_match_file =  self.bundler_output_dir.new_app_path(['matches'])
+        self.bundler_match_file = self.bundler_output_dir.new_app_path(['matches'])
         self.bundler_options_file = self.bundler_output_dir.new_app_path(['options.txt'])
         self.bundler_output_file = self.bundler_output_dir.new_app_path(['bundle.out'])
 

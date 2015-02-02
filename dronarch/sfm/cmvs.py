@@ -8,23 +8,23 @@ def run_cmvs(cmvs_bin_folder, pmvs_temp_dir, bundler_out_file, no_clusers=50, le
 
     #change to pmvs dir
     dir = os.getcwd()
-    os.chdir(pmvs_temp_dir)
+    os.chdir(pmvs_temp_dir.express())
 
     #copy bundle.out file, because cmvs does not us the file if the name and path is different than ./bundler.rd.out
-    command = 'cp '+bundler_out_file+' bundle.rd.out'
+    command = 'cp '+bundler_out_file.express()+' bundle.rd.out'
     execute_command(command)
 
-    debug(0, 'Starting CMVS')
+    debug(0, 'Starting CMVS with {} clusters'.format(str(no_clusers)))
     #make cmvs calls
-    command = cmvs_bin_folder+'cmvs ./ '+str(no_clusers) +' '+str(7)
+    CPU = cpu_count()-1
+    command = cmvs_bin_folder.new_app_path('cmvs').express()+' ./ '+str(no_clusers) +' '+str(CPU)
     execute_command(command)
 
 
 
     debug(0, 'GenOptions')
-    CPU = cpu_count()
 
-    command = cmvs_bin_folder+'genOption ./ '+' '.join([str(level), str(csize), str(threshold), str(wsize), str(minImageNum), str(CPU)])
+    command = cmvs_bin_folder.new_app_path('genOption').express()+' ./ '+' '.join([str(level), str(csize), str(threshold), str(wsize), str(minImageNum), str(CPU)])
     execute_command(command)
 
     #change back to previous dir

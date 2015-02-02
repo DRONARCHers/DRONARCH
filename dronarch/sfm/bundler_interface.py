@@ -164,10 +164,11 @@ def write_file(img_dict, file_path):
     with open(file_path.express(), 'w+') as file:
             for image,focal_length in img_dict.items():
                 #use the  format bundler expects
+                image_path = Path(image).express(separator='/')
                 if focal_length == None:
-                    file.write(' '.join([image, '0', '0', '\n']))
+                    file.write(' '.join([image_path, '0', '0', '\n']))
                 else:
-                    file.write(' '.join([image, '0', str(focal_length), '\n']))
+                    file.write(' '.join([image_path, '0', str(focal_length), '\n']))
             image_list_file = file.name
     debug(0, 'Saved image file: ', file_path)
     return image_list_file
@@ -321,21 +322,23 @@ def match_images(key_files, matches_file, radius, verbose=False):
 
     time = helpers.time_string(sum([i*10 for i in range(len(key_files))]))
     debug(0, 'Maching of {} images will take between {} and {} (I guess)'.format(len(key_files), helpers.time_string(len(key_files)*30), time))
-
-    with tempfile.NamedTemporaryFile(delete=False) as fp:
+    temp_file = Path(['.','temp_match.txt'])
+    with open(temp_file.express(), 'w+') as fp:
         for key in key_files:
             fp.write(str(key) + '\n')
-        keys_file = fp.name
-    keys_file = Path(keys_file)
+
     #execute match
-    command = ' '.join([MATCH_BIN, keys_file.express(), matches_file.express(), str(radius)])
+    if sys.platform == 'win32' or sys.platform == 'cygwin':
+        command = ' '.join([MATCH_BIN, temp_file.express(), matches_file.express()])
+    else:
+        command = ' '.join([MATCH_BIN, temp_file.express(), matches_file.express(), str(radius)])
     if verbose:
         helpers.execute_command(command, env=ENV)
     else:
         with open(os.devnull, 'w') as fp_out:
             helpers.execute_command(command,  stdout=fp_out, env=ENV)
 
-    os.remove(keys_file.express())
+    # os.remove(temp_file.express())
 
 
 def set_bundler_bins(bundler_bin_dir):

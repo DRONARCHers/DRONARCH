@@ -47,6 +47,9 @@ def move_command(path1, path2):
     :param path2:
     :return:
     """
+    path1 = path1.express()
+    path2 = path2.express()
+
     debug(0,'Execute: Move from ', path1, ' to ', path2)
     try:
         shutil.move(path1, path2)
