@@ -11,8 +11,11 @@ def run_pmvs(pmvs_bin_folder, pmvs_temp_dir):
     os.chdir(pmvs_temp_dir.express())
 
     debug(0, 'Starting PMVS. This might take a while.')
+
     option_desc = pmvs_temp_dir.new_app_path('option-*').express()
     option_files = glob(option_desc)
+    option_files = sorted(option_files)
+
     if len(option_files) == 0:
         os.chdir(dir)
         debug(2, 'No option files for pmvs.')
@@ -22,6 +25,5 @@ def run_pmvs(pmvs_bin_folder, pmvs_temp_dir):
             file = Path(file).path_list[-1]
             command = pmvs_bin_folder.new_app_path('pmvs2').express()+' ./ '+file
             execute_command(command)
-
     #change back to previous dir
     os.chdir(dir)

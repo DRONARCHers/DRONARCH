@@ -127,6 +127,8 @@ def send_mail(message):
         debug(1, 'Could not send email. Probably the email script is not available. Ignore this if you are not developer')
 
 
+
+
 if __name__=='__main__':
     # send_mail(message='Testing the mail implementation in helpers script of DRONARCH')
     start_stopwatch()

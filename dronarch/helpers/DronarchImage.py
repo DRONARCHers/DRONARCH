@@ -209,6 +209,22 @@ def check_and_resize(image, dest_dir, (height, width)):
     return new_image, factor
 
 
+def get_used_img_size(folders, endings):
+    max_size = (0,0)
+    for folder in folders:
+        imgs = helpers.get_files_with_ending(folder=folder, endings=endings)
+        image = DronarchImage(path=imgs[0])
+        if len(imgs)>0:
+            size = image.get_size()
+        if size>max_size:
+            max_size = size
+    if max_size==(0,0):
+        default_size = (2000,2000)
+        debug(1, 'No files found to detect size. Using default of ',default_size)
+        return default_size
+    else:
+        debug(0, 'Maximum size is ', max_size[0:2])
+    return max_size[0:2]
 
 
 # check_and_resize('../imgs/IMG_0632.JPG','../temp_imgs/', (1000,1000))
