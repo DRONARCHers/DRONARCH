@@ -35,7 +35,7 @@ def run_cmvs(cmvs_bin_folder, pmvs_temp_dir, bundler_out_file, img_size, level=1
     #change back to previous dir
     os.chdir(dir)
 
-def compute_no_clusters(img_size, level, csize, threshold, wsize, minImageNum, max_memory=6):
+def compute_no_clusters(img_size, level, csize, threshold, wsize, minImageNum, max_memory=20):
     threshold = 5
     no_pixels = img_size[0]*img_size[1]
     no_pixels = no_pixels/((level+0.5))

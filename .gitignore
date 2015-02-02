@@ -15,6 +15,7 @@
 *.bbl
 *.key.gz
 dronarch/helpers/mail_nick.py
+dronarch/helpers/mail_*
 */.directory
 agisoft/
 report/models/

@@ -213,11 +213,11 @@ def get_used_img_size(folders, endings):
     max_size = (0,0)
     for folder in folders:
         imgs = helpers.get_files_with_ending(folder=folder, endings=endings)
-        image = DronarchImage(path=imgs[0])
         if len(imgs)>0:
+            image = DronarchImage(path=imgs[0])
             size = image.get_size()
-        if size>max_size:
-            max_size = size
+            if size>max_size:
+                max_size = size
     if max_size==(0,0):
         default_size = (2000,2000)
         debug(1, 'No files found to detect size. Using default of ',default_size)
