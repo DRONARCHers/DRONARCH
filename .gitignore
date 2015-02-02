@@ -16,3 +16,7 @@
 *.key.gz
 dronarch/helpers/mail_nick.py
 */.directory
+agisoft/
+report/models/
+report/imgs/amphi_ortho_plan*
+report/imgs/amphi_ortho_comb.xcf

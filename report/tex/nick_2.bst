@@ -847,20 +847,7 @@ FUNCTION {format.booktitle}
   booktitle "booktitle" bibinfo.check
 }
 FUNCTION {format.in.ed.booktitle}
-{ format.booktitle duplicate$ empty$ 'skip$
-    {
-      editor "editor" format.names.ed duplicate$ empty$ 'pop$
-        {
-          " " *
-          get.bbl.editor
-          capitalize
-          "(" swap$ * "), " *
-          * swap$
-          * }
-      if$
-      word.in swap$ *
-    }
-  if$
+{booktitle write$
 }
 FUNCTION {format.thesis.type}
 { type duplicate$ empty$
@@ -1065,67 +1052,87 @@ FUNCTION {inbook}
 
 FUNCTION {incollection}
 { output.bibitem
-  format.authors "author" output.check
-  author format.key output
-  new.block
-  format.title "title" output.check
-  new.block
-  crossref missing$
-    { format.in.ed.booktitle "booktitle" output.check
-      format.publisher.address output
-      format.bvolume output
-      format.number.series output
-      format.chapter.pages output
-      new.sentence
-      format.edition output
-      format.isbn output
-    }
-    { format.incoll.inproc.crossref output.nonnull
-      format.chapter.pages output
-    }
-  if$
-  format.date "year" output.check
-  date.block
-  format.doi output
-  new.block
-  format.note output
-  fin.entry
-  write.url
+"~\\"
+write$ newline$
+
+"\newblock "
+author empty$
+{ format.editors "author and editor" output.check
+editor format.key output
 }
+{ format.authors output.nonnull
+crossref missing$
+{ "author and editor" editor either.or.check }
+'skip$
+if$
+}
+if$
+new.block
+%  add.period$ write$
+",~" * write$
+format.btitle "title" output.check
+".~" * write$
+booktitle *write$
+"~" * write$
+crossref missing$
+{ format.bvolume output
+new.block
+format.number.series output 
+new.sentence
+format.publisher.address output
+}
+{
+new.block
+format.book.crossref output.nonnull
+}
+if$
+%  format.edition output
+% format.date "year" output.check
+new.block
+write.url
+fin.entry
+}
+
 FUNCTION {inproceedings}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  ",~" * write$
   new.block
-  format.title "title" output.check
+  "" * title * ".~" * write$
   new.block
   crossref missing$
     { format.in.ed.booktitle "booktitle" output.check
       new.sentence
       publisher empty$
-        { format.organization.address output }
+      "" * write$
+        { format.organization.address output
+        }
         { organization "organization" bibinfo.check output
+          "" * write$
           format.publisher.address output
+          "" * write$
         }
       if$
       format.bvolume output
+      "" * write$
       format.number.series output
-      format.isbn output
-      format.issn output
+      "" * write$
     }
     { format.incoll.inproc.crossref output.nonnull
+    "" * write$
     }
   if$
   format.date "year" output.check
-  date.block
+  ",~" * write$
   add.blank
   format.pages "pages" output.check
-  format.doi output
-  new.block
-  format.note output
   fin.entry
   write.url
 }
+
+
+
 FUNCTION {conference} { inproceedings }
 FUNCTION {manual}
 { output.bibitem
@@ -1260,6 +1267,7 @@ FUNCTION {online}
 { output.bibitem
 format.authors "author" output.check
 author format.key output
+",~" * write$
 new.block
 format.title "title" output.check
 fin.entry

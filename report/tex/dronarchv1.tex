@@ -1,0 +1,89 @@
+\documentclass[a4paper]{report}
+
+%Use this line instead if you want to use running heads (i.e. headers on each page):
+%\documentclass[runningheads]{llncs}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{paratype}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{nameref}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+%\usepackage[style=mla]{biblatex}
+\usepackage[affil-it]{authblk}
+
+\usepackage[a4paper, twoside,centering,
+top=4cm,
+bottom=3cm,
+inner=4cm,
+outer=5cm]{geometry}
+
+\captionsetup{compatibility=false}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+
+
+\usepackage{ifthen}
+
+%remove [] around bibitems
+\makeatletter
+\renewcommand\@cite[2]{%
+	#1\ifthenelse{\boolean{@tempswa}}
+	{,#2}{}
+	%{, \nolinebreak[3] #2}{}
+}
+\renewcommand\@biblabel[1]{#1}
+\makeatother
+
+\newcommand{\etal}{u.a.}
+\newcommand{\citeu}[1]{\footnote{\cite{#1}}}
+\newcommand{\autorefu}[1]{\footnote{Siehe \autoref{#1}}}
+\def\dronarch{DRONARCH}
+
+\graphicspath{{../imgs/}}
+
+\begin{document}
+	
+	\title{\huge{DRONARCH} \\ \vspace*{1cm}\normalsize{Digital Reconstruction Of Natural Environment and Archaeological and Cultural Heritage using Structure from Motion}}
+	
+	\author{Niclas Scheuing}
+	\date{2014}
+	\affil{Institut für Archäologische Wissenschaften, Archäologie der Römischen Provinzen, Universität Bern}
+	
+	\pagenumbering{roman} \setcounter{page}{1}
+	\maketitle
+	\tableofcontents
+	\clearpage
+	\pagenumbering{arabic} \setcounter{page}{1}
+	
+	\include{chapters/einleitung}
+	\include{chapters/fragestellung}
+	\include{chapters/related_work}
+	\include{chapters/software}
+	\include{chapters/resultate}
+	\include{chapters/fazit}
+	
+	\begin{appendix}
+		\include{chapters/appendix}		
+	\end{appendix}
+	
+	\addcontentsline{toc}{section}{\numberline{}List of Figures}
+	\listoffigures
+	
+	\addcontentsline{toc}{section}{\numberline{}Bibliography}
+%		\bibliographystyle{apalike}
+%	\bibliographystyle{IEEEtran}
+	\bibliographystyle{nick_2}
+	\nocite{*}
+%	\printbibliography
+	\bibliography{dronarch}
+	
+
+	
+\end{document}
