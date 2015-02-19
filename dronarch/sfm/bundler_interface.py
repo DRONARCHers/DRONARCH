@@ -350,7 +350,10 @@ def sift_images(images, verbose=False, parallel=False):
             threads=4
         else:
             threads = 5
-        debug(0, 'Using {} threads for feature detection'.format(threads))
+	memory = 16
+        threads = threads*memory/8
+
+	debug(0, 'Using {} threads for feature detection'.format(threads))
 
         key_filenames = parallel_exe(sift_image, images, max_threads=threads)
     else:
