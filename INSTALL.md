@@ -23,15 +23,26 @@ From https://www.python.org/downloads
 Install it
 
 ### numpy 1.9.2
-
+- Using pip: `pip install numpy`
+OR:
 - Download from http://www.scipy.org/scipylib/download.html
 - Install according to instructions
 - You may try: `python setup.py install --user   # installs to your home directory -- requires Python >= 2.6`
 - If not done during installation, add bin-path of numpy to PYTHONPATH variable
 
 ### opencv 2.4.9
+- Install via *homebrew* (see: https://jjyap.wordpress.com/2014/05/24/installing-opencv-2-4-9-on-mac-osx-with-python-support/)
+- `brew tap homebrew/science`
+- `brew install opencv` if this fails try `brew update` first.
+OR:
 - Download from http://opencv.org/downloads.html
 - Add [PATH TO OPENCV]/opencv/build/python/2.7/x86 to PYTHONPATH variable
+
+- Add `/usr/local/Cellar/opencv/2.4.12/lib/python2.7/site-packages` to your PYTHONPATH
+- `echo 'PYTHONPATH=$PYTHONPATH:/usr/local/Cellar/opencv/2.4.12/lib/python2.7/site-
+packages'>>$HOME/.bash_profile`
+- `echo 'export PYTHONPATH'>>$HOME/.bash_profile`
+- Try in the python shell `python -c 'import cv2'` to see whether the installation was successful.
 
 ### bundler
 
@@ -42,12 +53,11 @@ Some preparing steps are needed to install bundler
 
 #### ImageMagick
 - Download *ImageMagik* using *homebrew* `brew install ImageMagick` or the OSX binaries from www.imagemagick.org/script/binary-releases.php
-- In Python shell try `import ImageMagick`to make sure Pyhton finds it.
 
 #### Pillow
 - Download *Python Imaging*  binaries *Pillow-2.9.0-cp27-none-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl* (or any 2.*) from https://pypi.python.org/pypi/Pillow/2.9.0
 - Install Pillow using `pip install <your pillow .whl file>`
-- Try `from PIL import Pillow? to make sure the installation is complete.
+- Try `from PIL import Pillow` to make sure the installation is complete.
 
 #### PMVS/CMVS
 - Get the binaries form https://github.com/pmoulon/CMVS-PMVS `git clone git@github.com:pmoulon/CMVS-PMVS.git`to some place you like
