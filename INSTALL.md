@@ -1,0 +1,38 @@
+Install
+
+OSX
+
+# Create dir
+In Terminal:
+mkdir dronarch
+cd dronarch
+
+#get dronarch source
+git clone https://github.com/DRONARCHers/DRONARCH.git
+
+#get python 2.7 from https://www.python.org/downloads/
+
+#get numpy 1.8.2 for python 2.7 from http://www.scipy.org/scipylib/download.html
+#if not done during installation, add bin-path to PYTHONPATH variable
+
+# get opencv 2.4.9 http://opencv.org/downloads.html
+# add [PATH TO OPENCV]/opencv/build/python/2.7/x86 to PYTHONPATH variable
+
+
+
+
+#whats needed
+
+#bundler
+bundler binaries https://github.com/TheFrenchLeaf/Bundler.git
+sift binaries http://www.cs.ubc.ca/~lowe/keypoints/
+jhead http://www.sentex.net/~mwandel/jhead/
+ImageMagik www.imagemagick.org/script/binary-releases.php
+Python Imaging (Pillow-2.7.0-cp27-none-win32.whl) http://www.lfd.uci.edu/~gohlke/pythonlibs/#pil
+#extract and add [PATH TO PILLOW]/Pillow-2.7.0-cp27-none-win32 to PYTHONPATH
+
+#pmvs/cmvs
+pmvs/cmvs binaries https://github.com/pmoulon/CMVS-PMVS
+
+#opencv
+opencv 2.4.9 http://opencv.org/downloads.html
